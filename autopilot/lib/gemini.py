@@ -11,7 +11,7 @@ def _key():
     return k
 
 
-def _req(method, path, body=None, retries=4):
+def _req(method, path, body=None, retries=3):
     url = f"{API}/{path}"
     data = json.dumps(body).encode() if body is not None else None
     for attempt in range(retries):
@@ -51,29 +51,54 @@ def list_models():
             return out
 
 
+def _ranked(names, keep):
+    import re
+    def ver(n):
+        m = re.search(r"(\d+(?:\.\d+)?)", n)
+        return (float(m.group(1)) if m else 0, "preview" not in n, -len(n))
+    return sorted([n for n in names if keep(n)], key=ver, reverse=True)
+
+
+TEXT_MODELS, TTS_MODELS = [], []
+
+
 def pick_models(text_pref="auto", tts_pref="auto"):
-    """Choose the newest 'flash' text model and newest TTS model available on this key."""
+    """Rank text + TTS models available on this key, newest first; the others are fallbacks."""
+    global TEXT_MODELS, TTS_MODELS
     names = [m["name"].split("/", 1)[1] for m in list_models()
              if "generateContent" in m.get("supportedGenerationMethods", [])]
-
-    def newest(cands):
-        def ver(n):
-            import re
-            m = re.search(r"(\d+(?:\.\d+)?)", n)
-            return (float(m.group(1)) if m else 0, "preview" not in n, -len(n))
-        return sorted(cands, key=ver, reverse=True)[0] if cands else None
-
-    text = text_pref if text_pref != "auto" else newest(
-        [n for n in names if "flash" in n and "tts" not in n and "image" not in n
-         and "live" not in n and "audio" not in n and "lite" not in n and "exp" not in n])
-    tts = tts_pref if tts_pref != "auto" else newest([n for n in names if "tts" in n and "pro" not in n]) \
-        or newest([n for n in names if "tts" in n])
-    if not text or not tts:
+    bad = ("tts", "image", "live", "audio", "exp", "embedding", "robotics", "computer", "thinking", "native")
+    TEXT_MODELS = _ranked(names, lambda n: "flash" in n and not any(b in n for b in bad))
+    TTS_MODELS = _ranked(names, lambda n: "tts" in n and "pro" not in n) + _ranked(names, lambda n: "tts" in n and "pro" in n)
+    if text_pref != "auto":
+        TEXT_MODELS.insert(0, text_pref)
+    if tts_pref != "auto":
+        TTS_MODELS.insert(0, tts_pref)
+    if not TEXT_MODELS or not TTS_MODELS:
         raise RuntimeError(f"Could not find text/tts models. Available: {names}")
-    return text, tts
+    return TEXT_MODELS[0], TTS_MODELS[0]
+
+
+def _with_fallback(models, first, call):
+    order = [first] + [m for m in models if m != first]
+    last = None
+    for m in order[:4]:
+        try:
+            return call(m)
+        except RuntimeError as e:
+            last = e
+            if any(c in str(e) for c in ("503", "429", "500", "network", "404")):
+                print(f"model {m} unavailable ({str(e)[:60]}), trying next")
+                continue
+            raise
+    raise last
 
 
 def generate_json(model, prompt, temperature=0.9):
+    return _with_fallback(TEXT_MODELS, model, lambda m: _generate_json(m, prompt, temperature))
+
+
+def _generate_json(model, prompt, temperature):
     body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
             "generationConfig": {"temperature": temperature, "responseMimeType": "application/json",
                                  "thinkingConfig": {"thinkingLevel": "low"}}}
@@ -89,6 +114,10 @@ def generate_json(model, prompt, temperature=0.9):
 
 
 def tts_to_wav(model, text, voice, out_path, style="Say this in a clear, friendly, upbeat tone, like a helpful creator:"):
+    return _with_fallback(TTS_MODELS, model, lambda m: _tts(m, text, voice, out_path, style))
+
+
+def _tts(model, text, voice, out_path, style):
     body = {"contents": [{"parts": [{"text": f"{style} {text}"}]}],
             "generationConfig": {"responseModalities": ["AUDIO"],
                                  "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}}}}
