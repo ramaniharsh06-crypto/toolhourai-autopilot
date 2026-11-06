@@ -68,3 +68,27 @@ Return JSON: {{"insights":["..."],"next_moves":["..."]}}"""
     out = ["", "## Growth Analyst"] + [f"- {i}" for i in r.get("insights", [])]
     out += ["", "**Next moves:**"] + [f"1. {m}" for m in r.get("next_moves", [])]
     return "\n".join(out) + "\n"
+
+
+def sound_check(text_model, listen_json, audio_path, script):
+    """Sound Engineer: actually listens to the final mix and reports problems."""
+    spoken = " ".join(s["voice"] for s in script["scenes"])
+    prompt = f"""You are a professional sound engineer for short-form social videos. LISTEN to this audio carefully.
+The voiceover should say exactly: "{spoken}"
+Check and rate 1-10:
+- voice_clarity: is every word clear and natural?
+- script_match: does it say the script, with NO extra words (e.g. reading out instructions like "say this excitedly")?
+- noise: any crackle, clicks, distortion, hiss or glitches? (10 = perfectly clean)
+- music_balance: background music supports but never fights the voice?
+- transitions: are the scene-change sound effects pleasant, not harsh or annoying?
+- energy: does it sound exciting and fun to listen to?
+Return JSON: {{"scores":{{"voice_clarity":0,"script_match":0,"noise":0,"music_balance":0,"transitions":0,"energy":0}},
+"transcript":"what you actually heard","problems":["specific problems with timestamps"],"verdict":"pass" | "fix"}}"""
+    r = listen_json(text_model, str(audio_path), prompt)
+    sc = r.get("scores", {})
+    low = {k: v for k, v in sc.items() if isinstance(v, (int, float)) and v < 7}
+    verdict = "fix" if low or r.get("verdict") == "fix" else "pass"
+    script["sound_check"] = {"verdict": verdict, "scores": sc, "problems": r.get("problems", [])[:6],
+                             "heard": (r.get("transcript") or "")[:400]}
+    print(f"sound engineer: {verdict} {sc} {r.get('problems', [])[:3]}")
+    return verdict

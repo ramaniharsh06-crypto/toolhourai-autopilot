@@ -164,3 +164,15 @@ def search_json(model, prompt, temperature=0.4):
         srcs = [c.get("web", {}).get("uri") for c in (cand.get("groundingMetadata") or {}).get("groundingChunks", [])]
         return _extract_json(txt), [s for s in srcs if s]
     return _with_fallback(TEXT_MODELS, model, call)
+
+
+def listen_json(model, audio_path, prompt, mime="audio/mp4"):
+    """Gemini hears an audio file (inline, < 15 MB) and answers in JSON."""
+    data = base64.b64encode(open(audio_path, "rb").read()).decode()
+    def call(m):
+        body = {"contents": [{"role": "user", "parts": [{"inline_data": {"mime_type": mime, "data": data}},
+                                                         {"text": prompt}]}],
+                "generationConfig": {"temperature": 0.1, "responseMimeType": "application/json"}}
+        r = _req("POST", f"models/{m}:generateContent", body)
+        return json.loads(r["candidates"][0]["content"]["parts"][0]["text"])
+    return _with_fallback(TEXT_MODELS, model, call)

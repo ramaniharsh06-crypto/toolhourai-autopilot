@@ -92,6 +92,11 @@ def main():
         name = f"{day}-{slug(script['tool_name'] + '-' + script['topic'])}"
         work = ROOT / "build" / name
         mp4, secs = render.render(script, work, tts_model, gemini.tts_to_wav)
+        try:                                    # Sound Engineer listens to the final mix
+            time.sleep(15)
+            team.sound_check(text_model, gemini.listen_json, work / "mix.m4a", script)
+        except Exception as e:
+            print("sound engineer could not listen:", str(e)[:90])
         final = DOCS / "v" / f"{name}.mp4"
         shutil.copy(mp4, final)
         script.update({"id": name, "seconds": round(secs, 1), "file": f"v/{final.name}"})
@@ -113,7 +118,8 @@ def main():
             for svc in CFG["post_to"]:
                 if svc not in chans:
                     print("no connected channel for", svc); continue
-                unverified = (script.get("fact_check") or {}).get("verdict") == "unverified"
+                unverified = (script.get("fact_check") or {}).get("verdict") == "unverified" or \
+                             (script.get("sound_check") or {}).get("verdict") == "fix"
                 p = buffer.create_video_post(chans[svc]["id"], svc, script["final_caption"], url,
                                              script["youtube_title"], draft=CFG["require_approval"] or unverified)
                 script["buffer_posts"][svc] = p["id"]
