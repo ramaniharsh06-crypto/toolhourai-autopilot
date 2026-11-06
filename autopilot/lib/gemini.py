@@ -1,7 +1,18 @@
 """Tiny Gemini REST client (no extra packages): text generation + text-to-speech."""
-import base64, http.client, json, os, socket, time, urllib.request, urllib.error, wave
+import base64, http.client, json, os, re, socket, time, urllib.request, urllib.error, wave
 
 API = "https://generativelanguage.googleapis.com/v1beta"
+DAILY_OUT = [False]          # set once Gemini says today's free quota is used up
+
+
+class DailyQuotaExhausted(RuntimeError):
+    pass
+
+
+def _check_daily(code, msg):
+    if code == 429 and re.search(r"per ?day|PerDay|RequestsPerDay|daily", msg, re.I):
+        DAILY_OUT[0] = True
+        raise DailyQuotaExhausted("Gemini free daily limit reached")
 
 
 def _key():
@@ -28,13 +39,15 @@ def _req(method, path, body=None, retries=3):
                     print(f"Gemini timeout/network error, retrying ({attempt+1})"); time.sleep(10); continue
                 raise RuntimeError(f"Gemini network error: {e}")
             e = raise_http
-            msg = e.read().decode(errors="ignore")[:500]
+            msg = e.read().decode(errors="ignore")[:3000]
+            _check_daily(e.code, msg)
             if e.code in (429, 500, 503) and attempt < retries - 1:
                 time.sleep(12 * (attempt + 1))
                 continue
             raise RuntimeError(f"Gemini {e.code}: {msg}")
         except urllib.error.HTTPError as e:
-            msg = e.read().decode(errors="ignore")[:500]
+            msg = e.read().decode(errors="ignore")[:3000]
+            _check_daily(e.code, msg)
             if e.code in (429, 500, 503) and attempt < retries - 1:
                 time.sleep(15 * (attempt + 1))
                 continue
@@ -83,8 +96,12 @@ def _with_fallback(models, first, call):
     order = [first] + [m for m in models if m != first]
     last = None
     for m in order[:4]:
+        if DAILY_OUT[0]:
+            raise DailyQuotaExhausted("Gemini free daily limit reached")
         try:
             return call(m)
+        except DailyQuotaExhausted:
+            raise
         except RuntimeError as e:
             last = e
             if any(c in str(e) for c in ("503", "429", "500", "network", "404")):
@@ -146,6 +163,8 @@ def tts_to_wav(model, text, voice, out_path, style=None):
         try:
             return _tts(model, text, voice, out_path, style)
         except RuntimeError as e:
+            if isinstance(e, DailyQuotaExhausted):
+                raise
             if "429" in str(e) and attempt < 3:
                 print(f"voice quota busy, waiting 30s (try {attempt + 2}/4)"); time.sleep(30); continue
             if attempt == 3 or "429" not in str(e):
@@ -195,14 +214,14 @@ def search_json(model, prompt, temperature=0.4):
                 "tools": [{"google_search": {}}],
                 "generationConfig": {"temperature": temperature}}
         r = None
-        for wait in (0, 40, 80):          # live search has a tight per-minute quota: wait and retry
+        for wait in (0, 30):              # live search has a tight per-minute quota: wait once and retry
             if wait:
                 print(f"search rate-limited, waiting {wait}s"); time.sleep(wait)
             try:
                 r = _req("POST", f"models/{m}:generateContent", body, retries=1)
                 break
             except RuntimeError as e:
-                if "429" not in str(e) or wait == 80:
+                if "429" not in str(e) or wait == 30 or DAILY_OUT[0]:
                     raise
         cand = r["candidates"][0]
         txt = "".join(p.get("text", "") for p in cand["content"]["parts"])

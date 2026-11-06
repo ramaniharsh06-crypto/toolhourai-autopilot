@@ -142,4 +142,11 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except gemini.DailyQuotaExhausted:
+        msg = ("Gemini's free daily limit is used up, so no video was made this time. Nothing is broken: "
+               "the limit resets at midnight Pacific time and tomorrow's run will make the video as normal.")
+        print("STOPPED:", msg)
+        (DATA / "LAST_ERROR.txt").write_text(msg)
+        sys.exit(1)

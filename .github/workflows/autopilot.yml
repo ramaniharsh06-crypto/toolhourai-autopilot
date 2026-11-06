@@ -2,7 +2,7 @@ name: Tool Hour AI autopilot
 
 on:
   schedule:
-    - cron: "30 3 * * *"     # every day 09:00 India time
+    - cron: "15 8 * * *"     # every day 13:45 India time, right after Gemini's free quota resets
   workflow_dispatch:           # "Run workflow" button for a manual run
     inputs:
       mode:
@@ -87,4 +87,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh issue create --title "⚠️ Autopilot failed $(date -u +%F)" --body "Open the run - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          REASON="$(cat data/LAST_ERROR.txt 2>/dev/null || echo 'See the run log for details.')"
+          gh issue create --title "⚠️ Autopilot did not finish $(date -u +%F)" --body "$REASON Run - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
