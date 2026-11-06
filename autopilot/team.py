@@ -37,7 +37,7 @@ def edit(text_model, generate_json, script):
 hook (first 2 seconds), pacing (no dead words), payoff (satisfying ending), emotion (fun, surprise, relief),
 clarity. Then, if any score is below 8, rewrite ONLY the weak "voice"/"headline"/"body" lines to be punchier,
 more conversational and more exciting, keeping the facts identical, the same scene kinds and order, total
-spoken words 60-85, and no emoji, no prices, no income claims.
+spoken words 55-75, and no emoji, no prices, no income claims.
 
 SCRIPT: {json.dumps(script['scenes'], ensure_ascii=False)}
 

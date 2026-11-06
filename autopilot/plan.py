@@ -88,7 +88,7 @@ def build_prompt(pillar, concept=None):
     w = weights()
     best = sorted(w["tools"].items(), key=lambda kv: kv[1]["score"], reverse=True)[:5]
     best_hooks = sorted(w["hooks"].items(), key=lambda kv: kv[1]["score"], reverse=True)[:3]
-    return f"""You write 25-35 second faceless short videos (Instagram Reels + YouTube Shorts) for the brand "{CFG['brand']}".
+    return f"""You write 28-32 second faceless short videos (Instagram Reels + YouTube Shorts) for the brand "{CFG['brand']}".
 Audience: small business owners who are busy and a bit overwhelmed by AI.
 
 BRAND VOICE:
@@ -120,7 +120,7 @@ HARD RULES:
 - Be factually safe: only describe stable, well-known features. NO prices, NO exact plan limits, NO income claims, NO made-up statistics.
 - Say "free plan" only if the tool is widely known to have one; otherwise say "try it".
 - One practical tip the viewer can do today, in plain English. No jargon.
-- Voice lines must be short spoken sentences. Total spoken words 60-85.
+- Voice lines must be short spoken sentences. Total spoken words 55-75 (the video must be about 30 seconds).
 - The tool_url must be the tool's real official homepage (https://...).
 
 Return ONLY JSON with exactly this shape:
@@ -154,7 +154,7 @@ def lint(script):
     if not str(script.get("tool_url", "")).startswith("https://"):
         problems.append("tool_url is not https")
     words = sum(len(s.get("voice", "").split()) for s in script.get("scenes", []))
-    if not 45 <= words <= 110:
+    if not 48 <= words <= 82:
         problems.append(f"voiceover length {words} words out of range")
     if [s.get("kind") for s in script.get("scenes", [])][:1] != ["hook"]:
         problems.append("first scene is not a hook")

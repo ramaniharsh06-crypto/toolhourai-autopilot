@@ -199,17 +199,15 @@ def whoosh(path):
 
 
 def clean_voice(src, dst):
-    ff("-i", src, "-af", "adeclip,highpass=f=70,lowpass=f=12000,afade=t=in:d=0.012,areverse,"
+    ff("-i", src, "-af", "adeclip,adeclick=window=55:overlap=75,highpass=f=70,lowpass=f=9500,"
+       "acompressor=threshold=-18dB:ratio=3:attack=8:release=120,afade=t=in:d=0.012,areverse,"
        "afade=t=in:d=0.04,areverse,volume=-3dB,aresample=48000", "-ac", "1", dst)
 
 
 def tts_checked(tts_fn, model, text, voice, out):
     """Energetic delivery cue, but re-record plainly if the cue was read aloud (speech much too long)."""
-    words = len(text.split())
-    tts_fn(model, text, voice, out, style="Say this with excited, warm energy, like you just found an amazing trick:")
-    if wav_len(out) > words * 0.55 + 1.5:
-        print(f"    voice cue was spoken aloud ({wav_len(out):.1f}s for {words} words), re-recording plainly")
-        tts_fn(model, text, voice, out)
+    # Gemini reads delivery cues aloud, so the energy comes from the voice (Puck) and the punchy script instead
+    tts_fn(model, text, voice, out)
 
 
 # ---------- main ----------
