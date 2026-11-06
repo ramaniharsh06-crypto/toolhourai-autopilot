@@ -23,6 +23,32 @@ def shoot(url_or_file, out_png, w, h, wait_ms=6000, scale=1):
     return out_png
 
 
+BLOCK_WORDS = ("security verification", "verifying you are human", "verify you are human", "checking your browser",
+               "captcha", "access denied", "are you a robot", "unusual traffic", "just a moment", "attention required",
+               "enable javascript and cookies", "403 forbidden", "request blocked")
+
+
+def page_blocked(url):
+    """True if the site shows a bot-check / block page instead of its real homepage."""
+    try:
+        dom = subprocess.run([chrome(), "--headless=new", "--disable-gpu", "--no-sandbox", "--virtual-time-budget=9000",
+                              "--window-size=430,760", "--dump-dom", url],
+                             capture_output=True, text=True, timeout=90).stdout.lower()
+    except Exception:
+        return True
+    import re
+    text = re.sub(r"<[^>]+>", " ", re.sub(r"(?s)<(script|style).*?</\1>", " ", dom))
+    return len(text.split()) < 15 or any(w in text for w in BLOCK_WORDS)
+
+
+def remember_blocked(url):
+    f = ROOT / "data/blocked_sites.json"
+    host = url.split("//")[-1].split("/")[0].replace("www.", "")
+    lst = json.loads(f.read_text()) if f.exists() else []
+    if host not in lst:
+        lst.append(host); f.write_text(json.dumps(lst, indent=1))
+
+
 def esc(t):
     return html.escape(str(t or ""))
 
@@ -32,10 +58,13 @@ def scene_body(s, tool_png, script):
     if k == "hook":
         return f'<div class="h">{esc(s["headline"])}</div><div class="s">{esc(s.get("sub"))}</div>'
     if k == "tool":
-        img = f'<div class="shot"><img src="{tool_png.name}"></div>' if tool_png else ""
         host = esc(script["tool_url"].split("//")[1].split("/")[0].replace("www.", ""))
+        img = (f'<div class="shot"><img src="{tool_png.name}"></div>' if tool_png else
+               f'<div class="card" style="margin-top:60px;padding:90px 50px;border-color:#ff7a3d">'
+               f'<div style="font:900 110px Inter;color:#fff">{esc(script["tool_name"])}</div>'
+               f'<div style="font:700 44px Inter;color:#ff7a3d;margin-top:24px">{host}</div></div>')
         return (f'<div class="h">{esc(s["headline"])}</div><div class="s">{esc(s.get("sub"))}</div>'
-                f'{img}<div class="url">{host}</div>')
+                f'{img}' + (f'<div class="url">{host}</div>' if tool_png else ''))
     if k == "step":
         return (f'<div class="num">{int(s.get("number", 1))}</div><div class="h" style="font-size:80px">'
                 f'{esc(s["headline"])}</div><div class="card">{esc(s.get("body"))}</div>')
@@ -62,9 +91,13 @@ def render(script, outdir, tts_model, tts_fn):
     # 1. real screenshot of the tool's public website (phone-sized, crisp)
     tool_png = None
     try:
-        tool_png = pathlib.Path(shoot(script["tool_url"], str(out / "tool.png"), 430, 760, 9000, 2.5))
-        if tool_png.stat().st_size < 15000:   # blank / blocked page
-            tool_png = None
+        if page_blocked(script["tool_url"]):
+            print("tool site shows a bot-check/blocked page -> using a branded tool card instead")
+            remember_blocked(script["tool_url"])
+        else:
+            tool_png = pathlib.Path(shoot(script["tool_url"], str(out / "tool.png"), 430, 760, 9000, 2.5))
+            if tool_png.stat().st_size < 15000:   # blank page
+                tool_png = None
     except Exception as e:
         print("tool screenshot failed:", e)
     # 2. scenes + voice per scene (exact timing)

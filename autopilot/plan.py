@@ -33,6 +33,8 @@ def choose_pillar(w):
 def build_prompt(pillar):
     h = history()
     used_tools = sorted({x["tool_name"] for x in h[-30:]})
+    bf = ROOT / "data/blocked_sites.json"
+    blocked = json.loads(bf.read_text()) if bf.exists() else []
     w = weights()
     best = sorted(w["tools"].items(), key=lambda kv: kv[1]["score"], reverse=True)[:5]
     best_hooks = sorted(w["hooks"].items(), key=lambda kv: kv[1]["score"], reverse=True)[:3]
@@ -53,6 +55,7 @@ TODAY'S CONTENT PILLAR: "{pillar}"
 Pick ONE real, well-known AI tool that has a public website and a free plan or free tier
 (examples: Gemini, ChatGPT, Claude, Perplexity, NotebookLM, Canva, CapCut, Gamma, Notion AI, Otter.ai, Grammarly, Descript, Zapier, Make, Tally, Google Sheets with Gemini).
 Do NOT use any of these tools that were used recently: {used_tools or 'none yet'}.
+Do NOT use tools whose website is on this list (their sites block screenshots): {blocked or 'none'}.
 Tools that performed best so far (prefer similar ones, but do not repeat the exact tool): {[t for t,_ in best] or 'no data yet'}
 Hooks that performed best: {[k for k,_ in best_hooks] or 'no data yet'}
 
