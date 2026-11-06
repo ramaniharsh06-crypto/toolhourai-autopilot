@@ -131,3 +131,27 @@ def _tts(model, text, voice, out_path, style):
     with wave.open(out_path, "wb") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(rate); w.writeframes(pcm)
     return out_path
+
+
+def _extract_json(txt):
+    import re
+    txt = txt.strip()
+    m = re.search(r"```(?:json)?\s*(.*?)```", txt, re.S)
+    if m:
+        txt = m.group(1)
+    start = min([i for i in (txt.find("{"), txt.find("[")) if i >= 0] or [0])
+    return json.loads(txt[start:txt.rfind("}" if txt[start] == "{" else "]") + 1])
+
+
+def search_json(model, prompt, temperature=0.4):
+    """Gemini with live Google Search grounding. Returns (parsed_json, [source urls])."""
+    def call(m):
+        body = {"contents": [{"role": "user", "parts": [{"text": prompt + "\n\nReturn ONLY the JSON, no prose."}]}],
+                "tools": [{"google_search": {}}],
+                "generationConfig": {"temperature": temperature}}
+        r = _req("POST", f"models/{m}:generateContent", body)
+        cand = r["candidates"][0]
+        txt = "".join(p.get("text", "") for p in cand["content"]["parts"])
+        srcs = [c.get("web", {}).get("uri") for c in (cand.get("groundingMetadata") or {}).get("groundingChunks", [])]
+        return _extract_json(txt), [s for s in srcs if s]
+    return _with_fallback(TEXT_MODELS, model, call)

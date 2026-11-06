@@ -8,7 +8,7 @@ import json, os, pathlib, re, shutil, subprocess, sys, time, datetime, urllib.re
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from lib import gemini, buffer          # noqa: E402
-import plan, render, learn              # noqa: E402
+import plan, render, learn, scout, team  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "autopilot/config.json").read_text())
@@ -69,8 +69,24 @@ def main():
     text_model, tts_model = gemini.pick_models(CFG["text_model"], CFG["tts_model"])
     print("models:", text_model, tts_model)
 
+    try:                                        # Trend Scout: live web research, weekly
+        scout.run(text_model, gemini.search_json, force="--scout" in sys.argv)
+    except Exception as e:
+        print("scout skipped:", e)
+    try:                                        # Growth Analyst: insights on the weekly report
+        h = json.loads(hist_f.read_text()) if hist_f.exists() else []
+        rows = sorted([x for x in h if "score" in x], key=lambda x: x["score"], reverse=True)
+        wf = DATA / "weights.json"
+        extra = team.analyst_insights(text_model, gemini.generate_json, rows,
+                                      json.loads(wf.read_text()) if wf.exists() else {})
+        if extra and (DATA / "REPORT.md").exists():
+            rep = DATA / "REPORT.md"
+            rep.write_text(rep.read_text().split("\n## Growth Analyst")[0] + extra)
+    except Exception as e:
+        print("analyst skipped:", e)
+
     for _ in range(CFG["videos_per_run"]):
-        script = plan.make_script(text_model, gemini.generate_json)
+        script = plan.make_script(text_model, gemini.generate_json, gemini.search_json)
         day = datetime.date.today().isoformat()
         name = f"{day}-{slug(script['tool_name'] + '-' + script['topic'])}"
         work = ROOT / "build" / name

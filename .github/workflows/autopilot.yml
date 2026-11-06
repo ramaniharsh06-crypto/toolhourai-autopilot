@@ -79,7 +79,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "$(date -u +%u)" = "1" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            [ -f data/REPORT.md ] && gh issue create --title "Autopilot report $(date -u +%F)" --body-file data/REPORT.md || true
+            cat data/REPORT.md data/SCOUT.md > /tmp/weekly.md 2>/dev/null || true
+            [ -s /tmp/weekly.md ] && gh issue create --title "Weekly report $(date -u +%F): performance + trend scout" --body-file /tmp/weekly.md || true
           fi
       - name: Tell you if something broke
         if: failure()

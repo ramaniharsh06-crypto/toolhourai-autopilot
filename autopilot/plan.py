@@ -30,6 +30,14 @@ def choose_pillar(w):
     return scored[0], "exploit"
 
 
+def scout_brief():
+    try:
+        import scout
+        return scout.brief()
+    except Exception:
+        return "no scout research yet"
+
+
 def brainstorm(text_model, generate_json, pillar):
     """Creative director: 4 concepts in different formats, scored hard, best one wins."""
     h = history()
@@ -47,6 +55,9 @@ Each concept must use one real, well-known AI tool with a free plan or free tier
 (not on this blocked list: {blocked or 'none'}), and must not repeat these recent videos:
 {recent or 'none yet'}
 Formats that performed best so far (favour them, but keep variety): {[k for k,_ in best_formats] or 'no data yet'}
+
+TREND SCOUT RESEARCH FROM THIS WEEK (live web; prefer rising tools and hot questions, respect "avoid"):
+{scout_brief()}
 
 Then judge every concept like a strict viral-video editor, 1-10 each:
 stop_scroll (would a thumb stop in the first second?), curiosity (must I watch to the end?),
@@ -150,7 +161,7 @@ def lint(script):
     return problems
 
 
-def make_script(text_model, generate_json):
+def make_script(text_model, generate_json, search_json=None):
     w = weights()
     pillar, mode = choose_pillar(w)
     try:
@@ -160,6 +171,19 @@ def make_script(text_model, generate_json):
     for attempt in range(3):
         s = generate_json(text_model, build_prompt(pillar, concept))
         problems = lint(s)
+        if not problems:
+            import team
+            try:
+                team.edit(text_model, generate_json, s)
+            except Exception as e:
+                print("editor skipped:", e)
+            if search_json:
+                try:
+                    if not team.fact_check(text_model, search_json, s):
+                        problems = ["fact-checker rejected the script"]
+                except Exception as e:
+                    print("fact-checker skipped:", e)
+            problems = problems or lint(s)
         if not problems:
             s["mode"] = mode
             if concept:
