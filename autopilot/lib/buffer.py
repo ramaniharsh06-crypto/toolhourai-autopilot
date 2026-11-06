@@ -38,9 +38,10 @@ def channels(org_id):
 def create_video_post(channel_id, service, caption, video_url, youtube_title, draft=True):
     meta = {}
     if service == "instagram":
-        meta = {"instagram": {"type": "reel", "shouldShareToFeed": True}}
+        meta = {"instagram": {"type": "reel", "shouldShareToFeed": True, "isAiGenerated": True}}
     elif service == "youtube":
-        meta = {"youtube": {"title": youtube_title[:95], "categoryId": "28"}}
+        meta = {"youtube": {"title": youtube_title[:95], "categoryId": "28", "privacy": "public",
+                            "madeForKids": False, "notifySubscribers": True, "isAiGenerated": True}}
     q = """mutation($input: CreatePostInput!) {
       createPost(input: $input) {
         ... on PostActionSuccess { post { id status dueAt } }
@@ -48,7 +49,7 @@ def create_video_post(channel_id, service, caption, video_url, youtube_title, dr
       } }"""
     inp = {"text": caption, "channelId": channel_id, "schedulingType": "automatic", "mode": "addToQueue",
            "assets": [{"video": {"url": video_url, "metadata": {"thumbnailOffset": 1500}}}],
-           "metadata": meta, "saveToDraft": bool(draft)}
+           "metadata": meta, "saveToDraft": bool(draft), "aiAssisted": True}
     r = gql(q, {"input": inp})["createPost"]
     if "post" not in r:
         raise RuntimeError(f"createPost failed for {service}: {r.get('message')}")

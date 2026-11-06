@@ -14,11 +14,11 @@ try:
     org = buffer.organization_id()
     chans = buffer.channels(org)
     print("✅ Buffer key works. channels:", [(c["service"], c["name"], "disconnected" if c.get("isDisconnected") else "ok") for c in chans])
-    for type_name in ("CreatePostInput", "PostInputMetaData", "InstagramPostMetadataInput", "YoutubePostMetadataInput"):
+    for type_name in ("PostType", "YoutubePrivacy", "ShareMode", "SchedulingType", "YoutubeLicense"):
         d = buffer.gql('query($n:String!){ __type(name:$n){ name inputFields{ name type{ name kind ofType{ name kind } } } enumValues{ name } } }', {"n": type_name})
         tt = d["__type"]
         if tt:
-            print(f"   {type_name}:", [(f['name'], f['type'].get('name') or (f['type'].get('ofType') or {}).get('name')) for f in (tt.get('inputFields') or [])])
+            print(f"   {type_name}:", [e['name'] for e in (tt.get('enumValues') or [])])
 except Exception as e:
     ok = False; print("❌ Buffer:", e)
 
