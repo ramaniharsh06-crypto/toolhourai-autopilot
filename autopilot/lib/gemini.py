@@ -1,5 +1,5 @@
 """Tiny Gemini REST client (no extra packages): text generation + text-to-speech."""
-import base64, json, os, socket, time, urllib.request, urllib.error, wave
+import base64, http.client, json, os, socket, time, urllib.request, urllib.error, wave
 
 API = "https://generativelanguage.googleapis.com/v1beta"
 
@@ -20,7 +20,7 @@ def _req(method, path, body=None, retries=3):
         try:
             with urllib.request.urlopen(req, timeout=300) as r:
                 return json.loads(r.read())
-        except (TimeoutError, socket.timeout, urllib.error.URLError) as e:
+        except (TimeoutError, socket.timeout, urllib.error.URLError, http.client.HTTPException, ConnectionError, OSError) as e:
             if isinstance(e, urllib.error.HTTPError):
                 raise_http = e
             else:
