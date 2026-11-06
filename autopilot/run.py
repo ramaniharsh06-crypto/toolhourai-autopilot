@@ -54,6 +54,13 @@ def prune_old_videos():
             f.unlink()
 
 
+START = time.time()
+
+
+def minutes():
+    return (time.time() - START) / 60
+
+
 def main():
     publish = "--no-publish" not in sys.argv
     (DOCS / "v").mkdir(parents=True, exist_ok=True)
@@ -70,6 +77,8 @@ def main():
     print("models:", text_model, tts_model)
 
     try:                                        # Trend Scout: live web research, weekly
+        if minutes() > 10:
+            raise RuntimeError("time budget")
         scout.run(text_model, gemini.search_json, force="--scout" in sys.argv)
     except Exception as e:
         print("scout skipped:", e)

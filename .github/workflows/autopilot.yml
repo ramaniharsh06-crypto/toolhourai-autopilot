@@ -20,7 +20,7 @@ concurrency: autopilot
 jobs:
   daily:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -66,9 +66,9 @@ jobs:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
         run: |
           MODE="${{ github.event.inputs.mode || 'full' }}"
-          if [ "$MODE" = "check" ]; then python autopilot/check.py
-          elif [ "$MODE" = "video-only" ]; then python autopilot/run.py --no-publish
-          else python autopilot/run.py; fi
+          if [ "$MODE" = "check" ]; then python -u autopilot/check.py
+          elif [ "$MODE" = "video-only" ]; then python -u autopilot/run.py --no-publish
+          else python -u autopilot/run.py; fi
       - name: Keep the video-only test as a downloadable file
         if: always() && github.event.inputs.mode == 'video-only'
         uses: actions/upload-artifact@v4

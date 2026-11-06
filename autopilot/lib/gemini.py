@@ -30,7 +30,7 @@ def _req(method, path, body=None, retries=3):
             e = raise_http
             msg = e.read().decode(errors="ignore")[:500]
             if e.code in (429, 500, 503) and attempt < retries - 1:
-                time.sleep(25 * (attempt + 1))
+                time.sleep(12 * (attempt + 1))
                 continue
             raise RuntimeError(f"Gemini {e.code}: {msg}")
         except urllib.error.HTTPError as e:
@@ -132,9 +132,25 @@ on results.
 """
 
 
+_last_tts = [0.0]
+TTS_GAP = 21          # seconds between voice requests (free tier allows only a few per minute)
+
+
 def tts_to_wav(model, text, voice, out_path, style=None):
-    """style=None -> the salesman direction above; style="" -> plain read."""
-    return _with_fallback(TTS_MODELS, model, lambda m: _tts(m, text, voice, out_path, style))
+    """style=None -> the salesman direction above; style="" -> plain read. Paced to stay inside the free quota."""
+    for attempt in range(4):
+        wait = _last_tts[0] + TTS_GAP - time.time()
+        if wait > 0:
+            time.sleep(wait)
+        _last_tts[0] = time.time()
+        try:
+            return _tts(model, text, voice, out_path, style)
+        except RuntimeError as e:
+            if "429" in str(e) and attempt < 3:
+                print(f"voice quota busy, waiting 30s (try {attempt + 2}/4)"); time.sleep(30); continue
+            if attempt == 3 or "429" not in str(e):
+                break
+    return _with_fallback(TTS_MODELS[1:] or TTS_MODELS, model, lambda m: _tts(m, text, voice, out_path, style))
 
 
 def _tts(model, text, voice, out_path, style):

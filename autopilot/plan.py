@@ -180,9 +180,10 @@ def make_script(text_model, generate_json, search_json=None):
         s = generate_json(text_model, build_prompt(pillar, concept))
         problems = lint(s)
         if not problems:
-            import team
+            import team, time as _t
             try:
                 team.edit(text_model, generate_json, s)
+                _t.sleep(5)
             except Exception as e:
                 print("editor skipped:", e)
             if search_json:
