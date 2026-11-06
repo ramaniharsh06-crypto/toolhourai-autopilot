@@ -216,8 +216,12 @@ def clean_voice(src, dst):
 
 def tts_checked(tts_fn, model, text, voice, out):
     """Energetic delivery cue, but re-record plainly if the cue was read aloud (speech much too long)."""
-    # Gemini reads delivery cues aloud, so the energy comes from the voice (Puck) and the punchy script instead
-    tts_fn(model, text, voice, out)
+    spoken = re.sub(r"<[^>]+>", "", text)
+    words = len(spoken.split())
+    tts_fn(model, text, voice, out)                       # salesman direction (only the transcript is spoken)
+    if wav_len(out) > words * 0.55 + 2.0:                 # direction leaked into the audio -> plain read
+        print(f"    direction leaked into audio ({wav_len(out):.1f}s for {words} words), re-recording plainly")
+        tts_fn(model, text, voice, out, style="")
 
 
 # ---------- main ----------
@@ -250,7 +254,7 @@ def render(script, outdir, tts_model, tts_fn):
     # 2) frames per word + one segment per scene
     segs, start = [], 0.0
     for i, (s, L, D) in enumerate(zip(scenes, lens, durs), 1):
-        chunks = chunk_words(s["voice"])
+        chunks = chunk_words(re.sub(r"<[^>]+>", "", s["voice"]).replace("  ", " ").strip())
         wts = word_times(chunks, L)
         seq, t, wi = [], 0.0, 0                      # (png, seconds, is_new_chunk)
         for ci, ch in enumerate(chunks):

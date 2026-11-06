@@ -113,15 +113,44 @@ def _generate_json(model, prompt, temperature):
     return json.loads(txt)
 
 
-def tts_to_wav(model, text, voice, out_path, style=""):
+SALESMAN = """# AUDIO PROFILE: "Max", the world's most magnetic salesman and hype host
+A charismatic, warm, confident presenter in his early 30s. He sounds like he just discovered something
+incredible and can't wait to tell you. Big smile you can hear. Totally genuine, never cheesy or shouty.
+
+## THE SCENE
+Recording a 30-second vertical video for busy small business owners scrolling on their phones.
+He has one job: make them stop scrolling and watch to the very end.
+
+### DIRECTOR'S NOTES
+Style: High-energy promo read, like a top infomercial host crossed with an excited best friend. Smile while
+speaking. Punch the key words. Rising excitement into every reveal.
+Pacing: Fast and snappy, with tiny dramatic pauses right before the payoff words.
+Dynamics: Lean in, almost conspiratorial, on secrets and "here's the trick" moments; open up big and bright
+on results.
+
+## Transcript:
+"""
+
+
+def tts_to_wav(model, text, voice, out_path, style=None):
+    """style=None -> the salesman direction above; style="" -> plain read."""
     return _with_fallback(TTS_MODELS, model, lambda m: _tts(m, text, voice, out_path, style))
 
 
 def _tts(model, text, voice, out_path, style):
-    body = {"contents": [{"parts": [{"text": (f"{style} {text}" if style else text)}]}],
-            "generationConfig": {"responseModalities": ["AUDIO"],
+    direction = SALESMAN if style is None else (style + "\n## Transcript:\n" if style else "")
+    body = {"contents": [{"role": "user", "parts": [{"text": direction + text}]}],
+            "generationConfig": {"responseModalities": ["AUDIO"], "temperature": 1,
                                  "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}}}}
-    r = _req("POST", f"models/{model}:generateContent", body)
+    try:
+        r = _req("POST", f"models/{model}:generateContent", body)
+    except RuntimeError as e:
+        if "400" in str(e) and voice != "Puck":        # voice not available on this model -> Puck
+            print(f"voice {voice} not available, using Puck")
+            body["generationConfig"]["speechConfig"]["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"] = "Puck"
+            r = _req("POST", f"models/{model}:generateContent", body)
+        else:
+            raise
     part = r["candidates"][0]["content"]["parts"][0]["inlineData"]
     pcm = base64.b64decode(part["data"])
     rate = 24000

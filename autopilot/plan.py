@@ -110,7 +110,12 @@ Do NOT use tools whose website is on this list (their sites block screenshots): 
 Tools that performed best so far (prefer similar ones, but do not repeat the exact tool): {[t for t,_ in best] or 'no data yet'}
 Hooks that performed best: {[k for k,_ in best_hooks] or 'no data yet'}
 
-ENERGY (this is what makes people watch to the end):
+ENERGY (write like the world's best salesman pitching to one person, this is what makes people watch to the end):
+- Open with a pattern interrupt: "Wait.", "Stop.", "Okay, this is crazy.", or a sharp question that hits a real pain.
+- Use contrast and stakes: the painful old way vs the effortless new way. Make them FEEL the time they're wasting.
+- Tease the payoff ("and here's the crazy part...") so they need the ending. Deliver it big.
+- Short sentences. Punchy verbs. Talk to "you". Genuine excitement, never fake hype or fake urgency.
+- You may add ONE or TWO vocal bursts inside voice lines where natural: <gasp>, <laugh>, <chuckle>, <sigh>.
 - The hook is a pattern interrupt in the first 2 seconds: a surprising claim, a "stop doing X", or a relatable frustration. Talk to "you".
 - Sound like a real excited friend sharing a discovery: short punchy sentences, a little humour, one moment of "wait, what?".
 - Build curiosity: the payoff (result) comes at the end, so viewers stay.
