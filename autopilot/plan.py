@@ -182,7 +182,8 @@ def make_script(text_model, generate_json, search_json=None):
                     if not team.fact_check(text_model, search_json, s):
                         problems = ["fact-checker rejected the script"]
                 except Exception as e:
-                    print("fact-checker skipped:", e)
+                    print("fact-checker could not run:", str(e)[:80], "-> marked UNVERIFIED (stays a draft for your review)")
+                    s["fact_check"] = {"verdict": "unverified", "problems": [str(e)[:120]]}
             problems = problems or lint(s)
         if not problems:
             s["mode"] = mode

@@ -30,7 +30,7 @@ def _req(method, path, body=None, retries=3):
             e = raise_http
             msg = e.read().decode(errors="ignore")[:500]
             if e.code in (429, 500, 503) and attempt < retries - 1:
-                time.sleep(15 * (attempt + 1))
+                time.sleep(25 * (attempt + 1))
                 continue
             raise RuntimeError(f"Gemini {e.code}: {msg}")
         except urllib.error.HTTPError as e:
@@ -149,7 +149,16 @@ def search_json(model, prompt, temperature=0.4):
         body = {"contents": [{"role": "user", "parts": [{"text": prompt + "\n\nReturn ONLY the JSON, no prose."}]}],
                 "tools": [{"google_search": {}}],
                 "generationConfig": {"temperature": temperature}}
-        r = _req("POST", f"models/{m}:generateContent", body)
+        r = None
+        for wait in (0, 40, 80):          # live search has a tight per-minute quota: wait and retry
+            if wait:
+                print(f"search rate-limited, waiting {wait}s"); time.sleep(wait)
+            try:
+                r = _req("POST", f"models/{m}:generateContent", body, retries=1)
+                break
+            except RuntimeError as e:
+                if "429" not in str(e) or wait == 80:
+                    raise
         cand = r["candidates"][0]
         txt = "".join(p.get("text", "") for p in cand["content"]["parts"])
         srcs = [c.get("web", {}).get("uri") for c in (cand.get("groundingMetadata") or {}).get("groundingChunks", [])]

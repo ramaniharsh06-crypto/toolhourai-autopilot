@@ -73,6 +73,7 @@ def main():
         scout.run(text_model, gemini.search_json, force="--scout" in sys.argv)
     except Exception as e:
         print("scout skipped:", e)
+    time.sleep(20)                              # space out calls to stay inside the free per-minute quota
     try:                                        # Growth Analyst: insights on the weekly report
         h = json.loads(hist_f.read_text()) if hist_f.exists() else []
         rows = sorted([x for x in h if "score" in x], key=lambda x: x["score"], reverse=True)
@@ -112,8 +113,9 @@ def main():
             for svc in CFG["post_to"]:
                 if svc not in chans:
                     print("no connected channel for", svc); continue
+                unverified = (script.get("fact_check") or {}).get("verdict") == "unverified"
                 p = buffer.create_video_post(chans[svc]["id"], svc, script["final_caption"], url,
-                                             script["youtube_title"], draft=CFG["require_approval"])
+                                             script["youtube_title"], draft=CFG["require_approval"] or unverified)
                 script["buffer_posts"][svc] = p["id"]
                 print(f"buffer {svc}: {p['status']} {p.get('dueAt')}")
             script["video_url"] = url
