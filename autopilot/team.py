@@ -92,3 +92,40 @@ Return JSON: {{"scores":{{"voice_clarity":0,"script_match":0,"noise":0,"music_ba
                              "heard": (r.get("transcript") or "")[:400]}
     print(f"sound engineer: {verdict} {sc} {r.get('problems', [])[:3]}")
     return verdict
+
+
+def attention_director(text_model, generate_json, script):
+    """Attention Director: plans a 'can't look away' beat map for every scene.
+
+    Uses the same principles that hold even a toddler's attention (a change every ~1-2 seconds, faces,
+    surprise, rhythm, bright contrast, sound cues tied to motion) but keeps the message for adults.
+    """
+    prompt = f"""You are the Attention Director of a viral short-video channel. Your job: a viewer must be unable to
+look away for 30 seconds, the way a toddler can't stop watching a great cartoon. You control the edit, not the facts.
+
+Principles you apply:
+- Something visibly changes every 1-2 seconds (new word punch, zoom, visual step, mascot reaction).
+- Emphasise the 1-3 most emotional or surprising words per scene (numbers, "free", "stop", the payoff word).
+- The mascot "Tick" (a friendly stopwatch with a face) reacts: "happy", "wow" (mouth open) on surprises.
+- Pattern interrupt in the first second; a curiosity tease mid-way; a satisfying payoff at the end.
+- Sound cues: "pop" on emphasis, "ding" on the payoff.
+- Never change facts. You MAY shorten or punch up a voice line by a few words if it drags (keep the meaning).
+
+SCRIPT SCENES: {json.dumps(script['scenes'], ensure_ascii=False)}
+
+Return JSON:
+{{"scenes":[{{"emphasis":["word","word"],"mascot":"happy|wow","voice":"same or slightly punchier line"}}],
+"retention_score":0,"biggest_risk":"where a viewer might swipe away and what you did about it"}}
+(one entry per scene, same order)"""
+    r = generate_json(text_model, prompt, temperature=0.6)
+    plan = r.get("scenes") or []
+    if len(plan) == len(script["scenes"]):
+        for sc, a in zip(script["scenes"], plan):
+            sc["attention"] = {"emphasis": [str(w) for w in (a.get("emphasis") or [])][:3],
+                               "mascot": a.get("mascot", "happy")}
+            v = (a.get("voice") or "").strip()
+            if v and 0.6 <= len(v.split()) / max(1, len(sc["voice"].split())) <= 1.15:
+                sc["voice"] = v
+    script["attention_plan"] = {"retention_score": r.get("retention_score"), "biggest_risk": r.get("biggest_risk")}
+    print(f"attention director: retention {r.get('retention_score')}/10, risk: {str(r.get('biggest_risk'))[:90]}")
+    return script

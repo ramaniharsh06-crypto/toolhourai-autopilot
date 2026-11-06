@@ -96,8 +96,8 @@ def inbox(d, p):
     rows = "".join(f'<div class="m {"u" if e.get("unread", True) else ""}"><span>{esc(e.get("from"))}</span>'
                    f'<span style="color:#6b6b76;font-weight:500">{esc(e.get("subject"))}</span></div>'
                    for e in reveal(items, p, 0, .6))
-    inner = (f'<div class="pad"><div style="display:flex;justify-content:space-between;align-items:center">'
-             f'<div style="font:900 46px/1.2 Inter;padding-top:6px">Inbox</div><span class="badge">{esc(d.get("unread_count", len(items)))} unread</span></div>'
+    inner = (f'<div class="pad"><div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">'
+             f'<div style="font:900 40px/1.3 Inter">Inbox</div><span class="badge">{esc(d.get("unread_count", len(items)))} unread</span></div>'
              f'<div class="inbox" style="margin-top:20px">{rows}</div></div>')
     return window("Mail", inner)
 
@@ -207,16 +207,69 @@ KINDS = {"email": email, "inbox": inbox, "spreadsheet": spreadsheet, "chat": cha
          "social": social, "stat": stat}
 
 
+PHONE_KINDS = {"chat", "social", "inbox", "checklist"}
+
+DEVICE_CSS = """
+.laptop{position:absolute;left:74px;right:74px;top:370px;transform:scale(.94);transform-origin:50% 0}
+.lid{position:relative;background:#1b1b1d;border:3px solid #3b3b3f;border-radius:30px 30px 6px 6px;padding:26px 24px 24px}
+.cam{position:absolute;top:9px;left:50%;margin-left:-5px;width:10px;height:10px;border-radius:50%;background:#33343a}
+.screen{position:relative;width:938px;height:588px;overflow:hidden;background:#eef0f4;border-radius:4px}
+.menubar{position:absolute;left:0;right:0;top:0;height:30px;background:#f5f5f7;display:flex;align-items:center;gap:22px;padding:0 16px;font:700 17px Inter;color:#222;z-index:2}
+.menubar .r{margin-left:auto;font-weight:600}
+.screen .win{position:absolute;left:0;top:30px;width:1054px;height:627px;transform:scale(.89);transform-origin:0 0;border-radius:0}
+.base{position:relative;height:30px;margin:0 -44px;background:#c9cad0;border-radius:2px 2px 26px 26px;border-top:2px solid #e2e3e8}
+.base:after{content:"";position:absolute;left:50%;top:0;width:150px;margin-left:-75px;height:11px;background:#aeb0b7;border-radius:0 0 12px 12px}
+.ptr{position:absolute;width:34px;height:34px;z-index:5}
+.click{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;border:5px solid #ff7a3d;z-index:4}
+.phone{position:absolute;left:50%;margin-left:-285px;top:300px;width:570px;height:1150px;background:#121214;border:4px solid #3b3b3f;border-radius:88px;padding:18px}
+.pscreen{position:relative;width:100%;height:100%;border-radius:70px;overflow:hidden;background:#fff}
+.island{position:absolute;top:18px;left:50%;margin-left:-76px;width:152px;height:44px;background:#000;border-radius:24px;z-index:3}
+.status{position:absolute;left:0;right:0;top:0;height:78px;display:flex;justify-content:space-between;align-items:center;padding:6px 44px 0;font:800 25px Inter;color:#111;z-index:2}
+.pscreen .win{position:absolute;left:0;right:0;top:78px;bottom:0;width:auto;height:auto;border-radius:0}
+.pscreen .bar{height:62px;font-size:27px;background:#fff;border-bottom:2px solid #eee}
+.pscreen .dot{display:none}
+.pscreen .bar b{margin-left:0}
+.pscreen .pad{padding:26px 28px}
+.pscreen .msg{font-size:30px;max-width:90%}
+"""
+
+POINTER = ('<svg class="ptr" style="left:{x}px;top:{y}px" viewBox="0 0 24 24"><path d="M3 2 L3 20 L8 15.5 L11.5 22 '
+           'L14.5 20.6 L11 14 L18 14 Z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>')
+TARGETS = {"email": (150, 520), "spreadsheet": (640, 150), "slides": (470, 330), "document": (470, 420),
+           "calendar": (560, 300), "search": (470, 120), "invoice": (700, 520), "stat": (470, 470)}
+
+
+def laptop(inner, kind, p, clock="10:24"):
+    tx, ty = TARGETS.get(kind, (470, 330))
+    q = min(1.0, p * 1.15)
+    x, y = 820 + (tx - 820) * q, 520 + (ty - 520) * q
+    click = f'<div class="click" style="left:{tx}px;top:{ty}px"></div>' if p > .9 else ""
+    return (f'<div class="laptop"><div class="lid"><i class="cam"></i><div class="screen">'
+            f'<div class="menubar"><b>{esc(kind.title() if kind != "stat" else "Report")}</b><span>File</span><span>Edit</span>'
+            f'<span>View</span><span class="r">Thu {clock}</span></div>{inner}{click}{POINTER.format(x=x, y=y)}'
+            f'</div></div><div class="base"></div></div>')
+
+
+def phone(inner, clock="10:24"):
+    return (f'<div class="phone"><div class="pscreen"><i class="island"></i>'
+            f'<div class="status"><span>{clock}</span><span>5G ▮▮▮</span></div>{inner}</div></div>')
+
+
 def render_visual(v, p):
-    """HTML for one visual at progress p, or '' if none/unknown."""
+    """HTML for one visual at progress p, shown on a realistic laptop or phone, or '' if none/unknown."""
     if not v or v.get("type") not in KINDS:
         return ""
+    kind = v["type"]
     try:
-        return KINDS[v["type"]](v.get("data") or {}, p)
+        inner = KINDS[kind](v.get("data") or {}, p)
     except Exception as e:
-        print("visual skipped:", v.get("type"), e)
+        print("visual skipped:", kind, e)
         return ""
+    device = (v.get("data") or {}).get("device") or v.get("device") or ("phone" if kind in PHONE_KINDS else "laptop")
+    return phone(inner) if device == "phone" else laptop(inner, kind, p)
 
+
+CSS = CSS + DEVICE_CSS
 
 SCHEMA_HELP = """Each scene (except "cta") gets a "visual": a REAL-LIFE example of exactly what the voice is talking about
 in that moment, so viewers SEE it, not just read captions. Pick the type that matches what is being said:
@@ -234,4 +287,6 @@ in that moment, so viewers SEE it, not just read captions. Pick the type that ma
 - "stat":        {"title":"Time spent", "before_label":"By hand", "before":"3 hours", "after_label":"With AI", "after":"10 min"}
 Use believable sample data for a small business (a bakery, salon, agency, shop, consultant...). Keep text short
 enough to read on a phone. For the "tool" scene use {"type":"none"} (the real website is shown). Never use real
-people's names or real company data."""
+people's names or real company data. Visuals are shown on a realistic laptop (email, spreadsheet, document,
+slides, calendar, search, invoice, stat) or phone (chat, social, inbox, checklist); add "device":"phone" or
+"device":"laptop" inside data to override."""

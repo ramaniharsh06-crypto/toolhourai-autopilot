@@ -186,6 +186,11 @@ def make_script(text_model, generate_json, search_json=None):
                 _t.sleep(5)
             except Exception as e:
                 print("editor skipped:", e)
+            try:
+                team.attention_director(text_model, generate_json, s)
+                _t.sleep(5)
+            except Exception as e:
+                print("editor skipped:", e)
             if search_json:
                 try:
                     if not team.fact_check(text_model, search_json, s):

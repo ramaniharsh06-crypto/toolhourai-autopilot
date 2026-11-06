@@ -110,7 +110,7 @@ def word_times(chunks, speech_len, lead=0.10):
 CSS = f"""*{{box-sizing:border-box;margin:0}}
 html,body{{width:1080px;height:1920px;overflow:hidden}}
 body{{font-family:Inter,sans-serif;position:relative}}
-.bar{{position:absolute;top:0;left:0;height:14px;background:var(--hl)}}
+.prog{{position:absolute;top:0;left:0;height:14px;background:var(--hl);z-index:9}}
 .mark{{position:absolute;top:58px;left:64px;font:800 34px Inter;letter-spacing:-.01em;color:var(--fg);display:flex;gap:14px;align-items:center}}
 .top{{position:absolute;left:64px;right:64px;top:170px;height:1000px;display:flex;flex-direction:column;justify-content:center}}
 .big{{font:900 172px/.9 Inter;letter-spacing:-.045em;color:var(--fg)}}
@@ -123,6 +123,9 @@ body{{font-family:Inter,sans-serif;position:relative}}
 .cap span{{display:inline-block;padding:0 14px;margin:0 -6px;border-radius:12px}}
 .cap .on{{background:var(--hl);color:var(--hlfg)}}
 .cap .off{{opacity:.38}}
+.cap .on.key{{transform:scale(1.16) rotate(-2.5deg);margin:0 14px}}
+.stg{{position:absolute;inset:0;transform-origin:50% 45%}}
+.tick{{position:absolute;right:52px;top:34px;width:132px;height:150px;z-index:8}}
 .foot{{position:absolute;left:64px;bottom:70px;font:600 28px Inter;color:var(--fg);opacity:.55}}
 .pill{{display:inline-block;margin-top:56px;background:var(--hl);color:var(--hlfg);font:900 64px Inter;padding:26px 52px;border-radius:999px}}
 """
@@ -136,7 +139,36 @@ LOGO = ('<svg width="40" height="40" viewBox="0 0 1080 1080"><circle cx="540" cy
         '<path d="M600 330 L430 610 L545 610 L490 820 L670 520 L555 520 Z" fill="currentColor"/></svg>')
 
 
-def frame_html(scene, script, tool_png, chunk, active, progress, p=1.0):
+KEY_WORDS = {"free", "crazy", "stop", "wait", "never", "instantly", "seconds", "minutes", "hours", "secret", "trick",
+             "magic", "done", "zero", "every", "one", "faster", "easy", "automatically", "insane", "finally"}
+
+
+EMPH = set()
+
+
+def is_key(w):
+    c = re.sub(r"[^\w]", "", w).lower()
+    if EMPH:
+        return c in EMPH or bool(re.search(r"\d", w))
+    return bool(re.search(r"\d", w)) or c in KEY_WORDS or (w.isupper() and len(c) > 1) or len(c) >= 10
+
+
+def mascot(bounce, blink, mood="happy"):
+    """'Tick', the Tool Hour AI stopwatch with a face. Bounces with the rhythm, blinks now and then."""
+    y, rot = (-16, -7) if bounce else (0, 6)
+    eyes = ('<rect x="40" y="78" width="16" height="5" rx="2" fill="#101014"/><rect x="76" y="78" width="16" height="5" rx="2" fill="#101014"/>'
+            if blink else '<circle cx="48" cy="80" r="8" fill="#101014"/><circle cx="84" cy="80" r="8" fill="#101014"/>'
+                          '<circle cx="51" cy="77" r="3" fill="#fff"/><circle cx="87" cy="77" r="3" fill="#fff"/>')
+    mouth = ('<path d="M46 98 Q66 120 86 98" stroke="#101014" stroke-width="7" fill="none" stroke-linecap="round"/>'
+             if mood == "happy" else '<ellipse cx="66" cy="104" rx="11" ry="13" fill="#101014"/>')
+    return (f'<svg class="tick" viewBox="0 0 132 150" style="transform:translateY({y}px) rotate({rot}deg)">'
+            '<rect x="54" y="0" width="24" height="18" rx="5" fill="#ff7a3d" stroke="#101014" stroke-width="5"/>'
+            '<circle cx="66" cy="88" r="58" fill="#fff" stroke="#101014" stroke-width="7"/>'
+            '<circle cx="66" cy="88" r="46" fill="#ff7a3d"/>'
+            f'{eyes}{mouth}<circle cx="30" cy="98" r="8" fill="#ffb08a"/><circle cx="102" cy="98" r="8" fill="#ffb08a"/></svg>')
+
+
+def frame_html(scene, script, tool_png, chunk, active, progress, p=1.0, stage=None, beat=0):
     bg, fg, hl, hlfg = SCENE_LOOK.get(scene["kind"], SCENE_LOOK["step"])
     k = scene["kind"]
     extra = ""
@@ -169,15 +201,24 @@ def frame_html(scene, script, tool_png, chunk, active, progress, p=1.0):
         extra = (f'<div class="mid" style="position:absolute;left:64px;right:64px;top:150px;font-size:84px;line-height:1">'
                  f'{esc(head)}</div>{vis}')
     cap_style = ' style="bottom:auto;top:560px;font-size:176px;line-height:.98;letter-spacing:-.045em"' if (k == "hook" and not vis) else ""
-    cap = "".join(f'<span class="{"on" if i == active else ("off" if i > active else "")}">{esc(w)}</span> '
+    cap = "".join(f'<span class="{("on key" if is_key(w) else "on") if i == active else ("off" if i > active else "")}">{esc(w)}</span> '
                   for i, w in enumerate(chunk))
+    # entrance: the scene drops in with an overshoot; afterwards a tiny pulse on every word keeps it alive
+    if stage is not None:
+        stg = ["translateY(300px) scale(.84) rotate(-3deg)", "translateY(-34px) scale(1.035) rotate(1deg)",
+               "translateY(10px) scale(.995)"][stage]
+    else:
+        stg = f"scale({1.012 if beat % 2 else 1.0})"
+    want = (scene.get("attention") or {}).get("mascot")
+    mood = "wow" if (want == "wow" and active >= 0 and is_key(chunk[active])) or (k == "result" and beat % 3 == 0) else "happy"
+    tick = mascot(beat % 2 == 1, beat % 7 == 3, mood) if k != "cta" else ""
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
 <style>{CSS}{visuals.CSS}</style></head>
 <body style="background:{bg};--fg:{fg};--hl:{hl};--hlfg:{hlfg}">
-<div class="bar" style="width:{progress*100:.1f}%"></div>
+<div class="prog" style="width:{progress*100:.1f}%"></div>
 <div class="mark">{LOGO}{esc(CFG["brand"])}</div>
-<div class="top">{top}</div>{extra}
+<div class="stg" style="transform:{stg}"><div class="top">{top}</div>{extra}</div>{tick}
 <div class="cap"{cap_style}>{cap}</div>
 <div class="foot">AI voiceover · not sponsored</div>
 </body></html>"""
@@ -259,25 +300,38 @@ def render(script, outdir, tts_model, tts_fn):
     total = sum(durs) - T * (len(durs) - 1)
 
     # 2) frames per word + one segment per scene
-    segs, start = [], 0.0
+    segs, start, pops, dings = [], 0.0, [], []
     for i, (s, L, D) in enumerate(zip(scenes, lens, durs), 1):
+        if s["kind"] == "result":
+            dings.append(start + 0.25)
+        att = s.get("attention") or {}
+        EMPH.clear(); EMPH.update(re.sub(r"[^\w]", "", w).lower() for w in att.get("emphasis", []))
         chunks = chunk_words(re.sub(r"<[^>]+>", "", s["voice"]).replace("  ", " ").strip())
         wts = word_times(chunks, L)
         seq, t, wi = [], 0.0, 0                      # (png, seconds, is_new_chunk)
+        for st_i in range(3):                        # 0.2s bouncy entrance before the first word
+            page = out / f"e{i}_{st_i}.html"
+            page.write_text(frame_html(s, script, tool_png, [], -1, min(1.0, start / total), p=0.0, stage=st_i, beat=st_i))
+            png = shoot(page.as_uri(), str(out / f"e{i}_{st_i}.png"), 1080, 1920, 2500)
+            seq.append((png, 0.067, False)); t += 0.067
         for ci, ch in enumerate(chunks):
             for a in range(len(ch)):
-                d = wts[wi] + (0.20 if wi == 0 else 0); wi += 1
+                d = wts[wi]; wi += 1
+                if a == 0:
+                    pops.append(start + t)
                 prog = min(1.0, (start + t) / total)
                 page = out / f"f{i}_{ci}_{a}.html"
-                page.write_text(frame_html(s, script, tool_png, ch, a, prog, p=wi / max(1, len(wts))))
+                page.write_text(frame_html(s, script, tool_png, ch, a, prog, p=wi / max(1, len(wts)), beat=wi))
                 png = shoot(page.as_uri(), str(out / f"f{i}_{ci}_{a}.png"), 1080, 1920, 2500)
-                seq.append((png, d, a == 0)); t += d
+                seq.append((png, d, a == 0 or is_key(ch[a]))); t += d
         seq[-1] = (seq[-1][0], seq[-1][1] + max(0.0, D - t), seq[-1][2])   # hold last word through the tail
         # each word image -> clip; a new phrase punches in from 106% to 100% in 4 frames
-        parts = []
+        parts, t0 = [], 0.0
         for j, (png, d, punch) in enumerate(seq):
             clip = out / f"c{i}_{j}.mp4"
-            z = "if(lt(on,4),1.06-0.015*on,1)" if punch else "1"
+            drift = f"0.045*(({t0:.3f}+on/{FPS})/{D:.3f})"          # slow continuous push-in across the scene
+            z = f"1+{drift}+if(lt(on,4),0.05-0.0125*on,0)" if punch else f"1+{drift}"
+            t0 += d
             ff("-loop", 1, "-framerate", FPS, "-t", f"{d:.3f}", "-i", png, "-vf",
                f"scale=1188:2112,zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps={FPS},format=yuv420p",
                "-c:v", "libx264", "-preset", "veryfast", "-crf", "17", "-an", clip)
@@ -324,6 +378,21 @@ def render(script, outdir, tts_model, tts_fn):
         a_in += ["-i", sw]
         ms = int(max(0, st - 0.30 + T / 2) * 1000)
         filt += f"[{n + i}:a]adelay={ms}|{ms},volume=0.32[w{i}];"; wh.append(f"[w{i}]")
+    pop, ding = out / "pop.wav", out / "ding.wav"
+    ff("-f", "lavfi", "-i", "aevalsrc='0.6*sin(2*PI*(520+900*exp(-40*t))*t)*exp(-28*t)':s=48000:d=0.18",
+       "-af", "lowpass=f=3500", "-ac", "2", pop)
+    ff("-f", "lavfi", "-i", "aevalsrc='(0.4*sin(2*PI*1318.5*t)+0.3*sin(2*PI*1975.5*t)+0.2*sin(2*PI*2637*t))*exp(-4*t)*(1-exp(-300*t))':s=48000:d=1.2",
+       "-af", "aecho=0.8:0.6:120:0.3,lowpass=f=7000", "-ac", "2", ding)
+    k0 = n + len(starts)
+    for j, pt in enumerate(pops[:40]):
+        a_in += ["-i", pop]
+        ms = int((pt + 0.18) * 1000)
+        filt += f"[{k0 + j}:a]adelay={ms}|{ms},volume=0.16[p{j}];"; wh.append(f"[p{j}]")
+    k1 = k0 + len(pops[:40])
+    for j, dt in enumerate(dings):
+        a_in += ["-i", ding]
+        ms = int(dt * 1000)
+        filt += f"[{k1 + j}:a]adelay={ms}|{ms},volume=0.22[d{j}];"; wh.append(f"[d{j}]")
     filt += f"[vox][duck]{''.join(wh)}amix=inputs={2 + len(wh)}:normalize=0,"
     filt += "loudnorm=I=-14:TP=-2:LRA=9,alimiter=limit=0.70:level=disabled,aresample=48000[a]"
     audio = out / "mix.m4a"
