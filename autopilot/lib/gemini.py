@@ -1,5 +1,5 @@
 """Tiny Gemini REST client (no extra packages): text generation + text-to-speech."""
-import base64, json, os, time, urllib.request, urllib.error, wave
+import base64, json, os, socket, time, urllib.request, urllib.error, wave
 
 API = "https://generativelanguage.googleapis.com/v1beta"
 
@@ -18,8 +18,21 @@ def _req(method, path, body=None, retries=4):
         req = urllib.request.Request(url, data=data, method=method,
                                      headers={"x-goog-api-key": _key(), "Content-Type": "application/json"})
         try:
-            with urllib.request.urlopen(req, timeout=180) as r:
+            with urllib.request.urlopen(req, timeout=300) as r:
                 return json.loads(r.read())
+        except (TimeoutError, socket.timeout, urllib.error.URLError) as e:
+            if isinstance(e, urllib.error.HTTPError):
+                raise_http = e
+            else:
+                if attempt < retries - 1:
+                    print(f"Gemini timeout/network error, retrying ({attempt+1})"); time.sleep(10); continue
+                raise RuntimeError(f"Gemini network error: {e}")
+            e = raise_http
+            msg = e.read().decode(errors="ignore")[:500]
+            if e.code in (429, 500, 503) and attempt < retries - 1:
+                time.sleep(15 * (attempt + 1))
+                continue
+            raise RuntimeError(f"Gemini {e.code}: {msg}")
         except urllib.error.HTTPError as e:
             msg = e.read().decode(errors="ignore")[:500]
             if e.code in (429, 500, 503) and attempt < retries - 1:
@@ -62,8 +75,15 @@ def pick_models(text_pref="auto", tts_pref="auto"):
 
 def generate_json(model, prompt, temperature=0.9):
     body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
-            "generationConfig": {"temperature": temperature, "responseMimeType": "application/json"}}
-    r = _req("POST", f"models/{model}:generateContent", body)
+            "generationConfig": {"temperature": temperature, "responseMimeType": "application/json",
+                                 "thinkingConfig": {"thinkingLevel": "low"}}}
+    try:
+        r = _req("POST", f"models/{model}:generateContent", body)
+    except RuntimeError as e:
+        if "400" not in str(e):
+            raise
+        body["generationConfig"].pop("thinkingConfig")   # model doesn't support it
+        r = _req("POST", f"models/{model}:generateContent", body)
     txt = r["candidates"][0]["content"]["parts"][0]["text"]
     return json.loads(txt)
 
