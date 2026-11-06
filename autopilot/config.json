@@ -51,5 +51,6 @@
     "One prompt challenge: a single copy-paste prompt that does the job",
     "Before / after transformation of a real piece of work",
     "If you only learn one AI trick this week, learn this"
-  ]
+  ],
+  "publish_enabled": false
 }

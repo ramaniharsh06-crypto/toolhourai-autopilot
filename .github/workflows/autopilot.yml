@@ -70,9 +70,9 @@ jobs:
           elif [ "$MODE" = "video-only" ]; then python -u autopilot/run.py --no-publish
           else python -u autopilot/run.py; fi
       - name: Keep the video-only test as a downloadable file
-        if: always() && github.event.inputs.mode == 'video-only'
+        if: always()
         uses: actions/upload-artifact@v4
-        with: { name: test-video, path: docs/v/*.mp4, if-no-files-found: ignore }
+        with: { name: test-video, path: docs/v/*.mp4, if-no-files-found: ignore, retention-days: 14 }
       - name: Weekly report to your inbox (GitHub issue notification)
         if: success()
         env:

@@ -62,7 +62,9 @@ def minutes():
 
 
 def main():
-    publish = "--no-publish" not in sys.argv
+    publish = "--no-publish" not in sys.argv and CFG.get("publish_enabled", True)
+    if not publish:
+        print("test mode: making the video only (publish_enabled is false or --no-publish), nothing sent to Buffer")
     (DOCS / "v").mkdir(parents=True, exist_ok=True)
     (DOCS / ".nojekyll").touch()
     hist_f = DATA / "history.json"
