@@ -11,6 +11,18 @@ learn  →  plan  →  render  →  host  →  schedule
  └─ reads real views/likes/comments/shares from Buffer → data/weights.json + data/REPORT.md
 ```
 
+## The team (each a focused AI role, all free)
+| Role | When | What they do |
+|---|---|---|
+| **Trend Scout** | weekly | Searches the live web: rising AI tools, questions owners are asking, formats working now, what to avoid → `data/trends.json`, `data/SCOUT.md` |
+| **Creative Director** | daily | Pitches 4 concepts in different formats, scores them hard (stop-scroll, curiosity, emotion, clarity, freshness), picks the winner |
+| **Scriptwriter** | daily | Writes the winning concept in the brand voice, with safety rules |
+| **Script Editor** | daily | Scores hook/pacing/payoff/emotion/clarity; rewrites anything under 8/10 |
+| **Fact-Checker** | daily | Verifies every claim with Google Search; fixes or rejects the script |
+| **Video Producer** | daily | Real site screenshot, kinetic captions, colour scenes, transitions, music, SFX, clean voice |
+| **Publisher** | daily | Hosts the video and queues it in Buffer for Instagram + YouTube (AI label on) |
+| **Data Analyst + Growth Analyst** | daily / weekly | Pulls real stats, re-weights formats/tools/hooks, writes insights + next moves |
+
 ## Controls (edit `autopilot/config.json`)
 | Setting | Meaning |
 |---|---|
