@@ -1,6 +1,6 @@
 # Tool Hour AI: Autopilot
 
-Runs **every day at 9:00 AM India time on GitHub's servers**, so your laptop can be closed.
+Runs **every day at 1:45 PM India time (right after the free Gemini quota resets) on GitHub's servers**, so your laptop can be closed.
 
 ```
 learn  →  plan  →  render  →  host  →  schedule
