@@ -59,6 +59,12 @@ Do NOT use tools whose website is on this list (their sites block screenshots): 
 Tools that performed best so far (prefer similar ones, but do not repeat the exact tool): {[t for t,_ in best] or 'no data yet'}
 Hooks that performed best: {[k for k,_ in best_hooks] or 'no data yet'}
 
+ENERGY (this is what makes people watch to the end):
+- The hook is a pattern interrupt in the first 2 seconds: a surprising claim, a "stop doing X", or a relatable frustration. Talk to "you".
+- Sound like a real excited friend sharing a discovery: short punchy sentences, a little humour, one moment of "wait, what?".
+- Build curiosity: the payoff (result) comes at the end, so viewers stay.
+- Headlines are bold statements in plain words. NO emoji anywhere.
+
 HARD RULES:
 - Be factually safe: only describe stable, well-known features. NO prices, NO exact plan limits, NO income claims, NO made-up statistics.
 - Say "free plan" only if the tool is widely known to have one; otherwise say "try it".
@@ -74,7 +80,7 @@ Return ONLY JSON with exactly this shape:
   "topic": "one-line topic",
   "hook_style": "curiosity | stop-doing | numbers | myth | before-after",
   "scenes": [
-    {{"kind": "hook",   "headline": "max 7 words, can end with 1 emoji", "sub": "max 8 words", "voice": "..."}},
+    {{"kind": "hook",   "headline": "max 6 words, no emoji", "sub": "max 8 words", "voice": "..."}},
     {{"kind": "tool",   "headline": "max 5 words", "sub": "max 8 words", "voice": "..."}},
     {{"kind": "step",   "number": 1, "headline": "max 6 words", "body": "max 18 words", "voice": "..."}},
     {{"kind": "step",   "number": 2, "headline": "max 6 words", "body": "max 18 words", "voice": "..."}},

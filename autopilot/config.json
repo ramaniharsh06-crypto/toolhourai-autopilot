@@ -9,7 +9,7 @@
   "require_approval": true,
   "post_to": ["instagram", "youtube"],
 
-  "voice_name": "Kore",
+  "voice_name": "Puck",
   "text_model": "auto",
   "tts_model": "auto",
 
