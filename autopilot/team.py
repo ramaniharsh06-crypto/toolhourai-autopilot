@@ -19,7 +19,7 @@ CAPTION: {script.get('caption','')}
 Return JSON:
 {{"verdict":"pass" | "fixable" | "reject",
   "problems":["each false or unverifiable claim"],
-  "fixed_scenes": [the full scenes array with ONLY the false claims rewritten to be true; same keys; null if verdict is pass or reject],
+  "fixed_scenes": [the full scenes array with ONLY the false claims rewritten to be true; same keys incl. "visual"; null if verdict is pass or reject],
   "fixed_caption": "caption with false claims fixed, or null"}}"""
     r, sources = search_json(text_model, prompt, temperature=0.1)
     verdict = r.get("verdict", "pass")
@@ -36,7 +36,7 @@ def edit(text_model, generate_json, script):
     prompt = f"""You are the head editor of a viral short-video channel. Score this 25-35s script 1-10 on:
 hook (first 2 seconds), pacing (no dead words), payoff (satisfying ending), emotion (fun, surprise, relief),
 clarity. Then, if any score is below 8, rewrite ONLY the weak "voice"/"headline"/"body" lines to be punchier,
-more conversational and more exciting, keeping the facts identical, the same scene kinds and order, total
+more conversational and more exciting, keeping the facts identical, the same scene kinds and order, every "visual" object unchanged, total
 spoken words 55-75, and no emoji, no prices, no income claims.
 
 SCRIPT: {json.dumps(script['scenes'], ensure_ascii=False)}

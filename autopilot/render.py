@@ -7,6 +7,7 @@ Audio: clean AI voice (de-clipped, faded, loudness-normalised), an original synt
 that ducks under the voice, a whoosh on every scene change.
 """
 import html, json, os, pathlib, re, shutil, subprocess, sys, wave
+import visuals
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "autopilot/config.json").read_text())
@@ -135,7 +136,7 @@ LOGO = ('<svg width="40" height="40" viewBox="0 0 1080 1080"><circle cx="540" cy
         '<path d="M600 330 L430 610 L545 610 L490 820 L670 520 L555 520 Z" fill="currentColor"/></svg>')
 
 
-def frame_html(scene, script, tool_png, chunk, active, progress):
+def frame_html(scene, script, tool_png, chunk, active, progress, p=1.0):
     bg, fg, hl, hlfg = SCENE_LOOK.get(scene["kind"], SCENE_LOOK["step"])
     k = scene["kind"]
     extra = ""
@@ -161,12 +162,18 @@ def frame_html(scene, script, tool_png, chunk, active, progress):
                f'<div class="big" style="font-size:150px">One AI shortcut.<br><span style="color:{ACCENT}">Every day.</span></div>'
                f'<div class="pill">Follow {esc(CFG["instagram_handle"])}</div>'
                f'<div class="sub" style="margin-top:40px">Free guide: 7 AI tools, link in bio</div>')
-    cap_style = ' style="bottom:auto;top:560px;font-size:176px;line-height:.98;letter-spacing:-.045em"' if k == "hook" else ""
+    vis = visuals.render_visual(scene.get("visual"), p) if k != "cta" else ""
+    if vis and k != "tool":                       # real-life example takes the stage; headline goes small on top
+        head = scene.get("headline") or ""
+        top = ""
+        extra = (f'<div class="mid" style="position:absolute;left:64px;right:64px;top:150px;font-size:84px;line-height:1">'
+                 f'{esc(head)}</div>{vis}')
+    cap_style = ' style="bottom:auto;top:560px;font-size:176px;line-height:.98;letter-spacing:-.045em"' if (k == "hook" and not vis) else ""
     cap = "".join(f'<span class="{"on" if i == active else ("off" if i > active else "")}">{esc(w)}</span> '
                   for i, w in enumerate(chunk))
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
-<style>{CSS}</style></head>
+<style>{CSS}{visuals.CSS}</style></head>
 <body style="background:{bg};--fg:{fg};--hl:{hl};--hlfg:{hlfg}">
 <div class="bar" style="width:{progress*100:.1f}%"></div>
 <div class="mark">{LOGO}{esc(CFG["brand"])}</div>
@@ -262,7 +269,7 @@ def render(script, outdir, tts_model, tts_fn):
                 d = wts[wi] + (0.20 if wi == 0 else 0); wi += 1
                 prog = min(1.0, (start + t) / total)
                 page = out / f"f{i}_{ci}_{a}.html"
-                page.write_text(frame_html(s, script, tool_png, ch, a, prog))
+                page.write_text(frame_html(s, script, tool_png, ch, a, prog, p=wi / max(1, len(wts))))
                 png = shoot(page.as_uri(), str(out / f"f{i}_{ci}_{a}.png"), 1080, 1920, 2500)
                 seq.append((png, d, a == 0)); t += d
         seq[-1] = (seq[-1][0], seq[-1][1] + max(0.0, D - t), seq[-1][2])   # hold last word through the tail

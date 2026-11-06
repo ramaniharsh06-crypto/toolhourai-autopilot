@@ -128,6 +128,9 @@ HARD RULES:
 - Voice lines must be short spoken sentences. Total spoken words 55-75 (the video must be about 30 seconds).
 - The tool_url must be the tool's real official homepage (https://...).
 
+VISUAL LEARNING (very important):
+{__import__("visuals").SCHEMA_HELP}
+
 Return ONLY JSON with exactly this shape:
 {{
   "pillar": "{pillar}",
@@ -137,11 +140,11 @@ Return ONLY JSON with exactly this shape:
   "hook_style": "curiosity | stop-doing | numbers | myth | before-after",
   "format": "the format used, copied from the concept",
   "scenes": [
-    {{"kind": "hook",   "headline": "max 6 words, no emoji", "sub": "max 8 words", "voice": "..."}},
+    {{"kind": "hook",   "headline": "max 6 words, no emoji", "sub": "max 8 words", "voice": "...", "visual": {{"type": "...", "data": {{}}}}}},
     {{"kind": "tool",   "headline": "max 5 words", "sub": "max 8 words", "voice": "..."}},
-    {{"kind": "step",   "number": 1, "headline": "max 6 words", "body": "max 18 words", "voice": "..."}},
-    {{"kind": "step",   "number": 2, "headline": "max 6 words", "body": "max 18 words", "voice": "..."}},
-    {{"kind": "result", "headline": "max 6 words", "body": "max 18 words", "voice": "..."}},
+    {{"kind": "step",   "number": 1, "headline": "max 6 words", "body": "max 18 words", "voice": "...", "visual": {{"type": "...", "data": {{}}}}}},
+    {{"kind": "step",   "number": 2, "headline": "max 6 words", "body": "max 18 words", "voice": "...", "visual": {{"type": "...", "data": {{}}}}}},
+    {{"kind": "result", "headline": "max 6 words", "body": "max 18 words", "voice": "...", "visual": {{"type": "...", "data": {{}}}}}},
     {{"kind": "cta",    "voice": "Follow {CFG['brand']} for one AI shortcut every day."}}
   ],
   "caption": "Instagram caption, 60-110 words, line breaks, ends with a question, mention the free guide in bio",
