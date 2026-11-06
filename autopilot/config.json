@@ -4,18 +4,17 @@
   "youtube_handle": "@toolhour_ai",
   "free_guide_url": "https://toolhourai.gumroad.com/l/vgcvy",
   "newsletter_url": "https://toolhourai.beehiiv.com",
-
   "videos_per_run": 1,
   "require_approval": true,
-  "post_to": ["instagram", "youtube"],
-
+  "post_to": [
+    "instagram",
+    "youtube"
+  ],
   "voice_name": "Puck",
   "text_model": "auto",
   "tts_model": "auto",
-
   "explore_rate": 0.25,
   "keep_videos_days": 21,
-
   "pillars": [
     "Tool in 30s",
     "Before / after",
@@ -24,9 +23,33 @@
     "Stack tour",
     "Honest review"
   ],
-  "hashtags_base": ["#aitools", "#smallbusiness", "#productivity", "#toolhourai"],
+  "hashtags_base": [
+    "#aitools",
+    "#smallbusiness",
+    "#productivity",
+    "#toolhourai"
+  ],
   "banned_phrases": [
-    "passive income", "get rich", "guaranteed", "make $", "make ₹", "per month income",
-    "secret hack", "they don't want you to know", "100% free forever", "millionaire"
+    "passive income",
+    "get rich",
+    "guaranteed",
+    "make $",
+    "make ₹",
+    "per month income",
+    "secret hack",
+    "they don't want you to know",
+    "100% free forever",
+    "millionaire"
+  ],
+  "creative_formats": [
+    "Speed run: do a real task with the tool in 3 fast steps, racing the clock",
+    "POV: you're a tired small business owner and this tool saves your evening",
+    "3 mistakes everyone makes with this kind of task, and the AI fix",
+    "Tool vs the old way: side-by-side, the old way loses hilariously",
+    "Hidden feature most people never find",
+    "Myth buster: a common belief about AI, flipped with a real demo",
+    "One prompt challenge: a single copy-paste prompt that does the job",
+    "Before / after transformation of a real piece of work",
+    "If you only learn one AI trick this week, learn this"
   ]
 }

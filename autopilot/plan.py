@@ -30,7 +30,46 @@ def choose_pillar(w):
     return scored[0], "exploit"
 
 
-def build_prompt(pillar):
+def brainstorm(text_model, generate_json, pillar):
+    """Creative director: 4 concepts in different formats, scored hard, best one wins."""
+    h = history()
+    recent = [f"{x.get('format','?')} / {x['tool_name']} / {x['topic']}" for x in h[-12:]]
+    w = weights()
+    best_formats = sorted(w.get("formats", {}).items(), key=lambda kv: kv[1]["score"], reverse=True)[:3]
+    bf = ROOT / "data/blocked_sites.json"
+    blocked = json.loads(bf.read_text()) if bf.exists() else []
+    prompt = f"""You are the creative director of a fast-growing faceless short-video channel, "{CFG['brand']}",
+teaching small business owners practical AI tools. Content pillar today: "{pillar}".
+
+Pitch 4 DIFFERENT concepts. Each uses a different format from this list:
+{json.dumps(CFG['creative_formats'], ensure_ascii=False, indent=1)}
+Each concept must use one real, well-known AI tool with a free plan or free tier and a public homepage
+(not on this blocked list: {blocked or 'none'}), and must not repeat these recent videos:
+{recent or 'none yet'}
+Formats that performed best so far (favour them, but keep variety): {[k for k,_ in best_formats] or 'no data yet'}
+
+Then judge every concept like a strict viral-video editor, 1-10 each:
+stop_scroll (would a thumb stop in the first second?), curiosity (must I watch to the end?),
+emotion (relief, surprise, laughter, "finally!"), clarity (instantly understandable), freshness (unlike recent videos).
+Be harsh; average ideas get 5s.
+
+Return ONLY JSON:
+{{"concepts":[{{"format":"...","tool_name":"...","tool_url":"https://...","hook_line":"the first spoken sentence, max 10 words",
+"story":"2 sentences: setup -> twist -> payoff","emotion":"...",
+"scores":{{"stop_scroll":0,"curiosity":0,"emotion":0,"clarity":0,"freshness":0}}}}],
+"winner_index":0,"why":"one sentence"}}"""
+    r = generate_json(text_model, prompt, temperature=1.0)
+    cs = r.get("concepts") or []
+    if not cs:
+        return None
+    for c in cs:
+        c["total"] = sum(int(v) for v in (c.get("scores") or {}).values())
+    best = max(cs, key=lambda c: c["total"])
+    print(f"creative director picked: {best.get('format','?')[:40]} | {best.get('tool_name')} | {best['total']}/50 | {best.get('hook_line')}")
+    return best
+
+
+def build_prompt(pillar, concept=None):
     h = history()
     used_tools = sorted({x["tool_name"] for x in h[-30:]})
     bf = ROOT / "data/blocked_sites.json"
@@ -52,6 +91,7 @@ HOOK IDEAS THAT WORK:
 {_read('content/hooks.md')}
 
 TODAY'S CONTENT PILLAR: "{pillar}"
+{("THE APPROVED CONCEPT (write exactly this video): " + json.dumps(concept, ensure_ascii=False)) if concept else ""}
 Pick ONE real, well-known AI tool that has a public website and a free plan or free tier
 (examples: Gemini, ChatGPT, Claude, Perplexity, NotebookLM, Canva, CapCut, Gamma, Notion AI, Otter.ai, Grammarly, Descript, Zapier, Make, Tally, Google Sheets with Gemini).
 Do NOT use any of these tools that were used recently: {used_tools or 'none yet'}.
@@ -79,6 +119,7 @@ Return ONLY JSON with exactly this shape:
   "tool_url": "https://...",
   "topic": "one-line topic",
   "hook_style": "curiosity | stop-doing | numbers | myth | before-after",
+  "format": "the format used, copied from the concept",
   "scenes": [
     {{"kind": "hook",   "headline": "max 6 words, no emoji", "sub": "max 8 words", "voice": "..."}},
     {{"kind": "tool",   "headline": "max 5 words", "sub": "max 8 words", "voice": "..."}},
@@ -112,11 +153,18 @@ def lint(script):
 def make_script(text_model, generate_json):
     w = weights()
     pillar, mode = choose_pillar(w)
+    try:
+        concept = brainstorm(text_model, generate_json, pillar)
+    except Exception as e:
+        print("brainstorm skipped:", e); concept = None
     for attempt in range(3):
-        s = generate_json(text_model, build_prompt(pillar))
+        s = generate_json(text_model, build_prompt(pillar, concept))
         problems = lint(s)
         if not problems:
             s["mode"] = mode
+            if concept:
+                s["concept"] = {k: concept.get(k) for k in ("format", "story", "emotion", "total")}
+                s.setdefault("format", concept.get("format"))
             s["created"] = datetime.datetime.utcnow().isoformat() + "Z"
             tags = list(dict.fromkeys(CFG["hashtags_base"] + s.get("hashtags", [])))[:9]
             s["final_caption"] = (s["caption"].strip() + "\n\n🎁 Free guide: link in bio\n" +

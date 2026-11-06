@@ -42,10 +42,11 @@ def run():
     hist_f.write_text(json.dumps(hist, indent=1))
 
     # aggregate -> weights.json (pillars, tools, hook styles), with a prior so one lucky post doesn't dominate
-    agg = {"pillars": {}, "tools": {}, "hooks": {}}
+    agg = {"pillars": {}, "tools": {}, "hooks": {}, "formats": {}}
     overall = (sum(r["score"] for r in rows) / len(rows)) if rows else 0
     for r in rows:
-        for bucket, key in (("pillars", r["pillar"]), ("tools", r["tool_name"]), ("hooks", r.get("hook_style", "?"))):
+        for bucket, key in (("pillars", r["pillar"]), ("tools", r["tool_name"]), ("hooks", r.get("hook_style", "?")),
+                            ("formats", (r.get("format") or "?")[:60])):
             a = agg[bucket].setdefault(key, {"n": 0, "sum": 0.0})
             a["n"] += 1; a["sum"] += r["score"]
     for bucket in agg.values():
@@ -62,7 +63,7 @@ def run():
         lines += ["## Top videos", "| Score | Pillar | Tool | Topic |", "|---|---|---|---|"]
         lines += [f"| {r['score']} | {r['pillar']} | {r['tool_name']} | {r['topic']} |" for r in rows[:5]]
         lines += ["", "## What the next videos will lean toward"]
-        for b in ("pillars", "hooks", "tools"):
+        for b in ("formats", "pillars", "hooks", "tools"):
             best = sorted(agg[b].items(), key=lambda kv: kv[1]["score"], reverse=True)[:3]
             lines.append(f"- **{b}**: " + ", ".join(f"{k} ({v['score']}×)" for k, v in best))
     else:
