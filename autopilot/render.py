@@ -76,7 +76,9 @@ def render(script, outdir, tts_model, tts_fn):
         png = shoot(page.as_uri(), str(out / f"scene{i}.png"), 1080, 1920, 4000)
         wav = out / f"voice{i}.wav"
         tts_fn(tts_model, s["voice"], CFG["voice_name"], str(wav))
-        parts.append((png, wav, wav_len(wav) + 0.35))
+        L = wav_len(wav)
+        print(f"  scene {i} ({s['kind']}): {len(s['voice'].split())} words -> {L:.1f}s")
+        parts.append((png, wav, L + 0.35))
     # 3. assemble: subtle zoom per scene, audio padded per scene
     args, vf, af = [], "", ""
     for i, (png, wav, d) in enumerate(parts):

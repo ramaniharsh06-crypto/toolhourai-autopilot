@@ -113,12 +113,12 @@ def _generate_json(model, prompt, temperature):
     return json.loads(txt)
 
 
-def tts_to_wav(model, text, voice, out_path, style="Say this in a clear, friendly, upbeat tone, like a helpful creator:"):
+def tts_to_wav(model, text, voice, out_path, style=""):
     return _with_fallback(TTS_MODELS, model, lambda m: _tts(m, text, voice, out_path, style))
 
 
 def _tts(model, text, voice, out_path, style):
-    body = {"contents": [{"parts": [{"text": f"{style} {text}"}]}],
+    body = {"contents": [{"parts": [{"text": (f"{style} {text}" if style else text)}]}],
             "generationConfig": {"responseModalities": ["AUDIO"],
                                  "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}}}}
     r = _req("POST", f"models/{model}:generateContent", body)
