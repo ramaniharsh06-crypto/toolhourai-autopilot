@@ -1,0 +1,62 @@
+name: Tool Hour AI autopilot
+
+on:
+  schedule:
+    - cron: "30 3 * * *"     # every day 09:00 India time
+  workflow_dispatch:           # "Run workflow" button for a manual run
+    inputs:
+      mode:
+        description: "full = make + schedule · video-only = make, don't post · check = test API keys only"
+        default: full
+        type: choice
+        options: [full, video-only, check]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency: autopilot
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Install video tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-noto-color-emoji > /dev/null
+      - name: Git identity
+        run: |
+          git config user.name "toolhourai-autopilot"
+          git config user.email "actions@users.noreply.github.com"
+      - name: Make today's video, schedule it, learn from past ones
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          MODE="${{ github.event.inputs.mode || 'full' }}"
+          if [ "$MODE" = "check" ]; then python autopilot/check.py
+          elif [ "$MODE" = "video-only" ]; then python autopilot/run.py --no-publish
+          else python autopilot/run.py; fi
+      - name: Keep the video-only test as a downloadable file
+        if: always() && github.event.inputs.mode == 'video-only'
+        uses: actions/upload-artifact@v4
+        with: { name: test-video, path: docs/v/*.mp4, if-no-files-found: ignore }
+      - name: Weekly report to your inbox (GitHub issue notification)
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$(date -u +%u)" = "1" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            [ -f data/REPORT.md ] && gh issue create --title "Autopilot report $(date -u +%F)" --body-file data/REPORT.md || true
+          fi
+      - name: Tell you if something broke
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "⚠️ Autopilot failed $(date -u +%F)" --body "Open the run - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

@@ -1,0 +1,24 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;width:1080px;height:1920px;background:#0f0f13;font-family:Inter,"Noto Color Emoji",sans-serif;color:#fff;overflow:hidden;position:relative}
+.wrap{position:absolute;inset:0;padding:150px 70px 200px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.brand{position:absolute;top:60px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:14px;font-weight:800;font-size:34px;opacity:.9}
+.h{font-weight:900;font-size:92px;line-height:1.05;letter-spacing:-2px}
+.h em{font-style:normal;color:#ff7a3d}
+.s{font-weight:700;font-size:46px;color:#c9c9d2;margin-top:30px;line-height:1.25}
+.shot{width:100%;border-radius:30px;overflow:hidden;border:4px solid #2a2a33;box-shadow:0 30px 80px rgba(0,0,0,.6);margin-top:56px;background:#fff;max-height:1080px}
+.shot img{display:block;width:100%}
+.url{margin-top:26px;font:700 36px Inter;color:#ff7a3d}
+.num{width:150px;height:150px;border-radius:40px;background:#ff7a3d;color:#fff;font:900 96px/150px Inter;margin-bottom:50px}
+.card{margin-top:50px;background:#1b1b22;border:3px solid #33333d;border-radius:30px;padding:50px;font:600 54px/1.35 Inter;color:#ececf2;width:100%}
+.res{border-color:#1f8f55;background:#14241b}
+.pill{display:inline-block;background:#ff7a3d;border-radius:999px;padding:20px 44px;font:900 50px Inter;margin-top:56px}
+.foot{position:absolute;bottom:60px;left:0;right:0;text-align:center;font:600 26px Inter;color:#6f6f7a}
+</style></head><body>
+<div class="brand"><svg width="44" height="44" viewBox="0 0 1080 1080"><circle cx="540" cy="575" r="330" fill="none" stroke="#ff7a3d" stroke-width="70"/><rect x="490" y="150" width="100" height="70" rx="18" fill="#ff7a3d"/><path d="M600 330 L430 610 L545 610 L490 820 L670 520 L555 520 Z" fill="#fff"/></svg>{{BRAND}}</div>
+<div class="wrap">{{BODY}}</div>
+<div class="foot">AI voiceover · {{HANDLE}}</div>
+</body></html>

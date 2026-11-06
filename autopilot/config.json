@@ -1,0 +1,32 @@
+{
+  "brand": "Tool Hour AI",
+  "instagram_handle": "@toolhourai",
+  "youtube_handle": "@toolhour_ai",
+  "free_guide_url": "https://toolhourai.gumroad.com/l/vgcvy",
+  "newsletter_url": "https://toolhourai.beehiiv.com",
+
+  "videos_per_run": 1,
+  "require_approval": true,
+  "post_to": ["instagram", "youtube"],
+
+  "voice_name": "Kore",
+  "text_model": "auto",
+  "tts_model": "auto",
+
+  "explore_rate": 0.25,
+  "keep_videos_days": 21,
+
+  "pillars": [
+    "Tool in 30s",
+    "Before / after",
+    "Steal this prompt",
+    "Myth vs fact",
+    "Stack tour",
+    "Honest review"
+  ],
+  "hashtags_base": ["#aitools", "#smallbusiness", "#productivity", "#toolhourai"],
+  "banned_phrases": [
+    "passive income", "get rich", "guaranteed", "make $", "make ₹", "per month income",
+    "secret hack", "they don't want you to know", "100% free forever", "millionaire"
+  ]
+}
