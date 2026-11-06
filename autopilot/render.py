@@ -194,8 +194,18 @@ def music_bed(path, seconds, bpm=116):
 
 
 def whoosh(path):
-    ff("-f", "lavfi", "-i", "aevalsrc='(2*random(0)-1)*sin(PI*t/0.42)^2*0.6':s=48000:d=0.42",
-       "-af", "highpass=f=700,lowpass=f=6000,afade=t=in:d=0.12,afade=t=out:st=0.25:d=0.17", "-ac", "2", path)
+    """Soft musical transition: a warm airy swish (brown noise, no hiss) + a gentle pluck in the music's key."""
+    d = os.path.dirname(path)
+    swish, pluck = os.path.join(d, "_swish.wav"), os.path.join(d, "_pluck.wav")
+    # warm swish: brown noise, band-limited to 180-1600 Hz, smooth rise-and-fall over 0.45s
+    ff("-f", "lavfi", "-i", "anoisesrc=color=brown:amplitude=0.6:sample_rate=48000:duration=0.45",
+       "-af", "highpass=f=180,lowpass=f=1600,lowpass=f=1600,"
+              "volume='sin(PI*t/0.45)^3':eval=frame,afade=t=out:st=0.33:d=0.12", "-ac", "2", swish)
+    # gentle pluck: E5 + soft octave, quick decay, a touch of echo for space (in key with the C-G-Am-F music)
+    ff("-f", "lavfi", "-i", "aevalsrc='(0.55*sin(2*PI*659.25*t)+0.2*sin(2*PI*1318.5*t)+0.15*sin(2*PI*329.63*t))*exp(-9*t)*(1-exp(-400*t))':s=48000:d=0.6",
+       "-af", "aecho=0.8:0.5:90:0.25,lowpass=f=5000", "-ac", "2", pluck)
+    ff("-i", swish, "-i", pluck, "-filter_complex", "[0:a]volume=0.9[a];[1:a]adelay=300|300,volume=0.55[b];"
+       "[a][b]amix=inputs=2:normalize=0,afade=t=out:st=0.75:d=0.15", "-t", "0.9", path)
 
 
 def clean_voice(src, dst):
@@ -301,8 +311,8 @@ def render(script, outdir, tts_model, tts_fn):
     wh = []
     for i, st in enumerate(starts[1:], 1):
         a_in += ["-i", sw]
-        ms = int(max(0, st - 0.12) * 1000)
-        filt += f"[{n + i}:a]adelay={ms}|{ms},volume=0.5[w{i}];"; wh.append(f"[w{i}]")
+        ms = int(max(0, st - 0.30 + T / 2) * 1000)
+        filt += f"[{n + i}:a]adelay={ms}|{ms},volume=0.32[w{i}];"; wh.append(f"[w{i}]")
     filt += f"[vox][duck]{''.join(wh)}amix=inputs={2 + len(wh)}:normalize=0,"
     filt += "loudnorm=I=-14:TP=-2:LRA=9,alimiter=limit=0.70:level=disabled,aresample=48000[a]"
     audio = out / "mix.m4a"
