@@ -184,18 +184,18 @@ def main():
         if "free daily limit" in err or "exceeded your current quota" in err:
             log("last run stopped on Gemini's free daily quota: not a bug, nothing to fix")
         else:
-            ok, msg = try_patch("Fix the error that made the last daily run fail.", err, relevant_files(err), model)
+            ok, msg = try_patch("Fix the error that made the last daily run fail.", err, relevant_files(err))
             log(("FIXED and pushed: " if ok else "could not fix automatically: ") + msg)
             if not ok:
                 issue("Auditor: daily run failed and needs a human look", f"{msg}\n\n```\n{err[-2500:]}\n```")
     elif problems:
-        ok, msg = try_patch("Fix these health-check problems.", "\n".join(problems), relevant_files("\n".join(problems)), model)
+        ok, msg = try_patch("Fix these health-check problems.", "\n".join(problems), relevant_files("\n".join(problems)))
         log(("FIXED and pushed: " if ok else "could not fix automatically: ") + msg)
 
     req = ceo_request()
     if req:
         ok, msg = try_patch(f"Implement this request from the CEO, safely and minimally: {req}", "CEO engineering request",
-                            ["autopilot/run.py", "autopilot/render.py", "autopilot/visuals.py", "autopilot/plan.py"], model)
+                            ["autopilot/run.py", "autopilot/render.py", "autopilot/visuals.py", "autopilot/plan.py"])
         log(f"CEO request '{req[:80]}': " + ("built and pushed" if ok else "not built: " + msg))
         if ok:
             memo = DATA / "CEO_MEMO.md"
