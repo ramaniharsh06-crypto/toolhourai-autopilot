@@ -292,7 +292,7 @@ def render(script, outdir, tts_model, tts_fn):
     voices = []
     for i, s in enumerate(scenes, 1):
         raw, wav = out / f"raw{i}.wav", out / f"voice{i}.wav"
-        tts_checked(tts_fn, tts_model, s["voice"], CFG["voice_name"], str(raw))
+        tts_checked(tts_fn, tts_model, s["voice"], (script.get("settings") or {}).get("voice", CFG["voice_name"]), str(raw))
         clean_voice(raw, wav)
         voices.append(wav)
     lens = [wav_len(v) for v in voices]
@@ -360,7 +360,7 @@ def render(script, outdir, tts_model, tts_fn):
 
     # 4) audio: voices placed on the timeline, music ducked under them, whoosh on each cut, mastered
     music, sw = out / "music.wav", out / "whoosh.wav"
-    music_bed(str(music), total); whoosh(str(sw))
+    music_bed(str(music), total, bpm=int((script.get("settings") or {}).get("music_bpm", 116))); whoosh(str(sw))
     a_in, filt, starts, acc = [], "", [], 0.0
     for i, D in enumerate(durs):
         starts.append(acc); acc += D - T

@@ -8,7 +8,7 @@ import json, os, pathlib, re, shutil, subprocess, sys, time, datetime, urllib.re
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from lib import gemini, buffer          # noqa: E402
-import plan, render, learn, scout, team  # noqa: E402
+import plan, render, learn, scout, team, strategist  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "autopilot/config.json").read_text())
@@ -96,6 +96,15 @@ def main():
             rep.write_text(rep.read_text().split("\n## Growth Analyst")[0] + extra)
     except Exception as e:
         print("analyst skipped:", e)
+    if publish:
+        try:                                    # Strategist: weekly playbook rewrite from real results
+            if strategist.run(text_model, gemini.generate_json, force="--strategy" in sys.argv):
+                CFG.update(json.loads((ROOT / "autopilot/config.json").read_text()))
+                plan.CFG.update(CFG)
+        except gemini.DailyQuotaExhausted:
+            raise
+        except Exception as e:
+            print("strategist skipped:", e)
 
     for _ in range(CFG["videos_per_run"]):
         script = plan.make_script(text_model, gemini.generate_json, gemini.search_json)
@@ -140,7 +149,7 @@ def main():
         hist_f.write_text(json.dumps(hist, indent=1))
 
     if publish:
-        git_publish(["data", "docs"], f"autopilot data {datetime.date.today()}")
+        git_publish(["data", "docs", "knowledge", "autopilot/config.json"], f"autopilot data {datetime.date.today()}")
 
 
 if __name__ == "__main__":

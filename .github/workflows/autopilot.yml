@@ -79,8 +79,16 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "$(date -u +%u)" = "1" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            cat data/REPORT.md data/SCOUT.md > /tmp/weekly.md 2>/dev/null || true
+            { cat data/REPORT.md; echo; echo "## Strategist changes this week"; head -30 data/STRATEGY_LOG.md; echo; cat data/SCOUT.md; } > /tmp/weekly.md 2>/dev/null || true
             [ -s /tmp/weekly.md ] && gh issue create --title "Weekly report $(date -u +%F): performance + trend scout" --body-file /tmp/weekly.md || true
+          fi
+      - name: Health monitor (failed posts)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -s data/ALERTS.md ]; then
+            gh issue create --title "⚠️ Some posts failed to publish $(date -u +%F)" --body-file data/ALERTS.md || true
           fi
       - name: Tell you if something broke
         if: failure()

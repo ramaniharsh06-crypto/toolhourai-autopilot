@@ -52,5 +52,33 @@
     "Before / after transformation of a real piece of work",
     "If you only learn one AI trick this week, learn this"
   ],
-  "publish_enabled": false
+  "publish_enabled": false,
+  "defaults": {
+    "voice": "Fenrir",
+    "music_bpm": 116,
+    "length": "normal"
+  },
+  "experiments": {
+    "voice": [
+      "Fenrir",
+      "Puck",
+      "Kore"
+    ],
+    "music_bpm": [
+      108,
+      116,
+      124
+    ],
+    "length": [
+      "short",
+      "normal"
+    ]
+  },
+  "experiment_rate": 0.5,
+  "max_videos_per_run": 2,
+  "strategist": {
+    "every_days": 7,
+    "min_samples": 3,
+    "min_lift": 0.15
+  }
 }

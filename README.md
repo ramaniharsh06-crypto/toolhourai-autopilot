@@ -22,6 +22,10 @@ learn  →  plan  →  render  →  host  →  schedule
 | **Video Producer** | daily | Real site screenshot, kinetic captions, colour scenes, transitions, music, SFX, clean voice |
 | **Publisher** | daily | Hosts the video and queues it in Buffer for Instagram + YouTube (AI label on) |
 | **Data Analyst + Growth Analyst** | daily / weekly | Pulls real stats, re-weights formats/tools/hooks, writes insights + next moves |
+| **Experiment Manager** | daily | Half the videos test one production choice (voice, music tempo, length) against the current default |
+| **Strategist** | weekly | Rewrites `hooks.md`, `past-winners.md`, `next-week-plan.md`; adds/retires formats; promotes experiment winners (needs ≥3 videos and ≥15% lift); sets 1–2 videos/day. Logged in `data/STRATEGY_LOG.md`. Never touches code or safety rules. |
+| **Health Monitor** | daily | Alerts you (GitHub issue) when a Buffer post fails or a run doesn't finish |
+| **Autopilot Engineer** | weekly (Claude on your Mac) | Reads the runs and alerts, fixes bugs, tests, pushes. Never changes safety rules, posting approval or secrets. |
 
 ## Controls (edit `autopilot/config.json`)
 | Setting | Meaning |

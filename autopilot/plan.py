@@ -3,6 +3,7 @@ import json, random, re, pathlib, datetime
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "autopilot/config.json").read_text())
+CURRENT_LEN = (55, 75, "about 30 seconds")
 
 
 def _read(p):
@@ -125,7 +126,7 @@ HARD RULES:
 - Be factually safe: only describe stable, well-known features. NO prices, NO exact plan limits, NO income claims, NO made-up statistics.
 - Say "free plan" only if the tool is widely known to have one; otherwise say "try it".
 - One practical tip the viewer can do today, in plain English. No jargon.
-- Voice lines must be short spoken sentences. Total spoken words 55-75 (the video must be about 30 seconds).
+- Voice lines must be short spoken sentences. Total spoken words {CURRENT_LEN[0]}-{CURRENT_LEN[1]} (the video must be {CURRENT_LEN[2]}).
 - The tool_url must be the tool's real official homepage (https://...).
 
 VISUAL LEARNING (very important):
@@ -162,16 +163,38 @@ def lint(script):
     if not str(script.get("tool_url", "")).startswith("https://"):
         problems.append("tool_url is not https")
     words = sum(len(s.get("voice", "").split()) for s in script.get("scenes", []))
-    if not 48 <= words <= 82:
+    lo, hi, _ = CURRENT_LEN
+    if not lo - 8 <= words <= hi + 8:
         problems.append(f"voiceover length {words} words out of range")
     if [s.get("kind") for s in script.get("scenes", [])][:1] != ["hook"]:
         problems.append("first scene is not a hook")
     return problems
 
 
+LENGTHS = {"short": (40, 55, "about 22 seconds"), "normal": (55, 75, "about 30 seconds")}
+
+
+def choose_settings():
+    """Experiment Manager: half the videos test ONE production variable against the current default."""
+    d = dict(CFG.get("defaults") or {})
+    d.setdefault("voice", CFG.get("voice_name", "Fenrir")); d.setdefault("music_bpm", 116); d.setdefault("length", "normal")
+    exp = None
+    if random.random() < CFG.get("experiment_rate", 0.5) and CFG.get("experiments"):
+        dim = random.choice(list(CFG["experiments"]))
+        opts = [o for o in CFG["experiments"][dim] if o != d.get(dim)]
+        if opts:
+            d[dim] = random.choice(opts); exp = {"dim": dim, "value": d[dim]}
+    return d, exp
+
+
 def make_script(text_model, generate_json, search_json=None):
     w = weights()
     pillar, mode = choose_pillar(w)
+    settings, experiment = choose_settings()
+    lo, hi, secs = LENGTHS.get(settings["length"], LENGTHS["normal"])
+    global CURRENT_LEN
+    CURRENT_LEN = (lo, hi, secs)
+    print(f"settings: {settings}" + (f" | experiment: {experiment}" if experiment else " | no experiment"))
     try:
         concept = brainstorm(text_model, generate_json, pillar)
     except Exception as e:
@@ -201,6 +224,7 @@ def make_script(text_model, generate_json, search_json=None):
             problems = problems or lint(s)
         if not problems:
             s["mode"] = mode
+            s["settings"], s["experiment"] = settings, experiment
             if concept:
                 s["concept"] = {k: concept.get(k) for k in ("format", "story", "emotion", "total")}
                 s.setdefault("format", concept.get("format"))

@@ -23,7 +23,7 @@ def score(metrics):
 def run():
     hist_f = DATA / "history.json"
     hist = json.loads(hist_f.read_text()) if hist_f.exists() else []
-    rows = []
+    rows, alerts = [], []
     for v in hist:
         total, seen = 0.0, False
         for svc, pid in (v.get("buffer_posts") or {}).items():
@@ -32,6 +32,8 @@ def run():
             except Exception as e:
                 print("metrics error", svc, e); continue
             v.setdefault("status", {})[svc] = p.get("status")
+            if str(p.get("status", "")).lower() in ("error", "failed"):
+                alerts.append(f"{v.get('id')} on {svc} failed to publish in Buffer (check the post in Buffer)")
             if p.get("metrics"):
                 seen = True
                 v.setdefault("metrics", {})[svc] = {m["type"]: m["value"] for m in p["metrics"]}
@@ -40,14 +42,18 @@ def run():
             v["score"] = round(total, 1)
             rows.append(v)
     hist_f.write_text(json.dumps(hist, indent=1))
+    (DATA / "ALERTS.md").write_text(("\n".join(f"- {a}" for a in alerts) + "\n") if alerts else "")
 
     # aggregate -> weights.json (pillars, tools, hook styles), with a prior so one lucky post doesn't dominate
-    agg = {"pillars": {}, "tools": {}, "hooks": {}, "formats": {}}
+    agg = {"pillars": {}, "tools": {}, "hooks": {}, "formats": {}, "experiments": {}}
     overall = (sum(r["score"] for r in rows) / len(rows)) if rows else 0
     for r in rows:
         for bucket, key in (("pillars", r["pillar"]), ("tools", r["tool_name"]), ("hooks", r.get("hook_style", "?")),
                             ("formats", (r.get("format") or "?")[:60])):
             a = agg[bucket].setdefault(key, {"n": 0, "sum": 0.0})
+            a["n"] += 1; a["sum"] += r["score"]
+        for dim, val in (r.get("settings") or {}).items():
+            a = agg["experiments"].setdefault(f"{dim}={val}", {"n": 0, "sum": 0.0})
             a["n"] += 1; a["sum"] += r["score"]
     for bucket in agg.values():
         for k, a in bucket.items():
@@ -63,7 +69,7 @@ def run():
         lines += ["## Top videos", "| Score | Pillar | Tool | Topic |", "|---|---|---|---|"]
         lines += [f"| {r['score']} | {r['pillar']} | {r['tool_name']} | {r['topic']} |" for r in rows[:5]]
         lines += ["", "## What the next videos will lean toward"]
-        for b in ("formats", "pillars", "hooks", "tools"):
+        for b in ("formats", "pillars", "hooks", "tools", "experiments"):
             best = sorted(agg[b].items(), key=lambda kv: kv[1]["score"], reverse=True)[:3]
             lines.append(f"- **{b}**: " + ", ".join(f"{k} ({v['score']}×)" for k, v in best))
     else:
