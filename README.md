@@ -27,6 +27,13 @@ learn  →  plan  →  render  →  host  →  schedule
 | **Health Monitor** | daily | Alerts you (GitHub issue) when a Buffer post fails or a run doesn't finish |
 | **Autopilot Engineer** | weekly (Claude on your Mac) | Reads the runs and alerts, fixes bugs, tests, pushes. Never changes safety rules, posting approval or secrets. |
 
+## Safety Governor (overrides every agent)
+- **Auto-posts only when every check passes** (fact-check, sound check, editor ≥6); otherwise the video waits in Buffer as a draft.
+- **Warm-up:** 1 post/day for the first 14 days; never more than **2/day** after that.
+- **No duplicates:** rejects scripts too similar to the last 60 videos.
+- **Clean captions:** max 5 hashtags, no links, AI voiceover + not sponsored disclosure; platform AI labels on.
+- **Auto-pause** (and alert you) if 2+ posts fail in a week, or the last 3 posts get almost no views (possible reach limit).
+
 ## The company
 - **CEO** (weekly): reads every report, writes `data/CEO_MEMO.md` (memo, priorities, engineering requests),
   **hires** specialist agents when there's a gap and **lets go** of ones that don't help → `data/agents/`, `data/ORG_CHART.md`.

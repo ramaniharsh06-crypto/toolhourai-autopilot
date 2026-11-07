@@ -248,7 +248,7 @@ def make_script(text_model, generate_json, search_json=None):
                 s["concept"] = {k: concept.get(k) for k in ("format", "story", "emotion", "total")}
                 s.setdefault("format", concept.get("format"))
             s["created"] = datetime.datetime.utcnow().isoformat() + "Z"
-            tags = list(dict.fromkeys(CFG["hashtags_base"] + s.get("hashtags", [])))[:9]
+            tags = list(dict.fromkeys(CFG["hashtags_base"] + s.get("hashtags", [])))[:5]
             s["final_caption"] = (s["caption"].strip() + "\n\n🎁 Free guide: link in bio\n" +
                                   "AI voiceover · not sponsored\n\n" + " ".join(tags))
             return s

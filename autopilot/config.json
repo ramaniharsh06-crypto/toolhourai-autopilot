@@ -5,7 +5,7 @@
   "free_guide_url": "https://toolhourai.gumroad.com/l/vgcvy",
   "newsletter_url": "https://toolhourai.beehiiv.com",
   "videos_per_run": 1,
-  "require_approval": true,
+  "require_approval": false,
   "post_to": [
     "instagram",
     "youtube"
@@ -52,7 +52,7 @@
     "Before / after transformation of a real piece of work",
     "If you only learn one AI trick this week, learn this"
   ],
-  "publish_enabled": false,
+  "publish_enabled": true,
   "defaults": {
     "voice": "Fenrir",
     "music_bpm": 116,

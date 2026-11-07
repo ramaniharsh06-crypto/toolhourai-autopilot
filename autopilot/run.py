@@ -8,7 +8,7 @@ import json, os, pathlib, re, shutil, subprocess, sys, time, datetime, urllib.re
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from lib import gemini, buffer          # noqa: E402
-import plan, render, learn, scout, team, strategist, company  # noqa: E402
+import plan, render, learn, scout, team, strategist, company, governor  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "autopilot/config.json").read_text())
@@ -74,6 +74,13 @@ def main():
             learn.run()
         except Exception as e:
             print("learning step skipped:", e)
+        hist0 = json.loads(hist_f.read_text()) if hist_f.exists() else []
+        governor.review_health(hist0)                       # Safety Governor: auto-pause on danger signals
+        p = governor.paused()
+        if p:
+            print(f"governor: posting is paused until {p['until']} ({p['reason']}). No video today.")
+            git_publish(["data"], f"autopilot paused {datetime.date.today()}")
+            return
 
     text_model, tts_model = gemini.pick_models(CFG["text_model"], CFG["tts_model"])
     print("models:", text_model, tts_model)
@@ -112,8 +119,16 @@ def main():
         except Exception as e:
             print("ceo skipped:", e)
 
-    for _ in range(CFG["videos_per_run"]):
+    n_videos = CFG["videos_per_run"]
+    if publish:
+        n_videos = governor.videos_allowed(CFG, json.loads(hist_f.read_text()) if hist_f.exists() else [])
+    for _ in range(n_videos):
         script = plan.make_script(text_model, gemini.generate_json, gemini.search_json)
+        dup = governor.too_similar(script, json.loads(hist_f.read_text()) if hist_f.exists() else [])
+        if dup:
+            print(f"governor: too similar to {dup}, writing a different video")
+            script = plan.make_script(text_model, gemini.generate_json, gemini.search_json)
+        script["final_caption"] = governor.clean_caption(script["final_caption"])
         day = datetime.date.today().isoformat()
         name = f"{day}-{slug(script['tool_name'] + '-' + script['topic'])}"
         work = ROOT / "build" / name
@@ -144,10 +159,13 @@ def main():
             for svc in CFG["post_to"]:
                 if svc not in chans:
                     print("no connected channel for", svc); continue
-                unverified = (script.get("fact_check") or {}).get("verdict") == "unverified" or \
-                             (script.get("sound_check") or {}).get("verdict") == "fix"
+                ok, why = governor.gate(script)
+                as_draft = CFG["require_approval"] or not ok
+                if as_draft and not CFG["require_approval"]:
+                    print(f"governor: saved as DRAFT, not auto-posted ({', '.join(why)})")
+                script["auto_published"] = not as_draft
                 p = buffer.create_video_post(chans[svc]["id"], svc, script["final_caption"], url,
-                                             script["youtube_title"], draft=CFG["require_approval"] or unverified)
+                                             script["youtube_title"], draft=as_draft)
                 script["buffer_posts"][svc] = p["id"]
                 print(f"buffer {svc}: {p['status']} {p.get('dueAt')}")
             script["video_url"] = url
