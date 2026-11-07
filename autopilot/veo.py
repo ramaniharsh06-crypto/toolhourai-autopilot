@@ -44,8 +44,9 @@ def _call(method, path, body=None):
 
 
 def pick_model():
-    names = [m["name"].split("/")[-1] for m in _call("GET", "models?pageSize=200").get("models", [])
-             if "veo" in m["name"] and "predictLongRunning" in m.get("supportedGenerationMethods", [])]
+    models = _call("GET", "models?pageSize=1000").get("models", [])
+    names = [m["name"].split("/")[-1] for m in models if "veo" in m["name"].lower()]
+    print("veo: video models on this key:", names or "none", f"({len(models)} models total)")
     if not names:
         return None
     rank = lambda n: (("lite" in n) * 3 + ("fast" in n) * 2 + ("3.1" in n), n)   # cheapest good model first
