@@ -41,6 +41,13 @@ learn  →  plan  →  render  →  host  →  schedule
   or rule changes. Limits: max 6 specialists, 1 hire/week, 2 per stage (to stay inside the free AI quota).
 - **Autopilot Engineer** (Claude on your Mac, weekly) builds the CEO's engineering requests and fixes bugs.
 
+## The Auditor (engineering, runs on GitHub after every daily run)
+- **Checks** every file compiles, workflows and config are valid, 22 safety tests pass, and an offline test video renders (1080x1920 with sound).
+- **Fixes bugs**: reads the failed run's error, asks Gemini for the smallest patch, re-runs every test, and pushes only if all pass. Otherwise it undoes the patch and opens an issue.
+- **Builds CEO requests**: at most one unchecked engineering request from `data/CEO_MEMO.md` per week, under the same test gate.
+- **Rollback guard**: if the next daily run fails on an Auditor commit, it reverts that commit and opens an issue.
+- **Can never edit** `governor.py`, `tests/`, `knowledge/`, the workflows or `config.json`, so it can't weaken safety. Log: `data/AUDIT_LOG.md`.
+
 ## Controls (edit `autopilot/config.json`)
 | Setting | Meaning |
 |---|---|

@@ -1,0 +1,9 @@
+{"pillar":"Before / after","tool_name":"Gemini","tool_url":"https://gemini.google.com","topic":"Answer customer emails fast",
+"scenes":[
+{"kind":"hook","headline":"47 unread emails?","sub":"","voice":"Wait. Forty seven unread emails, again?","visual":{"type":"inbox","data":{"unread_count":47,"emails":[{"from":"Priya S.","subject":"Do you deliver on Sunday?"},{"from":"Mark T.","subject":"Price for 3 cakes?"},{"from":"Anita R.","subject":"Can I change my order"},{"from":"Leo P.","subject":"Refund question"},{"from":"Sara K.","subject":"Gluten-free options?"}]}}},
+{"kind":"tool","headline":"Meet Gemini","sub":"","voice":"Okay, open Gemini. It's free.","visual":{"type":"none"}},
+{"kind":"step","number":1,"headline":"Paste the email","body":"","voice":"Paste the customer's email and say: reply politely, under eighty words.","visual":{"type":"chat","data":{"app":"Gemini","user":"Reply politely in under 80 words: Do you deliver on Sunday?","ai":"Hi Priya! Yes, we deliver on Sundays between 9am and 2pm. Just place your order by Saturday 6pm and choose Sunday at checkout. Thanks for choosing us!"}}},
+{"kind":"step","number":2,"headline":"Track it in a sheet","body":"","voice":"Then log every reply in your sheet, so nothing slips.","visual":{"type":"spreadsheet","data":{"title":"Customer emails","columns":["Customer","Question","Status"],"rows":[["Priya S.","Sunday delivery","Replied"],["Mark T.","Price for 3 cakes","Replied"],["Anita R.","Change order","Replied"],["Leo P.","Refund","Replied"]],"highlight_column":2,"result_note":"Inbox zero by 10am"}}},
+{"kind":"result","headline":"Hours back","body":"","voice":"And here's the crazy part. Your whole inbox, done before lunch.","visual":{"type":"stat","data":{"title":"Time on emails","before_label":"By hand","before":"2 hours","after_label":"With AI","after":"15 min"}}},
+{"kind":"cta","voice":"Follow Tool Hour AI for one AI shortcut every day."}],
+"caption":"t","youtube_title":"t","hashtags":[]}

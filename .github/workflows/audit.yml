@@ -1,0 +1,55 @@
+name: Tool Hour AI auditor
+
+on:
+  workflow_run:
+    workflows: ["Tool Hour AI autopilot"]
+    types: [completed]
+  schedule:
+    - cron: "0 12 * * 3"     # backup audit every Wednesday 17:30 India time
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  issues: write
+  actions: read
+
+concurrency: auditor
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 30 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Cache video tools
+        uses: actions/cache@v4
+        with:
+          path: ~/tools
+          key: video-tools-v2
+      - name: Install video tools (cached after first run)
+        timeout-minutes: 10
+        run: |
+          mkdir -p "$HOME/tools/bin" "$HOME/.fonts"
+          if [ ! -x "$HOME/tools/bin/ffmpeg" ]; then
+            curl -fsSL --retry 3 --connect-timeout 20 -o /tmp/ff.tar.xz \
+              https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz
+            tar -xJf /tmp/ff.tar.xz -C /tmp
+            cp /tmp/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg /tmp/ffmpeg-master-latest-linux64-gpl/bin/ffprobe "$HOME/tools/bin/"
+          fi
+          [ -f "$HOME/tools/NotoColorEmoji.ttf" ] && cp "$HOME/tools/NotoColorEmoji.ttf" "$HOME/.fonts/" || true
+          fc-cache -f >/dev/null 2>&1 || true
+          echo "$HOME/tools/bin" >> "$GITHUB_PATH"
+      - name: Install YAML checker
+        run: pip install -q pyyaml
+      - name: Git identity
+        run: |
+          git config user.name "toolhourai-auditor"
+          git config user.email "actions@users.noreply.github.com"
+      - name: Audit, fix, build, push
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: python -u autopilot/audit.py
