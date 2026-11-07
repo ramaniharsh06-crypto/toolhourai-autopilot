@@ -41,6 +41,12 @@ learn  →  plan  →  render  →  host  →  schedule
   or rule changes. Limits: max 6 specialists, 1 hire/week, 2 per stage (to stay inside the free AI quota).
 - **Autopilot Engineer** (Claude on your Mac, weekly) builds the CEO's engineering requests and fixes bugs.
 
+## Professor Koko (the teaching koala)
+- Drawn koala on every video: lip-synced to the voice, blinks, points on the beat, gasps at the result.
+- **Veo clips (free):** with the `VEO_API_KEY` secret (project "toolhour-veo", free-trial billing, Google spend cap Rs 700/month),
+  the autopilot makes a one-time library of 6 real animated Koko clips (`assets/koala/`) and reuses them forever.
+  Hard limit in `autopilot/veo.py`: 24 seconds of Veo per month. Never click "Upgrade" in Google Cloud: on the free trial nothing can be charged.
+
 ## The Auditor (engineering, runs on GitHub after every daily run)
 - **Checks** every file compiles, workflows and config are valid, 22 safety tests pass, and an offline test video renders (1080x1920 with sound).
 - **Fixes bugs**: reads the failed run's error, asks Gemini for the smallest patch, re-runs every test, and pushes only if all pass. Otherwise it undoes the patch and opens an issue.

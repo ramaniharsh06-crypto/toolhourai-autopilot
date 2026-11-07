@@ -63,6 +63,7 @@ jobs:
       - name: Make today's video, schedule it, learn from past ones
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          VEO_API_KEY: ${{ secrets.VEO_API_KEY }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
         run: |
           MODE="${{ github.event.inputs.mode || 'full' }}"

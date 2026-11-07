@@ -7,7 +7,8 @@ Audio: clean AI voice (de-clipped, faded, loudness-normalised), an original synt
 that ducks under the voice, a whoosh on every scene change.
 """
 import html, json, os, pathlib, re, shutil, subprocess, sys, wave
-import visuals, koala
+import random
+import visuals, koala, veo
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "autopilot/config.json").read_text())
@@ -401,9 +402,18 @@ def render(script, outdir, tts_model, tts_fn):
            "-map", "[a]", "-t", f"{total:.2f}", "-ac", "1", "-ar", "16000", vox)
         bpm = int((script.get("settings") or {}).get("music_bpm", 116))
         koala.render_poses(out, chrome())
-        lst = koala.track(vox, out, total, bpm=bpm, wow_times=dings)
+        moments = [(0.0, ("hello", "dance")), (dings[0] if dings else None, ("wow", "point")),
+                   (starts[-1] + 0.2, ("bye", "think"))]
+        vclips, vin = [], []
+        for t0, names in moments:                # real Veo koala clips, when the library has them
+            got = [veo.clip(nm) for nm in names if veo.clip(nm)]
+            if t0 is not None and got and t0 < total - 1:
+                t1 = min(total, t0 + veo.CLIP_SECONDS - 0.1)
+                if not vclips or t0 >= vclips[-1][1]:
+                    vclips.append((t0, t1)); vin += ["-i", random.choice(got)]
+        lst = koala.track(vox, out, total, bpm=bpm, wow_times=dings, hide=vclips)
         vk = out / "video_koala.mp4"
-        ff("-i", video, "-f", "concat", "-safe", "0", "-i", lst, "-filter_complex", koala.overlay_args(bpm),
+        ff("-i", video, "-f", "concat", "-safe", "0", "-i", lst, *vin, "-filter_complex", koala.overlay_args(bpm, vclips),
            "-map", "[v]", "-t", f"{total:.2f}", "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", vk)
         video = vk
     except Exception as e:

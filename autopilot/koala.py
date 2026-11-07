@@ -70,6 +70,8 @@ def pose_name(m, e, a):
 
 def render_poses(out, chrome):
     out = pathlib.Path(out)
+    subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "lavfi", "-i",
+                    f"color=c=black@0.0:s={W}x{H},format=rgba", "-frames:v", "1", str(out / "k_blank.png")], check=True)
     for m, e, a in POSES:
         page = out / "koala.html"
         page.write_text(f'<!doctype html><html><body style="margin:0;background:transparent">{svg(m, e, a)}</body></html>')
@@ -88,7 +90,7 @@ def loudness(wav_path, step):
     return [math.sqrt(sum(x * x for x in a[i:i + n]) / max(1, len(a[i:i + n]))) for i in range(0, len(a), n)]
 
 
-def track(voice_wav, out, total, bpm=116, wow_times=(), step=1 / 15):
+def track(voice_wav, out, total, bpm=116, wow_times=(), step=1 / 15, hide=()):
     """Write a concat list of koala poses (lip-synced to voice_wav) and return its path."""
     out = pathlib.Path(out)
     rms = loudness(voice_wav, step)
@@ -109,15 +111,21 @@ def track(voice_wav, out, total, bpm=116, wow_times=(), step=1 / 15):
             eyes, mouth = "wow", ("wide" if mouth in ("open", "wide") else "open")
         else:
             eyes = "blink" if (t % 3.3) < 0.13 else "open"
-        lines.append(f"file '{pose_name(mouth, eyes, arm)}'\nduration {step:.4f}\n")
+        name = "k_blank.png" if any(a <= t < b for a, b in hide) else pose_name(mouth, eyes, arm)
+        lines.append(f"file '{name}'\nduration {step:.4f}\n")
     lines.append(lines[-1].split("\n")[0] + "\n")              # concat demuxer needs the last file repeated
     lst = out / "koala.txt"
     lst.write_text("".join(lines))
     return lst
 
 
-def overlay_args(bpm=116):
-    """ffmpeg filter that places the koala bottom-right and bobs it on the beat."""
+def overlay_args(bpm=116, clips=()):
+    """ffmpeg filter: drawn koala bottom-right, bobbing on the beat; Veo clips (inputs 2..) keyed over it."""
     f = bpm / 60.0
-    return (f"[1:v]fps=30,format=rgba,scale=380:-1[k];"
-            f"[0:v][k]overlay=x=W-w-18:y=H-h-22+abs(sin(PI*t*{f:.4f}))*-14:eval=frame:format=auto[v]")
+    g = (f"[1:v]fps=30,format=rgba,scale=380:-1[k];"
+         f"[0:v][k]overlay=x=W-w-18:y=H-h-22+abs(sin(PI*t*{f:.4f}))*-14:eval=frame:format=auto[v0]")
+    for i, (t0, t1) in enumerate(clips):
+        g += (f";[{i + 2}:v]fps=30,chromakey=0x00ff00:0.22:0.08,despill=type=green,scale=-1:640,format=rgba,"
+              f"setpts=PTS-STARTPTS+{t0:.3f}/TB[c{i}];"
+              f"[v{i}][c{i}]overlay=x=W-w+20:y=H-h+10:enable='between(t,{t0:.3f},{t1:.3f})':eof_action=pass[v{i + 1}]")
+    return g + f";[v{len(clips)}]null[v]"

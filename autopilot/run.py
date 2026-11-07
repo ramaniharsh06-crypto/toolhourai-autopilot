@@ -8,7 +8,7 @@ import json, os, pathlib, re, shutil, subprocess, sys, time, datetime, urllib.re
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from lib import gemini, buffer          # noqa: E402
-import plan, render, learn, scout, team, strategist, company, governor  # noqa: E402
+import plan, render, learn, scout, team, strategist, company, governor, veo  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "autopilot/config.json").read_text())
@@ -119,6 +119,8 @@ def main():
         except Exception as e:
             print("ceo skipped:", e)
 
+    if minutes() < 25:                          # Veo koala clip library: a few clips once, inside the free budget
+        veo.build_library(render.chrome())
     n_videos = CFG["videos_per_run"]
     if publish:
         n_videos = governor.videos_allowed(CFG, json.loads(hist_f.read_text()) if hist_f.exists() else [])
@@ -173,7 +175,7 @@ def main():
         hist_f.write_text(json.dumps(hist, indent=1))
 
     if publish:
-        git_publish(["data", "docs", "knowledge", "autopilot/config.json"], f"autopilot data {datetime.date.today()}")
+        git_publish(["data", "docs", "knowledge", "assets", "autopilot/config.json"], f"autopilot data {datetime.date.today()}")
 
 
 if __name__ == "__main__":
