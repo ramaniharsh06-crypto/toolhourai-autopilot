@@ -4,6 +4,7 @@ import json, random, re, pathlib, datetime
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "autopilot/config.json").read_text())
 CURRENT_LEN = (55, 75, "about 30 seconds")
+SCRIPT_ADVICE = [""]
 
 
 def _read(p):
@@ -47,6 +48,13 @@ def brainstorm(text_model, generate_json, pillar):
     best_formats = sorted(w.get("formats", {}).items(), key=lambda kv: kv[1]["score"], reverse=True)[:3]
     bf = ROOT / "data/blocked_sites.json"
     blocked = json.loads(bf.read_text()) if bf.exists() else []
+    try:
+        import company
+        concept_advice = company.advise("concept", text_model, generate_json, {"pillar": pillar, "recent": recent})
+    except Exception as e:
+        if "daily limit" in str(e):
+            raise
+        concept_advice = ""
     prompt = f"""You are the creative director of a fast-growing faceless short-video channel, "{CFG['brand']}",
 teaching small business owners practical AI tools. Content pillar today: "{pillar}".
 
@@ -59,6 +67,9 @@ Formats that performed best so far (favour them, but keep variety): {[k for k,_ 
 
 TREND SCOUT RESEARCH FROM THIS WEEK (live web; prefer rising tools and hot questions, respect "avoid"):
 {scout_brief()}
+
+ADVICE FROM THE COMPANY'S HIRED SPECIALISTS (weigh it, you decide):
+{concept_advice or 'none'}
 
 Then judge every concept like a strict viral-video editor, 1-10 each:
 stop_scroll (would a thumb stop in the first second?), curiosity (must I watch to the end?),
@@ -104,6 +115,7 @@ HOOK IDEAS THAT WORK:
 
 TODAY'S CONTENT PILLAR: "{pillar}"
 {("THE APPROVED CONCEPT (write exactly this video): " + json.dumps(concept, ensure_ascii=False)) if concept else ""}
+{("ADVICE FROM HIRED SPECIALISTS: " + SCRIPT_ADVICE[0]) if SCRIPT_ADVICE[0] else ""}
 Pick ONE real, well-known AI tool that has a public website and a free plan or free tier
 (examples: Gemini, ChatGPT, Claude, Perplexity, NotebookLM, Canva, CapCut, Gamma, Notion AI, Otter.ai, Grammarly, Descript, Zapier, Make, Tally, Google Sheets with Gemini).
 Do NOT use any of these tools that were used recently: {used_tools or 'none yet'}.
@@ -199,6 +211,13 @@ def make_script(text_model, generate_json, search_json=None):
         concept = brainstorm(text_model, generate_json, pillar)
     except Exception as e:
         print("brainstorm skipped:", e); concept = None
+    try:
+        import company
+        SCRIPT_ADVICE[0] = company.advise("script", text_model, generate_json, {"concept": concept, "pillar": pillar})
+    except Exception as e:
+        if "daily limit" in str(e):
+            raise
+        SCRIPT_ADVICE[0] = ""
     for attempt in range(3):
         s = generate_json(text_model, build_prompt(pillar, concept))
         problems = lint(s)

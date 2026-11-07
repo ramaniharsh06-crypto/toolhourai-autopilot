@@ -27,6 +27,13 @@ learn  →  plan  →  render  →  host  →  schedule
 | **Health Monitor** | daily | Alerts you (GitHub issue) when a Buffer post fails or a run doesn't finish |
 | **Autopilot Engineer** | weekly (Claude on your Mac) | Reads the runs and alerts, fixes bugs, tests, pushes. Never changes safety rules, posting approval or secrets. |
 
+## The company
+- **CEO** (weekly): reads every report, writes `data/CEO_MEMO.md` (memo, priorities, engineering requests),
+  **hires** specialist agents when there's a gap and **lets go** of ones that don't help → `data/agents/`, `data/ORG_CHART.md`.
+- **Hired specialists** advise at one stage (`concept`, `script` or `weekly`). Advice only: no code, posting, spending,
+  or rule changes. Limits: max 6 specialists, 1 hire/week, 2 per stage (to stay inside the free AI quota).
+- **Autopilot Engineer** (Claude on your Mac, weekly) builds the CEO's engineering requests and fixes bugs.
+
 ## Controls (edit `autopilot/config.json`)
 | Setting | Meaning |
 |---|---|

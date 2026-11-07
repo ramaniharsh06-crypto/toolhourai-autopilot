@@ -8,7 +8,7 @@ import json, os, pathlib, re, shutil, subprocess, sys, time, datetime, urllib.re
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from lib import gemini, buffer          # noqa: E402
-import plan, render, learn, scout, team, strategist  # noqa: E402
+import plan, render, learn, scout, team, strategist, company  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "autopilot/config.json").read_text())
@@ -105,6 +105,12 @@ def main():
             raise
         except Exception as e:
             print("strategist skipped:", e)
+        try:                                    # CEO: weekly review, hires/lets go of specialists
+            company.ceo(text_model, gemini.generate_json, force="--ceo" in sys.argv)
+        except gemini.DailyQuotaExhausted:
+            raise
+        except Exception as e:
+            print("ceo skipped:", e)
 
     for _ in range(CFG["videos_per_run"]):
         script = plan.make_script(text_model, gemini.generate_json, gemini.search_json)

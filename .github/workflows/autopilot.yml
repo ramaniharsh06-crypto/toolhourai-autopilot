@@ -79,8 +79,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "$(date -u +%u)" = "1" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            { cat data/REPORT.md; echo; echo "## Strategist changes this week"; head -30 data/STRATEGY_LOG.md; echo; cat data/SCOUT.md; } > /tmp/weekly.md 2>/dev/null || true
-            [ -s /tmp/weekly.md ] && gh issue create --title "Weekly report $(date -u +%F): performance + trend scout" --body-file /tmp/weekly.md || true
+            { cat data/CEO_MEMO.md 2>/dev/null; echo; cat data/ORG_CHART.md 2>/dev/null; echo; cat data/REPORT.md; echo; echo "## Strategist changes this week"; head -30 data/STRATEGY_LOG.md; echo; cat data/SCOUT.md; } > /tmp/weekly.md 2>/dev/null || true
+            [ -s /tmp/weekly.md ] && gh issue create --title "Weekly company report $(date -u +%F): CEO memo, performance, strategy, trends" --body-file /tmp/weekly.md || true
           fi
       - name: Health monitor (failed posts)
         if: always()
