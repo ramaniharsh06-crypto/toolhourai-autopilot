@@ -9,7 +9,7 @@ on:
         description: "full = make + schedule · video-only = make, don't post · check = test API keys only"
         default: full
         type: choice
-        options: [full, video-only, check]
+        options: [full, video-only, check, veo-test]
 
 permissions:
   contents: write
@@ -69,6 +69,7 @@ jobs:
           MODE="${{ github.event.inputs.mode || 'full' }}"
           if [ "$MODE" = "check" ]; then python -u autopilot/check.py
           elif [ "$MODE" = "video-only" ]; then python -u autopilot/run.py --no-publish
+          elif [ "$MODE" = "veo-test" ]; then python -u autopilot/veo.py && mkdir -p docs/v && cp assets/koala/*.mp4 docs/v/ 2>/dev/null; git add assets data/veo_ledger.json 2>/dev/null; git commit -qm "veo koala clip" && git pull -q --rebase && git push -q || true
           else python -u autopilot/run.py; fi
       - name: Keep the video-only test as a downloadable file
         if: always()

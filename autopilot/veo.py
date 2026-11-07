@@ -134,3 +134,12 @@ def build_library(chrome, max_new=2):
 def clip(name):
     p = LIB / f"{name}.mp4"
     return p if p.exists() else None
+
+
+if __name__ == "__main__":          # one test clip: python autopilot/veo.py
+    import sys
+    sys.path.insert(0, str(ROOT / "autopilot"))
+    import render
+    made = build_library(render.chrome(), max_new=1)
+    print("made:", made or "nothing")
+    sys.exit(0 if made else 1)
