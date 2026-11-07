@@ -66,8 +66,8 @@ def run_tests(smoke=True):
 
 # ---------------- GitHub helpers ----------------
 def last_daily_run():
-    r = sh("gh", "run", "list", "-R", REPO, "-w", "autopilot.yml", "-L", "1",
-           "--json", "databaseId,conclusion,headSha,status,event")
+    r = sh("gh", "run", "list", "-R", REPO, "-w", "autopilot.yml", "-L", "1", "--event", "schedule",
+           "--json", "databaseId,conclusion,headSha,status,event")      # only the real daily runs, not manual tests
     runs = json.loads(r.stdout or "[]")
     return runs[0] if runs else None
 
