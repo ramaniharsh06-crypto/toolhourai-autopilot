@@ -42,10 +42,11 @@ learn  →  plan  →  render  →  host  →  schedule
 - **Autopilot Engineer** (Claude on your Mac, weekly) builds the CEO's engineering requests and fixes bugs.
 
 ## Professor Koko (the teaching koala)
-- Drawn koala on every video: lip-synced to the voice, blinks, points on the beat, gasps at the result.
-- **Veo clips (free):** with the `VEO_API_KEY` secret (project "toolhour-veo", free-trial billing, Google spend cap Rs 700/month),
-  the autopilot makes a one-time library of 6 real animated Koko clips (`assets/koala/`) and reuses them forever.
-  Hard limit in `autopilot/veo.py`: 24 seconds of Veo per month. Never click "Upgrade" in Google Cloud: on the free trial nothing can be charged.
+- Designed with **Google Gemini** (`assets/koala/koko_design.png`) and animated with **Veo** in the Gemini app (Pro plan, no extra cost).
+- Veo clips in `assets/koala/` (hello, explain, point, wow, think, bye...) are keyed off green and play in every scene,
+  Koko standing beside the lesson like a teacher. A missing clip falls back to the Gemini design, bobbing to the beat.
+- Background music is original **Gemini-made** music in `assets/music/` (synth music only as a fallback).
+- Add more clips/tracks any time: drop `<action>.mp4` into `assets/koala/` or an mp3 into `assets/music/`.
 
 ## The Auditor (engineering, runs on GitHub after every daily run)
 - **Checks** every file compiles, workflows and config are valid, 22 safety tests pass, and an offline test video renders (1080x1920 with sound).

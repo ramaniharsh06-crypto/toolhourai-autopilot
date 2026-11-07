@@ -22,6 +22,7 @@ STYLE = ("Cute 2D cartoon koala teacher character exactly like the reference ima
          "with an orange tip. Flat vector cartoon style, smooth bouncy animation, the character stays fully in frame, "
          f"centered. Solid flat pure green background ({GREEN}), no shadows on the background, no text, no other objects.")
 CLIPS = {   # name -> action
+    "explain": "The koala explains a lesson, talking enthusiastically, nodding and gesturing with its paw and wand.",
     "hello": "The koala pops up, waves hello with a big happy smile and a little bounce.",
     "point": "The koala excitedly points the stick up and to the left, nodding as if explaining something.",
     "wow":   "The koala gasps in amazement, eyes sparkle, then claps its paws happily.",
@@ -71,18 +72,9 @@ def spend(seconds, clip):
     LEDGER.write_text(json.dumps(d, indent=1))
 
 
-def reference_png(chrome):
-    """The drawn koala on green, used as the first frame so Veo keeps the same character."""
-    import koala
-    p = LIB / "_ref.png"
-    page = LIB / "_ref.html"
-    page.write_text('<!doctype html><html><body style="margin:0;background:%s;display:flex;align-items:center;'
-                    'justify-content:center;width:720px;height:1280px">%s</body></html>'
-                    % (GREEN, koala.svg("closed", "open", "up").replace(f'width="{koala.W}" height="{koala.H}"',
-                                                                         'width="640" height="715"')))
-    subprocess.run([chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--no-sandbox", "--window-size=720,1280",
-                    f"--screenshot={p}", page.as_uri()], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    return p
+def reference_png(chrome=None):
+    """Gemini's Koko design (green background): the first frame, so Veo keeps the same character."""
+    return LIB / "koko_design.png"
 
 
 def generate(model, action, ref_png, out):

@@ -120,7 +120,7 @@ body{{font-family:Inter,sans-serif;position:relative}}
 .shot{{position:absolute;left:0;right:0;top:330px;height:860px;overflow:hidden;background:#fff}}
 .shot img{{width:100%;height:100%;object-fit:cover;object-position:center 42%;display:block}}
 .host{{position:absolute;left:64px;top:1210px;font:800 44px Inter;color:var(--hl)}}
-.cap{{position:absolute;left:64px;right:400px;bottom:250px;font:900 96px/1.06 Inter;letter-spacing:-.035em;color:var(--fg)}}
+.cap{{position:absolute;left:56px;right:560px;bottom:230px;font:900 82px/1.04 Inter;letter-spacing:-.035em;color:var(--fg)}}
 .cap span{{display:inline-block;padding:0 14px;margin:0 -6px;border-radius:12px}}
 .cap .on{{background:var(--hl);color:var(--hlfg)}}
 .cap .off{{opacity:.38}}
@@ -152,21 +152,6 @@ def is_key(w):
     if EMPH:
         return c in EMPH or bool(re.search(r"\d", w))
     return bool(re.search(r"\d", w)) or c in KEY_WORDS or (w.isupper() and len(c) > 1) or len(c) >= 10
-
-
-def mascot(bounce, blink, mood="happy"):
-    """'Tick', the Tool Hour AI stopwatch with a face. Bounces with the rhythm, blinks now and then."""
-    y, rot = (-16, -7) if bounce else (0, 6)
-    eyes = ('<rect x="40" y="78" width="16" height="5" rx="2" fill="#101014"/><rect x="76" y="78" width="16" height="5" rx="2" fill="#101014"/>'
-            if blink else '<circle cx="48" cy="80" r="8" fill="#101014"/><circle cx="84" cy="80" r="8" fill="#101014"/>'
-                          '<circle cx="51" cy="77" r="3" fill="#fff"/><circle cx="87" cy="77" r="3" fill="#fff"/>')
-    mouth = ('<path d="M46 98 Q66 120 86 98" stroke="#101014" stroke-width="7" fill="none" stroke-linecap="round"/>'
-             if mood == "happy" else '<ellipse cx="66" cy="104" rx="11" ry="13" fill="#101014"/>')
-    return (f'<svg class="tick" viewBox="0 0 132 150" style="transform:translateY({y}px) rotate({rot}deg)">'
-            '<rect x="54" y="0" width="24" height="18" rx="5" fill="#ff7a3d" stroke="#101014" stroke-width="5"/>'
-            '<circle cx="66" cy="88" r="58" fill="#fff" stroke="#101014" stroke-width="7"/>'
-            '<circle cx="66" cy="88" r="46" fill="#ff7a3d"/>'
-            f'{eyes}{mouth}<circle cx="30" cy="98" r="8" fill="#ffb08a"/><circle cx="102" cy="98" r="8" fill="#ffb08a"/></svg>')
 
 
 def frame_html(scene, script, tool_png, chunk, active, progress, p=1.0, stage=None, beat=0):
@@ -210,8 +195,6 @@ def frame_html(scene, script, tool_png, chunk, active, progress, p=1.0, stage=No
                "translateY(10px) scale(.995)"][stage]
     else:
         stg = f"scale({1.012 if beat % 2 else 1.0})"
-    want = (scene.get("attention") or {}).get("mascot")
-    mood = "wow" if (want == "wow" and active >= 0 and is_key(chunk[active])) or (k == "result" and beat % 3 == 0) else "happy"
     tick = ""                                   # Professor Koko (koala.py) is overlaid on the final video instead
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
@@ -356,7 +339,15 @@ def render(script, outdir, tts_model, tts_fn):
 
     # 4) audio: voices placed on the timeline, music ducked under them, whoosh on each cut, mastered
     music, sw = out / "music.wav", out / "whoosh.wav"
-    music_bed(str(music), total, bpm=int((script.get("settings") or {}).get("music_bpm", 116))); whoosh(str(sw))
+    tracks = sorted(p for p in (ROOT / "assets" / "music").glob("*") if p.suffix.lower() in (".mp3", ".m4a", ".wav", ".ogg"))
+    if tracks:                                    # original Gemini-made music (Pro plan), looped and faded
+        tr = random.choice(tracks)
+        ff("-stream_loop", "-1", "-i", tr, "-t", f"{total:.2f}", "-af",
+           f"aresample=48000,volume=0.8,afade=t=in:d=0.3,afade=t=out:st={max(0, total - 1.2):.2f}:d=1.2", "-ac", "2", music)
+        print("  music:", tr.name)
+    else:
+        music_bed(str(music), total, bpm=int((script.get("settings") or {}).get("music_bpm", 116)))
+    whoosh(str(sw))
     a_in, filt, starts, acc = [], "", [], 0.0
     for i, D in enumerate(durs):
         starts.append(acc); acc += D - T
@@ -394,30 +385,26 @@ def render(script, outdir, tts_model, tts_fn):
     audio = out / "mix.m4a"
     ff(*a_in, "-filter_complex", filt, "-map", "[a]", "-t", f"{total:.2f}", "-c:a", "aac", "-b:a", "192k", audio)
 
-    try:                                         # Professor Koko teaches on top of everything
-        vox = out / "vox16.wav"
-        ff(*[x for v in voices for x in ("-i", v)], "-filter_complex",
-           "".join(f"[{i}:a]adelay={int((st + 0.20) * 1000)}|{int((st + 0.20) * 1000)},apad=whole_dur={total:.2f}[v{i}];"
-                   for i, st in enumerate(starts)) + "".join(f"[v{i}]" for i in range(n)) + f"amix=inputs={n}:normalize=0[a]",
-           "-map", "[a]", "-t", f"{total:.2f}", "-ac", "1", "-ar", "16000", vox)
+    try:                                         # Professor Koko (Gemini design, Veo clips) teaches beside the lesson
         bpm = int((script.get("settings") or {}).get("music_bpm", 116))
-        koala.render_poses(out, chrome())
-        moments = [(0.0, ("hello", "dance")), (dings[0] if dings else None, ("wow", "point")),
-                   (starts[-1] + 0.2, ("bye", "think"))]
+        ACT = {"hook": ("hello", "wow"), "tool": ("explain", "point"), "step": ("point", "explain", "think"),
+               "result": ("wow", "dance"), "cta": ("bye", "hello")}
         vclips, vin = [], []
-        for t0, names in moments:                # real Veo koala clips, when the library has them
-            got = [veo.clip(nm) for nm in names if veo.clip(nm)]
-            if t0 is not None and got and t0 < total - 1:
-                t1 = min(total, t0 + veo.CLIP_SECONDS - 0.1)
-                if not vclips or t0 >= vclips[-1][1]:
-                    vclips.append((t0, t1)); vin += ["-i", random.choice(got)]
-        lst = koala.track(vox, out, total, bpm=bpm, wow_times=dings, hide=vclips)
-        vk = out / "video_koala.mp4"
-        ff("-i", video, "-f", "concat", "-safe", "0", "-i", lst, *vin, "-filter_complex", koala.overlay_args(bpm, vclips),
-           "-map", "[v]", "-t", f"{total:.2f}", "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", vk)
-        video = vk
+        for sc, st, D in zip(scenes, starts, durs):  # every scene plays the Veo clip that fits it
+            got = [veo.clip(nm) for nm in ACT.get(sc["kind"], ("explain",)) if veo.clip(nm)]
+            if got:
+                t0, t1 = (st + (T if vclips else 0.0)), min(total, st + D - T / 2)
+                if t1 - t0 > 0.5:
+                    vclips.append((t0, t1)); vin += ["-stream_loop", "-1", "-t", f"{t1 - t0 + 0.1:.2f}", "-i", random.choice(got)]
+        stl = koala.still(out)
+        if stl or vclips:
+            sin = ["-loop", "1", "-i", stl] if stl else ["-f", "lavfi", "-i", "color=c=black@0:s=16x16,format=rgba"]
+            vk = out / "video_koala.mp4"
+            ff("-i", video, *sin, *vin, "-filter_complex", koala.overlay_args(bpm, vclips, has_still=bool(stl)),
+               "-map", "[v]", "-t", f"{total:.2f}", "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", vk)
+            video = vk
     except Exception as e:
-        print("koala overlay skipped:", str(e)[:200])
+        print("koala overlay skipped:", str(e)[:300])
     mp4 = out / "video.mp4"
     ff("-i", video, "-i", audio, "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "copy", "-shortest",
        "-movflags", "+faststart", mp4)
