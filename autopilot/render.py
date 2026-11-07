@@ -7,7 +7,7 @@ Audio: clean AI voice (de-clipped, faded, loudness-normalised), an original synt
 that ducks under the voice, a whoosh on every scene change.
 """
 import html, json, os, pathlib, re, shutil, subprocess, sys, wave
-import visuals
+import visuals, koala
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "autopilot/config.json").read_text())
@@ -119,7 +119,7 @@ body{{font-family:Inter,sans-serif;position:relative}}
 .shot{{position:absolute;left:0;right:0;top:330px;height:860px;overflow:hidden;background:#fff}}
 .shot img{{width:100%;height:100%;object-fit:cover;object-position:center 42%;display:block}}
 .host{{position:absolute;left:64px;top:1210px;font:800 44px Inter;color:var(--hl)}}
-.cap{{position:absolute;left:64px;right:64px;bottom:250px;font:900 104px/1.06 Inter;letter-spacing:-.035em;color:var(--fg)}}
+.cap{{position:absolute;left:64px;right:400px;bottom:250px;font:900 96px/1.06 Inter;letter-spacing:-.035em;color:var(--fg)}}
 .cap span{{display:inline-block;padding:0 14px;margin:0 -6px;border-radius:12px}}
 .cap .on{{background:var(--hl);color:var(--hlfg)}}
 .cap .off{{opacity:.38}}
@@ -200,7 +200,7 @@ def frame_html(scene, script, tool_png, chunk, active, progress, p=1.0, stage=No
         top = ""
         extra = (f'<div class="mid" style="position:absolute;left:64px;right:64px;top:150px;font-size:84px;line-height:1">'
                  f'{esc(head)}</div>{vis}')
-    cap_style = ' style="bottom:auto;top:560px;font-size:176px;line-height:.98;letter-spacing:-.045em"' if (k == "hook" and not vis) else ""
+    cap_style = ' style="bottom:auto;top:560px;right:64px;font-size:176px;line-height:.98;letter-spacing:-.045em"' if (k == "hook" and not vis) else ""
     cap = "".join(f'<span class="{("on key" if is_key(w) else "on") if i == active else ("off" if i > active else "")}">{esc(w)}</span> '
                   for i, w in enumerate(chunk))
     # entrance: the scene drops in with an overshoot; afterwards a tiny pulse on every word keeps it alive
@@ -211,7 +211,7 @@ def frame_html(scene, script, tool_png, chunk, active, progress, p=1.0, stage=No
         stg = f"scale({1.012 if beat % 2 else 1.0})"
     want = (scene.get("attention") or {}).get("mascot")
     mood = "wow" if (want == "wow" and active >= 0 and is_key(chunk[active])) or (k == "result" and beat % 3 == 0) else "happy"
-    tick = mascot(beat % 2 == 1, beat % 7 == 3, mood) if k != "cta" else ""
+    tick = ""                                   # Professor Koko (koala.py) is overlaid on the final video instead
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
 <style>{CSS}{visuals.CSS}</style></head>
@@ -242,18 +242,13 @@ def music_bed(path, seconds, bpm=116):
 
 
 def whoosh(path):
-    """Soft musical transition: a warm airy swish (brown noise, no hiss) + a gentle pluck in the music's key."""
-    d = os.path.dirname(path)
-    swish, pluck = os.path.join(d, "_swish.wav"), os.path.join(d, "_pluck.wav")
-    # warm swish: brown noise, band-limited to 180-1600 Hz, smooth rise-and-fall over 0.45s
-    ff("-f", "lavfi", "-i", "anoisesrc=color=brown:amplitude=0.6:sample_rate=48000:duration=0.45",
-       "-af", "highpass=f=180,lowpass=f=1600,lowpass=f=1600,"
-              "volume='sin(PI*t/0.45)^3':eval=frame,afade=t=out:st=0.33:d=0.12", "-ac", "2", swish)
-    # gentle pluck: E5 + soft octave, quick decay, a touch of echo for space (in key with the C-G-Am-F music)
-    ff("-f", "lavfi", "-i", "aevalsrc='(0.55*sin(2*PI*659.25*t)+0.2*sin(2*PI*1318.5*t)+0.15*sin(2*PI*329.63*t))*exp(-9*t)*(1-exp(-400*t))':s=48000:d=0.6",
-       "-af", "aecho=0.8:0.5:90:0.25,lowpass=f=5000", "-ac", "2", pluck)
-    ff("-i", swish, "-i", pluck, "-filter_complex", "[0:a]volume=0.9[a];[1:a]adelay=300|300,volume=0.55[b];"
-       "[a][b]amix=inputs=2:normalize=0,afade=t=out:st=0.75:d=0.15", "-t", "0.9", path)
+    """Soft transition 'ba-dum': two warm marimba-like notes (G4 -> C5), no noise, rounded attack, low-passed."""
+    n1 = "(sin(2*PI*392*t)+0.18*sin(2*PI*1568*t)*exp(-25*t))*exp(-9*t)*(1-exp(-260*t))"
+    u = "(t-0.09)"
+    n2 = f"(sin(2*PI*523.25*{u})+0.18*sin(2*PI*2093*{u})*exp(-25*{u}))*exp(-9*{u})*(1-exp(-260*{u}))"
+    expr = f"0.5*{n1}+if(gte(t,0.09),0.42*{n2},0)"
+    ff("-f", "lavfi", "-i", f"aevalsrc='{expr}':s=48000:d=0.7", "-af", "lowpass=f=1800,lowpass=f=2400,afade=t=out:st=0.5:d=0.2",
+       "-ac", "2", path)
 
 
 def clean_voice(src, dst):
@@ -377,17 +372,17 @@ def render(script, outdir, tts_model, tts_fn):
     for i, st in enumerate(starts[1:], 1):
         a_in += ["-i", sw]
         ms = int(max(0, st - 0.30 + T / 2) * 1000)
-        filt += f"[{n + i}:a]adelay={ms}|{ms},volume=0.32[w{i}];"; wh.append(f"[w{i}]")
+        filt += f"[{n + i}:a]adelay={ms}|{ms},volume=0.24[w{i}];"; wh.append(f"[w{i}]")
     pop, ding = out / "pop.wav", out / "ding.wav"
-    ff("-f", "lavfi", "-i", "aevalsrc='0.6*sin(2*PI*(520+900*exp(-40*t))*t)*exp(-28*t)':s=48000:d=0.18",
-       "-af", "lowpass=f=3500", "-ac", "2", pop)
+    ff("-f", "lavfi", "-i", "aevalsrc='0.5*sin(2*PI*(330+260*exp(-35*t))*t)*exp(-30*t)*(1-exp(-300*t))':s=48000:d=0.18",
+       "-af", "lowpass=f=1800", "-ac", "2", pop)
     ff("-f", "lavfi", "-i", "aevalsrc='(0.4*sin(2*PI*1318.5*t)+0.3*sin(2*PI*1975.5*t)+0.2*sin(2*PI*2637*t))*exp(-4*t)*(1-exp(-300*t))':s=48000:d=1.2",
        "-af", "aecho=0.8:0.6:120:0.3,lowpass=f=7000", "-ac", "2", ding)
     k0 = n + len(starts)
     for j, pt in enumerate(pops[:40]):
         a_in += ["-i", pop]
         ms = int((pt + 0.18) * 1000)
-        filt += f"[{k0 + j}:a]adelay={ms}|{ms},volume=0.16[p{j}];"; wh.append(f"[p{j}]")
+        filt += f"[{k0 + j}:a]adelay={ms}|{ms},volume=0.11[p{j}];"; wh.append(f"[p{j}]")
     k1 = k0 + len(pops[:40])
     for j, dt in enumerate(dings):
         a_in += ["-i", ding]
@@ -398,6 +393,21 @@ def render(script, outdir, tts_model, tts_fn):
     audio = out / "mix.m4a"
     ff(*a_in, "-filter_complex", filt, "-map", "[a]", "-t", f"{total:.2f}", "-c:a", "aac", "-b:a", "192k", audio)
 
+    try:                                         # Professor Koko teaches on top of everything
+        vox = out / "vox16.wav"
+        ff(*[x for v in voices for x in ("-i", v)], "-filter_complex",
+           "".join(f"[{i}:a]adelay={int((st + 0.20) * 1000)}|{int((st + 0.20) * 1000)},apad=whole_dur={total:.2f}[v{i}];"
+                   for i, st in enumerate(starts)) + "".join(f"[v{i}]" for i in range(n)) + f"amix=inputs={n}:normalize=0[a]",
+           "-map", "[a]", "-t", f"{total:.2f}", "-ac", "1", "-ar", "16000", vox)
+        bpm = int((script.get("settings") or {}).get("music_bpm", 116))
+        koala.render_poses(out, chrome())
+        lst = koala.track(vox, out, total, bpm=bpm, wow_times=dings)
+        vk = out / "video_koala.mp4"
+        ff("-i", video, "-f", "concat", "-safe", "0", "-i", lst, "-filter_complex", koala.overlay_args(bpm),
+           "-map", "[v]", "-t", f"{total:.2f}", "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", vk)
+        video = vk
+    except Exception as e:
+        print("koala overlay skipped:", str(e)[:200])
     mp4 = out / "video.mp4"
     ff("-i", video, "-i", audio, "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "copy", "-shortest",
        "-movflags", "+faststart", mp4)
