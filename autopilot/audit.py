@@ -110,7 +110,7 @@ def relevant_files(text):
     return list(dict.fromkeys([f for f in found if EDITABLE.match(f)] + base))[:5]
 
 
-def try_patch(goal, context, files, model):
+def try_patch(goal, context, files, model=None):
     prompt = f"""You are a careful senior Python engineer maintaining an automated video pipeline.
 GOAL: {goal}
 CONTEXT:
@@ -122,7 +122,7 @@ FILES YOU MAY EDIT (only these; never governor.py, tests, knowledge, workflows o
 Make the SMALLEST change that achieves the goal. Do not weaken any safety check, quota handling or posting limit.
 Return JSON: {{"summary":"one line","edits":[{{"file":"autopilot/...py","find":"exact existing text (unique)","replace":"new text"}}]}}
 If you are not confident, return {{"summary":"not confident","edits":[]}}"""
-    r = gemini.generate_json(model, prompt, temperature=0.2)
+    r = gemini.generate_json(model_name(), prompt, temperature=0.2)
     edits = r.get("edits") or []
     if not edits:
         return False, r.get("summary", "no edits proposed")
@@ -160,8 +160,17 @@ def ceo_request():
     return reqs[0] if reqs else None
 
 
+_MODEL = []
+
+
+def model_name():
+    """Ask Gemini for a model only when a fix is actually needed (checks never spend quota)."""
+    if not _MODEL:
+        _MODEL.append(gemini.pick_models()[0])
+    return _MODEL[0]
+
+
 def main():
-    model, _ = gemini.pick_models()
     run = last_daily_run()
     if rollback_guard(run):
         write_log(); return
