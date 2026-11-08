@@ -42,11 +42,13 @@ learn  →  plan  →  render  →  host  →  schedule
 - **Autopilot Engineer** (Claude on your Mac, weekly) builds the CEO's engineering requests and fixes bugs.
 
 ## Professor Koko (the teaching koala)
-- Designed with **Google Gemini** (`assets/koala/koko_design.png`) and animated with **Veo** in the Gemini app (Pro plan, no extra cost).
-- Veo clips in `assets/koala/` (hello, explain, point, wow, think, bye...) are keyed off green and play in every scene,
-  Koko standing beside the lesson like a teacher. A missing clip falls back to the Gemini design, bobbing to the beat.
-- Background music is original **Gemini-made** music in `assets/music/` (synth music only as a fallback).
-- Add more clips/tracks any time: drop `<action>.mp4` into `assets/koala/` or an mp3 into `assets/music/`.
+- Designed with **Google Gemini** (`assets/koala/koko_design.png`). Gemini also made the same image with only the mouth
+  changed (`koko_mouth_oh/ah/closed.png`) and only the eyes closed (`koko_blink.png`).
+- **Koko really says the words:** his mouth follows the loudness of the actual voiceover 15 times a second, he blinks,
+  and bobs to the beat. Only the changed region of each Gemini edit is pasted in, so he never jitters.
+- **Voice:** Gemini TTS with a "cute koala + world's most magnetic salesman" direction, bright voices (Puck/Leda/Zephyr),
+  and a gentle pitch lift (`voice_pitch` in config).
+- Music: original **Gemini-made** tracks in `assets/music/`. Steady camera and soft cross-fades (no sliding screens).
 
 ## The Auditor (engineering, runs on GitHub after every daily run)
 - **Checks** every file compiles, workflows and config are valid, 22 safety tests pass, and an offline test video renders (1080x1920 with sound).

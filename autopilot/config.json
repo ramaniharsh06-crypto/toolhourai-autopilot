@@ -10,7 +10,7 @@
     "instagram",
     "youtube"
   ],
-  "voice_name": "Fenrir",
+  "voice_name": "Puck",
   "text_model": "auto",
   "tts_model": "auto",
   "explore_rate": 0.25,
@@ -34,7 +34,7 @@
     "get rich",
     "guaranteed",
     "make $",
-    "make ₹",
+    "make \u20b9",
     "per month income",
     "secret hack",
     "they don't want you to know",
@@ -54,15 +54,15 @@
   ],
   "publish_enabled": true,
   "defaults": {
-    "voice": "Fenrir",
+    "voice": "Puck",
     "music_bpm": 116,
     "length": "normal"
   },
   "experiments": {
     "voice": [
-      "Fenrir",
       "Puck",
-      "Kore"
+      "Leda",
+      "Zephyr"
     ],
     "music_bpm": [
       108,
@@ -80,5 +80,6 @@
     "every_days": 7,
     "min_samples": 3,
     "min_lift": 0.15
-  }
+  },
+  "voice_pitch": 1.14
 }

@@ -13,7 +13,7 @@ import visuals, koala, veo
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "autopilot/config.json").read_text())
 FPS, T = 30, 0.30                      # frame rate, transition length (s)
-TRANSITIONS = ["smoothleft", "slideup", "zoomin", "smoothup", "slideleft", "circleopen"]
+TRANSITIONS = ["fade", "dissolve", "fade", "fade"]       # soft cross-fades only: screens never slide or warp
 
 # palette: one ground, one ink, one accent + two whole colour fields
 INK, GROUND, ACCENT, PAPER = "#101014", "#101014", "#ff7a3d", "#f3efe6"
@@ -191,10 +191,9 @@ def frame_html(scene, script, tool_png, chunk, active, progress, p=1.0, stage=No
                   for i, w in enumerate(chunk))
     # entrance: the scene drops in with an overshoot; afterwards a tiny pulse on every word keeps it alive
     if stage is not None:
-        stg = ["translateY(300px) scale(.84) rotate(-3deg)", "translateY(-34px) scale(1.035) rotate(1deg)",
-               "translateY(10px) scale(.995)"][stage]
+        stg = ["scale(.97)", "scale(.99)", "scale(1)"][stage]          # gentle settle, no tilt or slide
     else:
-        stg = f"scale({1.012 if beat % 2 else 1.0})"
+        stg = "none"
     tick = ""                                   # Professor Koko (koala.py) is overlaid on the final video instead
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
@@ -236,7 +235,9 @@ def whoosh(path):
 
 
 def clean_voice(src, dst):
-    ff("-i", src, "-af", "adeclip,adeclick=window=55:overlap=75,highpass=f=70,lowpass=f=9500,"
+    k = float(CFG.get("voice_pitch", 1.0))       # gentle pitch lift so it sounds like little Koko (same speed)
+    lift = f"aresample=48000,asetrate={int(48000 * k)},aresample=48000,atempo={1 / k:.4f}," if k != 1.0 else ""
+    ff("-i", src, "-af", lift + "adeclip,adeclick=window=55:overlap=75,highpass=f=70,lowpass=f=9500,"
        "acompressor=threshold=-18dB:ratio=3:attack=8:release=120,afade=t=in:d=0.012,areverse,"
        "afade=t=in:d=0.04,areverse,volume=-3dB,aresample=48000", "-ac", "1", dst)
 
@@ -308,8 +309,7 @@ def render(script, outdir, tts_model, tts_fn):
         parts, t0 = [], 0.0
         for j, (png, d, punch) in enumerate(seq):
             clip = out / f"c{i}_{j}.mp4"
-            drift = f"0.045*(({t0:.3f}+on/{FPS})/{D:.3f})"          # slow continuous push-in across the scene
-            z = f"1+{drift}+if(lt(on,4),0.05-0.0125*on,0)" if punch else f"1+{drift}"
+            z = "1"                                                   # steady camera: devices keep their true proportions
             t0 += d
             ff("-loop", 1, "-framerate", FPS, "-t", f"{d:.3f}", "-i", png, "-vf",
                f"scale=1188:2112,zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps={FPS},format=yuv420p",
@@ -385,22 +385,18 @@ def render(script, outdir, tts_model, tts_fn):
     audio = out / "mix.m4a"
     ff(*a_in, "-filter_complex", filt, "-map", "[a]", "-t", f"{total:.2f}", "-c:a", "aac", "-b:a", "192k", audio)
 
-    try:                                         # Professor Koko (Gemini design, Veo clips) teaches beside the lesson
+    try:                                         # Professor Koko says the words: lip-synced to the voiceover
         bpm = int((script.get("settings") or {}).get("music_bpm", 116))
-        ACT = {"hook": ("hello", "wow"), "tool": ("explain", "point"), "step": ("point", "explain", "think"),
-               "result": ("wow", "dance"), "cta": ("bye", "hello")}
-        vclips, vin = [], []
-        for sc, st, D in zip(scenes, starts, durs):  # every scene plays the Veo clip that fits it
-            got = [veo.clip(nm) for nm in ACT.get(sc["kind"], ("explain",)) if veo.clip(nm)]
-            if got:
-                t0, t1 = (st + (T if vclips else 0.0)), min(total, st + D - T / 2)
-                if t1 - t0 > 0.5:
-                    vclips.append((t0, t1)); vin += ["-stream_loop", "-1", "-t", f"{t1 - t0 + 0.1:.2f}", "-i", random.choice(got)]
-        stl = koala.still(out)
-        if stl or vclips:
-            sin = ["-loop", "1", "-i", stl] if stl else ["-f", "lavfi", "-i", "color=c=black@0:s=16x16,format=rgba"]
+        states = koala.build(out)
+        if states:
+            vox = out / "vox16.wav"
+            ff(*[x for v in voices for x in ("-i", v)], "-filter_complex",
+               "".join(f"[{i}:a]adelay={int((st + 0.20) * 1000)}|{int((st + 0.20) * 1000)},apad=whole_dur={total:.2f}[v{i}];"
+                       for i, st in enumerate(starts)) + "".join(f"[v{i}]" for i in range(n)) + f"amix=inputs={n}:normalize=0[a]",
+               "-map", "[a]", "-t", f"{total:.2f}", "-ac", "1", "-ar", "16000", vox)
+            lst = koala.track(vox, out, total, states)
             vk = out / "video_koala.mp4"
-            ff("-i", video, *sin, *vin, "-filter_complex", koala.overlay_args(bpm, vclips, has_still=bool(stl)),
+            ff("-i", video, "-f", "concat", "-safe", "0", "-i", lst, "-filter_complex", koala.overlay_args(bpm),
                "-map", "[v]", "-t", f"{total:.2f}", "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", vk)
             video = vk
     except Exception as e:

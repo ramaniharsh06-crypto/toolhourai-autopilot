@@ -130,20 +130,20 @@ def _generate_json(model, prompt, temperature):
     return json.loads(txt)
 
 
-SALESMAN = """# AUDIO PROFILE: "Max", the world's most magnetic salesman and hype host
-A charismatic, warm, confident presenter in his early 30s. He sounds like he just discovered something
-incredible and can't wait to tell you. Big smile you can hear. Totally genuine, never cheesy or shouty.
+SALESMAN = """# AUDIO PROFILE: "Professor Koko", a tiny baby koala teacher with the most magnetic sales voice on earth
+An adorable, fluffy little koala: bright, sweet, slightly high and bouncy voice, giggly warmth you can hear,
+pure delight in every word. But he sells like the world's greatest salesman: confident, charming, irresistible,
+every line makes you lean in and need to hear the next one. Cute, never babyish; genuine, never cheesy or shouty.
 
 ## THE SCENE
-Recording a 30-second vertical video for busy small business owners scrolling on their phones.
-He has one job: make them stop scrolling and watch to the very end.
+Koko is on screen teaching one amazing AI shortcut in a 30-second vertical video to busy people scrolling
+on their phones. He has one job: hook them in the first second and keep them watching to the very end.
 
 ### DIRECTOR'S NOTES
-Style: High-energy promo read, like a top infomercial host crossed with an excited best friend. Smile while
-speaking. Punch the key words. Rising excitement into every reveal.
-Pacing: Fast and snappy, with tiny dramatic pauses right before the payoff words.
-Dynamics: Lean in, almost conspiratorial, on secrets and "here's the trick" moments; open up big and bright
-on results.
+Style: Cute cartoon-character voice with master-salesman charisma. Smile so big you can hear it. Playful
+little gasps of wonder on the reveals. Punch the key words like they are treasure.
+Pacing: Quick and lively, with tiny suspenseful pauses right before the payoff words.
+Dynamics: Lean in and whisper-excited on the "here's the secret" moments; burst bright and proud on results.
 
 ## Transcript:
 """
