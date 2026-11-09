@@ -1,1 +1,191 @@
-[]
+[
+ {
+  "pillar": "Steal this prompt",
+  "tool_name": "Notion AI",
+  "tool_url": "https://www.notion.so",
+  "topic": "Turn voice notes into client contracts",
+  "hook_style": "before-after",
+  "format": "Before / after transformation of a real piece of work",
+  "scenes": [
+   {
+    "kind": "hook",
+    "headline": "Stop Writing Client Contracts By Hand",
+    "sub": "Turn messy voice rambles into agreements",
+    "voice": "Stop wasting hours turning chaotic client calls into contracts.",
+    "visual": {
+     "type": "document",
+     "data": {
+      "device": "phone",
+      "title": "Voice Memo Transcript",
+      "paragraphs": [
+       "Hey so we want three videos, maybe launch next Friday? Also pay half now and half later.",
+       "Make sure they do not call me on weekends."
+      ]
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "Stop",
+      "wasting hours"
+     ],
+     "mascot": "wow"
+    }
+   },
+   {
+    "kind": "tool",
+    "headline": "Meet Notion AI",
+    "sub": "Structure your chaotic notes instantly",
+    "voice": "Drop that messy transcript straight into Notion AI.",
+    "attention": {
+     "emphasis": [
+      "Drop",
+      "Notion AI"
+     ],
+     "mascot": "happy"
+    }
+   },
+   {
+    "kind": "step",
+    "number": 1,
+    "headline": "Paste The Extraction Prompt",
+    "body": "Tell it to extract deliverables, dates, and clear payment milestones.",
+    "voice": "Tell it to pull out deliverables, strict deadlines, and payment milestones.",
+    "visual": {
+     "type": "chat",
+     "data": {
+      "device": "laptop",
+      "app": "Notion AI",
+      "user": "Extract deliverables, payment dates, and boundary terms into a clean Scope of Work.",
+      "ai": "Creating Scope of Work with milestones, payment schedule, and communication boundaries..."
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "pull out",
+      "strict deadlines"
+     ],
+     "mascot": "wow"
+    }
+   },
+   {
+    "kind": "step",
+    "number": 2,
+    "headline": "Auto Format The Agreement",
+    "body": "Review the structured scope and set revision limits.",
+    "voice": "Watch it lock in solid boundaries and organize the chaos instantly.",
+    "visual": {
+     "type": "checklist",
+     "data": {
+      "device": "laptop",
+      "title": "Scope of Work Draft",
+      "items": [
+       "Deliverable: 3 finished video assets",
+       "Milestone: 50% deposit before kickoff",
+       "Final payment: due upon delivery Friday",
+       "Communication: weekday email response only"
+      ]
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "lock in",
+      "instantly"
+     ],
+     "mascot": "happy"
+    }
+   },
+   {
+    "kind": "result",
+    "headline": "Ready To Sign Instantly",
+    "body": "A polished scope of work ready for signature.",
+    "voice": "Boom! A bulletproof agreement ready to sign in ten seconds.",
+    "visual": {
+     "type": "document",
+     "data": {
+      "device": "laptop",
+      "title": "Signed Agreement - Apex Media",
+      "paragraphs": [
+       "1. Deliverables: Three edited marketing reels due Oct 24.",
+       "2. Payment Terms: 50% upfront, remainder on completion. Late fee applies after 7 days.",
+       "Client Signature: Approved"
+      ]
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "Boom!",
+      "ten seconds"
+     ],
+     "mascot": "wow"
+    }
+   },
+   {
+    "kind": "cta",
+    "voice": "Follow Tool Hour AI for one AI shortcut every day.",
+    "attention": {
+     "emphasis": [
+      "one AI shortcut",
+      "every day"
+     ],
+     "mascot": "happy"
+    }
+   }
+  ],
+  "caption": "Stop spending Sunday evening turning rambling client calls into formal proposals.\n\nDrop your raw transcripts or messy voice notes into Notion AI with this exact prompt:\n\"Extract deliverables, strict milestones, late fee terms, and boundaries into a clean Scope of Work.\"\n\nIt structures the chaos so your client signs without back-and-forth arguments.\n\nGrab our free guide in the bio for more daily business prompts.\n\nHow much time do you spend drafting proposals each week?",
+  "youtube_title": "Turn Messy Voice Notes Into Contracts With AI",
+  "hashtags": [
+   "#NotionAI",
+   "#SmallBusinessTips",
+   "#Solopreneur",
+   "#WorkflowAutomation",
+   "#ProductivityHacks"
+  ],
+  "editor": {
+   "scores": {
+    "hook": 6,
+    "pacing": 7,
+    "payoff": 8,
+    "emotion": 7,
+    "clarity": 9
+   },
+   "note": "Tightened hook by cutting the weak sigh and leading directly into the pain point; sharpened step and payoff voice lines for higher energy and punchiness (total 65 spoken words)."
+  },
+  "attention_plan": {
+   "retention_score": 94,
+   "biggest_risk": "Viewers swiping during the prompt extraction step (Scene 3) due to wall-of-text fatigue; solved by punching the voiceover with high-urgency keywords ('strict deadlines') and cueing Tick with an energetic 'wow' mouth-open reaction."
+  },
+  "fact_check": {
+   "verdict": "unverified",
+   "problems": [
+    "Gemini 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and "
+   ]
+  },
+  "mode": "explore",
+  "settings": {
+   "voice": "Puck",
+   "music_bpm": 116,
+   "length": "short"
+  },
+  "experiment": {
+   "dim": "length",
+   "value": "short"
+  },
+  "concept": {
+   "format": "Before / after transformation of a real piece of work",
+   "story": "A frantic phone voice note rambles about vague client deliverables, messy payment dates, and boundary issues. Using this surgical extraction prompt, Notion AI instantly organizes the chaos into a structured Scope of Work with clear milestones and late fee terms. The client signs immediately without arguing.",
+   "emotion": "surprise",
+   "total": 43
+  },
+  "created": "2026-11-09T19:30:15.467105Z",
+  "final_caption": "Stop spending Sunday evening turning rambling client calls into formal proposals.\n\nDrop your raw transcripts or messy voice notes into Notion AI with this exact prompt:\n\"Extract deliverables, strict milestones, late fee terms, and boundaries into a clean Scope of Work.\"\n\nIt structures the chaos so your client signs without back-and-forth arguments.\n\nGrab our free guide in the bio for more daily business prompts.\n\nHow much time do you spend drafting proposals each week?\n\n\ud83c\udf81 Free guide: link in bio\nAI voiceover \u00b7 not sponsored\n\n#aitools #smallbusiness #productivity #toolhourai #NotionAI",
+  "id": "2026-11-09-notion-ai-turn-voice-notes-into-client-c",
+  "seconds": 31.6,
+  "file": "v/2026-11-09-notion-ai-turn-voice-notes-into-client-c.mp4",
+  "buffer_posts": {
+   "instagram": "6af220cdeb73f8e77f54f509",
+   "youtube": "6af220cdb3dd86936aa2c37a"
+  },
+  "auto_published": false,
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-09-notion-ai-turn-voice-notes-into-client-c.mp4"
+ }
+]
