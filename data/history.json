@@ -186,6 +186,151 @@
    "youtube": "6af220cdb3dd86936aa2c37a"
   },
   "auto_published": false,
-  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-09-notion-ai-turn-voice-notes-into-client-c.mp4"
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-09-notion-ai-turn-voice-notes-into-client-c.mp4",
+  "status": {
+   "instagram": "draft",
+   "youtube": "draft"
+  },
+  "metrics": {
+   "youtube": {
+    "reactions": 0,
+    "comments": 0,
+    "engagementRate": 0,
+    "views": 0
+   }
+  },
+  "score": 0.0
+ },
+ {
+  "pillar": "Tool in 30s",
+  "tool_name": "Descript",
+  "tool_url": "https://www.descript.com",
+  "topic": "Remove filler words from video automatically",
+  "hook_style": "before-after",
+  "format": "Tool vs the old way: side-by-side, the old way loses hilariously",
+  "scenes": [
+   {
+    "kind": "hook",
+    "headline": "Stop cutting video frame by frame",
+    "sub": "There is a faster way",
+    "voice": "Wait. Are you still cutting 'ums' out of your videos by hand? <sigh>",
+    "visual": {
+     "type": "stat",
+     "data": {
+      "title": "Editing 5-minute video",
+      "before_label": "Old way",
+      "before": "45 minutes",
+      "after_label": "New way",
+      "after": "10 seconds",
+      "device": "laptop"
+     }
+    }
+   },
+   {
+    "kind": "tool",
+    "headline": "Meet Descript",
+    "sub": "Edit video like text",
+    "voice": "This tool is called Descript, and it treats your video like a text doc."
+   },
+   {
+    "kind": "step",
+    "number": 1,
+    "headline": "Drop in your raw video",
+    "body": "Descript turns the entire audio track into an editable script.",
+    "voice": "Just drop your raw recording in, and it writes out every single word.",
+    "visual": {
+     "type": "document",
+     "data": {
+      "title": "Client_Update_Draft.mp4",
+      "paragraphs": [
+       "Hey everyone, um, so today we are, like, reviewing the new autumn menu...",
+       "We have three, uh, main changes to cover for the staff."
+      ],
+      "device": "laptop"
+     }
+    }
+   },
+   {
+    "kind": "step",
+    "number": 2,
+    "headline": "Delete filler words instantly",
+    "body": "One click highlights every repeated word and pause.",
+    "voice": "Then click 'remove filler words'. It deletes every single 'um' automatically. <laugh>",
+    "visual": {
+     "type": "document",
+     "data": {
+      "title": "Client_Update_Cleaned.mp4",
+      "paragraphs": [
+       "Hey everyone, so today we are reviewing the new autumn menu.",
+       "We have three main changes to cover for the staff."
+      ],
+      "device": "laptop"
+     }
+    }
+   },
+   {
+    "kind": "result",
+    "headline": "Clean cut in seconds",
+    "body": "Export smooth video without touching a complex timeline.",
+    "voice": "And here's the best part: the video cuts match your text edits perfectly.",
+    "visual": {
+     "type": "stat",
+     "data": {
+      "title": "Filler words removed",
+      "before_label": "Manual cuts",
+      "before": "28 razor cuts",
+      "after_label": "Descript",
+      "after": "1 click",
+      "device": "laptop"
+     }
+    }
+   },
+   {
+    "kind": "cta",
+    "voice": "Follow Tool Hour AI for one AI shortcut every day."
+   }
+  ],
+  "caption": "Editing talking-head videos used to mean staring at audio waveforms for an hour just to trim pauses.\n\nDescript lets you edit the transcript instead. Delete a word in the text, and it disappears from the video timeline.\n\nIt works great for product updates, client walk-throughs, and social clips. Keep in mind: if you cut too many pauses, your speech can sound slightly clipped, so leave a few natural breaths in.\n\nGrab our free guide in bio for our favorite practical business setups.\n\nHow much time do you spend editing videos each week?",
+  "youtube_title": "Cut filler words from videos in one click",
+  "hashtags": [
+   "#descript",
+   "#videoediting",
+   "#smallbusinesstips",
+   "#productivitytools",
+   "#aitools"
+  ],
+  "fact_check": {
+   "verdict": "unverified",
+   "problems": [
+    "Gemini free daily limit reached"
+   ]
+  },
+  "mode": "exploit",
+  "settings": {
+   "voice": "Puck",
+   "music_bpm": 124,
+   "length": "normal"
+  },
+  "experiment": {
+   "dim": "music_bpm",
+   "value": 124
+  },
+  "concept": {
+   "format": "Tool vs the old way: side-by-side, the old way loses hilariously",
+   "story": "The left screen shows an owner painfully cutting 'ums' frame-by-frame for two hours. The right screen shows Descript highlighting text and removing all filler words with a single click.",
+   "emotion": "Laughter",
+   "total": 42
+  },
+  "created": "2026-11-10T16:35:51.056499Z",
+  "final_caption": "Editing talking-head videos used to mean staring at audio waveforms for an hour just to trim pauses.\n\nDescript lets you edit the transcript instead. Delete a word in the text, and it disappears from the video timeline.\n\nIt works great for product updates, client walk-throughs, and social clips. Keep in mind: if you cut too many pauses, your speech can sound slightly clipped, so leave a few natural breaths in.\n\nGrab our free guide in bio for our favorite practical business setups.\n\nHow much time do you spend editing videos each week?\n\n\ud83c\udf81 Free guide: link in bio\nAI voiceover \u00b7 not sponsored\n\n#aitools #smallbusiness #productivity #toolhourai #descript",
+  "id": "2026-11-10-descript-remove-filler-words-from-video-",
+  "seconds": 34.5,
+  "file": "v/2026-11-10-descript-remove-filler-words-from-video-.mp4",
+  "buffer_posts": {
+   "instagram": "6af3497842d372a81f6b4da2",
+   "youtube": "6af34979a80c88d576487bd1"
+  },
+  "auto_published": false,
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-10-descript-remove-filler-words-from-video-.mp4"
  }
 ]

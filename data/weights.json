@@ -1,7 +1,47 @@
 {
- "pillars": {},
- "tools": {},
- "hooks": {},
- "formats": {},
- "experiments": {}
+ "pillars": {
+  "Steal this prompt": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
+  }
+ },
+ "tools": {
+  "Notion AI": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
+  }
+ },
+ "hooks": {
+  "before-after": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
+  }
+ },
+ "formats": {
+  "Before / after transformation of a real piece of work": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
+  }
+ },
+ "experiments": {
+  "voice=Puck": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
+  },
+  "music_bpm=116": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
+  },
+  "length=short": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
+  }
+ }
 }
