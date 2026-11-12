@@ -331,6 +331,146 @@
    "youtube": "6af34979a80c88d576487bd1"
   },
   "auto_published": false,
-  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-10-descript-remove-filler-words-from-video-.mp4"
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-10-descript-remove-filler-words-from-video-.mp4",
+  "status": {
+   "instagram": "draft",
+   "youtube": "draft"
+  },
+  "metrics": {
+   "youtube": {
+    "reactions": 0,
+    "comments": 0,
+    "engagementRate": 0,
+    "views": 0
+   }
+  },
+  "score": 0.0
+ },
+ {
+  "pillar": "Before / after",
+  "tool_name": "Gamma App",
+  "tool_url": "https://gamma.app",
+  "topic": "Turn messy notes into a full slide deck in seconds",
+  "hook_style": "before-after",
+  "format": "Speed run: do a real task with the tool in 3 fast steps, racing the clock",
+  "scenes": [
+   {
+    "kind": "hook",
+    "headline": "Pitch deck due in 60 seconds",
+    "sub": "Stop building slides by hand",
+    "voice": "Wait. Stop staring at blank presentation slides.",
+    "visual": {
+     "type": "stat",
+     "data": {
+      "title": "Pitch deck prep",
+      "before_label": "By hand",
+      "before": "4 hours",
+      "after_label": "Gamma",
+      "after": "45 sec"
+     }
+    }
+   },
+   {
+    "kind": "tool",
+    "headline": "Meet Gamma App",
+    "sub": "AI presentations in one click",
+    "voice": "Go to Gamma App. It turns rough bullet points into formatted slide decks instantly."
+   },
+   {
+    "kind": "step",
+    "number": 1,
+    "headline": "Paste your messy notes",
+    "body": "Drop in raw bullet points about your service offerings and pricing packages.",
+    "voice": "First, paste your rough business notes straight into the prompt box.",
+    "visual": {
+     "type": "document",
+     "data": {
+      "title": "Consulting Proposal Notes",
+      "paragraphs": [
+       "Goal: Rebrand boutique coffee roasters with local digital ads.",
+       "Package 1: Social launch at 1.5k. Package 2: Full rollout at 3k."
+      ]
+     }
+    }
+   },
+   {
+    "kind": "step",
+    "number": 2,
+    "headline": "Pick theme and click generate",
+    "body": "Select modern styling and let the AI format layouts, text cards, and graphics.",
+    "voice": "Second, pick clean branding colors and hit generate. <chuckle> Now watch this.",
+    "visual": {
+     "type": "chat",
+     "data": {
+      "app": "Gamma App",
+      "user": "Generate a 4-slide client proposal with clean modern layout",
+      "ai": "Drafting 4 branded slides with pricing tables, timeline, and deliverables."
+     }
+    }
+   },
+   {
+    "kind": "result",
+    "headline": "Polished deck ready to send",
+    "body": "A complete client pitch deck fully styled with clear sections and zero design headache.",
+    "voice": "Boom. Complete pitch deck with layouts and typography ready before your coffee finishes brewing.",
+    "visual": {
+     "type": "slides",
+     "data": {
+      "title": "Growth Proposal: Local Coffee Co.",
+      "bullets": [
+       "Phase 1: Local brand story and targeted ad setup",
+       "Phase 2: Automated customer loyalty workflow",
+       "Deliverables: 30-day reporting and ROI dashboard"
+      ]
+     }
+    }
+   },
+   {
+    "kind": "cta",
+    "voice": "Follow Tool Hour AI for one AI shortcut every day."
+   }
+  ],
+  "caption": "Spending hours moving text boxes around a presentation deck is painful when you have a business to run.\n\nInstead of starting from a blank page, you can paste messy client notes into Gamma App and let it format the entire presentation deck for you in seconds.\n\nIt handles visual hierarchy, card layouts, and mobile-friendly layouts right away.\n\nGrab our free starter guide in the bio to simplify your tech stack.\n\nHow much time do you spend making client presentations every week?",
+  "youtube_title": "Build a Client Pitch Deck in 45 Seconds",
+  "hashtags": [
+   "#smallbusinesstools",
+   "#productivityhacks",
+   "#gammaapp",
+   "#aitools",
+   "#entrepreneurtips"
+  ],
+  "fact_check": {
+   "verdict": "unverified",
+   "problems": [
+    "Gemini free daily limit reached"
+   ]
+  },
+  "mode": "exploit",
+  "settings": {
+   "voice": "Leda",
+   "music_bpm": 116,
+   "length": "normal"
+  },
+  "experiment": {
+   "dim": "voice",
+   "value": "Leda"
+  },
+  "concept": {
+   "format": "Speed run: do a real task with the tool in 3 fast steps, racing the clock",
+   "story": "The timer ticks down while a freelancer panics over creating a client presentation from scratch. By pasting an outline into Gamma, picking a theme, and hitting generate, a gorgeous 10-slide deck builds itself before the clock strikes zero.",
+   "emotion": "surprise",
+   "total": 42
+  },
+  "created": "2026-11-12T17:05:47.494014Z",
+  "final_caption": "Spending hours moving text boxes around a presentation deck is painful when you have a business to run.\n\nInstead of starting from a blank page, you can paste messy client notes into Gamma App and let it format the entire presentation deck for you in seconds.\n\nIt handles visual hierarchy, card layouts, and mobile-friendly layouts right away.\n\nGrab our free starter guide in the bio to simplify your tech stack.\n\nHow much time do you spend making client presentations every week?\n\n\ud83c\udf81 Free guide: link in bio\nAI voiceover \u00b7 not sponsored\n\n#aitools #smallbusiness #productivity #toolhourai #smallbusinesstools",
+  "id": "2026-11-12-gamma-app-turn-messy-notes-into-a-full-s",
+  "seconds": 36.7,
+  "file": "v/2026-11-12-gamma-app-turn-messy-notes-into-a-full-s.mp4",
+  "buffer_posts": {
+   "instagram": "6af5f3183e88d8443f47203d",
+   "youtube": "6af5f31851cc3cd58272452b"
+  },
+  "auto_published": false,
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-12-gamma-app-turn-messy-notes-into-a-full-s.mp4"
  }
 ]

@@ -4,6 +4,11 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Tool in 30s": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "tools": {
@@ -11,11 +16,16 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Descript": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "hooks": {
   "before-after": {
-   "n": 1,
+   "n": 2,
    "sum": 0.0,
    "score": 0.0
   }
@@ -25,11 +35,16 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Tool vs the old way: side-by-side, the old way loses hilario": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "experiments": {
   "voice=Puck": {
-   "n": 1,
+   "n": 2,
    "sum": 0.0,
    "score": 0.0
   },
@@ -39,6 +54,16 @@
    "score": 0.0
   },
   "length=short": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
+  },
+  "music_bpm=124": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
+  },
+  "length=normal": {
    "n": 1,
    "sum": 0.0,
    "score": 0.0
