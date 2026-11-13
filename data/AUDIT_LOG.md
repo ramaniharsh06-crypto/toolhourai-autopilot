@@ -1,3 +1,6 @@
+## 2026-11-13 16:40 UTC
+- last run stopped on Gemini's free daily quota: not a bug, nothing to fix
+
 ## 2026-11-12 17:13 UTC
 - all checks passed, nothing to do
 
