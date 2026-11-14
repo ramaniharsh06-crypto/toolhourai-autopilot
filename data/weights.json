@@ -9,6 +9,11 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Before / after": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "tools": {
@@ -21,11 +26,16 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Gamma App": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "hooks": {
   "before-after": {
-   "n": 2,
+   "n": 3,
    "sum": 0.0,
    "score": 0.0
   }
@@ -40,6 +50,11 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Speed run: do a real task with the tool in 3 fast steps, rac": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "experiments": {
@@ -49,7 +64,7 @@
    "score": 0.0
   },
   "music_bpm=116": {
-   "n": 1,
+   "n": 2,
    "sum": 0.0,
    "score": 0.0
   },
@@ -64,6 +79,11 @@
    "score": 0.0
   },
   "length=normal": {
+   "n": 2,
+   "sum": 0.0,
+   "score": 0.0
+  },
+  "voice=Leda": {
    "n": 1,
    "sum": 0.0,
    "score": 0.0

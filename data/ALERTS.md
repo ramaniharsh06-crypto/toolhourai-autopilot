@@ -1,0 +1,1 @@
+- Posting PAUSED until 2026-11-17: last 3 posts got almost no views (possible reach limit); resting the account
