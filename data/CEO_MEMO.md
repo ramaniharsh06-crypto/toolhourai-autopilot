@@ -11,5 +11,5 @@ We are currently at day zero with zero published videos tracked and no initial p
 - none
 
 ## Engineering requests (for the Autopilot Engineer)
-- [ ] Verify and ensure automated daily sync of YouTube Shorts and Instagram Insights into the local performance database.
+- [x] Verify and ensure automated daily sync of YouTube Shorts and Instagram Insights into the local performance database. (built by Auditor)
 - [ ] Set up UTM tracking and log attribution for free guide download clicks originating from Instagram and YouTube bios.
