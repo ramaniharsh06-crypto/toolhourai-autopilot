@@ -69,11 +69,10 @@ def main():
     (DOCS / ".nojekyll").touch()
     hist_f = DATA / "history.json"
 
-    if publish and os.environ.get("BUFFER_API_KEY"):
-        try:
-            learn.run()
-        except Exception as e:
-            print("learning step skipped:", e)
+    try:
+        learn.run()
+    except Exception as e:
+        print("learning step skipped:", e)
         hist0 = json.loads(hist_f.read_text()) if hist_f.exists() else []
         governor.review_health(hist0)                       # Safety Governor: auto-pause on danger signals
         p = governor.paused()
