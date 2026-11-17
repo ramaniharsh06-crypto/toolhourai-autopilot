@@ -1,15 +1,15 @@
-# CEO memo: 2026-11-09
+# CEO memo: 2026-11-17
 
-We are currently at day zero with zero published videos tracked and no initial performance data back from Instagram or YouTube Shorts. While it is tempting to expand the roster immediately, our free-tier budget dictates strict discipline until the baseline pipeline is proven. Our primary objective this week is establishing a clean cadence of high-retention baseline videos focused on high-utility AI tools for small business operators. We will rigorously test our newly drafted hooks and monitor conversion paths from video captions to the free guide. Next week, once initial analytics and trend reports populate, we will evaluate content bottlenecks and conversion drop-offs. For now, the core team possesses all necessary tools to script, edit, produce, and publish.
+We are currently sitting at 3 published videos with flat zero views and zero impressions across both platforms. With zero impressions recorded, our immediate bottleneck is not creative nuance or script quality, but fundamental distribution and publishing health. The algorithm hasn't picked up our content pipeline or there may be an API/privacy publishing error leaving videos unindexed. This week, we are prioritizing technical distribution verification, ensuring proper public visibility and indexing on YouTube Shorts and Instagram. Concurrently, we need to diversify our hook archetypes beyond the repetitive 'before-after' style to prepare for algorithmic discovery. We are not hiring any additional prompt-costly specialists until our baseline distribution is unblocked.
 
 ## Priorities
-1. Publish and monitor baseline batch of 5-7 short-form videos covering essential small business AI tools.
-1. Validate funnel tracking from platform bio/captions to the free guide landing page and newsletter signups.
-1. Establish automated ingestion of platform analytics into the weekly performance report.
+1. Verify and repair channel publishing settings to ensure Shorts and Reels are public, indexed, and receiving algorithmic impressions.
+1. Diversify hook testing across 'problem-agitation', 'curiosity gap', and 'speed run' instead of relying solely on 'before-after'.
+1. Increase publishing volume to 5-7 videos this week to establish statistical baseline data for tools and formats.
 
 ## Team changes
 - none
 
 ## Engineering requests (for the Autopilot Engineer)
-- [x] Verify and ensure automated daily sync of YouTube Shorts and Instagram Insights into the local performance database. (built by Auditor)
-- [ ] Set up UTM tracking and log attribution for free guide download clicks originating from Instagram and YouTube bios.
+- [ ] Verify the YouTube Data API and Instagram Graph API publishing payload to confirm videos are set to 'public' rather than 'unlisted' or 'private'.
+- [ ] Add automated view/impression check logging within 24 hours of upload to verify content is entering the recommendation feeds.

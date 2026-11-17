@@ -485,5 +485,133 @@
    }
   },
   "score": 0.0
+ },
+ {
+  "pillar": "Myth vs fact",
+  "tool_name": "Photoroom",
+  "tool_url": "https://www.photoroom.com",
+  "topic": "Turn messy product shots into studio quality photos",
+  "hook_style": "before-after",
+  "format": "Before / after transformation of a real piece of work",
+  "scenes": [
+   {
+    "kind": "hook",
+    "headline": "Your product photos look cheap",
+    "sub": "Not anymore with this simple trick",
+    "voice": "Wait. You do not need a three thousand dollar camera to get high-end product photos.",
+    "visual": {
+     "type": "social",
+     "data": {
+      "device": "phone",
+      "account": "oakandwaxcandleco",
+      "caption": "Hand-poured soy candle on cluttered kitchen table. Dim lighting, blurry edges.",
+      "likes": "14",
+      "comments": "2"
+     }
+    }
+   },
+   {
+    "kind": "tool",
+    "headline": "Meet Photoroom AI",
+    "sub": "Instant studio lighting and staging",
+    "voice": "Drop that photo into Photoroom. It cuts the background instantly with zero trace."
+   },
+   {
+    "kind": "step",
+    "number": 1,
+    "headline": "Wipe the cluttered counter",
+    "sub": "Isolates your item cleanly",
+    "voice": "Next, pick a realistic backdrop like marble or warm oak.",
+    "visual": {
+     "type": "checklist",
+     "data": {
+      "device": "phone",
+      "title": "Photo Clean Up",
+      "items": [
+       "Detect object edges",
+       "Erase background clutter",
+       "Preserve candle wick shadow",
+       "Select marble studio setting"
+      ]
+     }
+    }
+   },
+   {
+    "kind": "step",
+    "number": 2,
+    "headline": "Render photorealistic studio lights",
+    "sub": "Matches lighting automatically",
+    "voice": "The crazy part? It casts real shadows matching your new room.",
+    "visual": {
+     "type": "chat",
+     "data": {
+      "device": "laptop",
+      "app": "Photoroom",
+      "user": "Place candle on luxury marble slab with morning sun shadows",
+      "ai": "Generated 4 high-res studio renders with natural soft lighting and reflection."
+     }
+    }
+   },
+   {
+    "kind": "result",
+    "headline": "Madison Avenue ad quality",
+    "sub": "From kitchen counter to luxury catalog",
+    "voice": "<chuckle> That homemade candle now looks like an upscale boutique ad.",
+    "visual": {
+     "type": "stat",
+     "data": {
+      "device": "laptop",
+      "title": "Studio Shoot Setup",
+      "before_label": "Hiring Studio",
+      "before": "400 dollars",
+      "after_label": "Photoroom Free",
+      "after": "20 seconds"
+     }
+    }
+   },
+   {
+    "kind": "cta",
+    "voice": "Follow Tool Hour AI for one AI shortcut every day."
+   }
+  ],
+  "caption": "Myth: You need a thousand-dollar studio setup to sell products online.\n\nFact: Good lighting and clean backgrounds can now be done in seconds with Photoroom. Take a quick snapshot on your phone, upload it, and let it build a luxury studio backdrop around your actual product.\n\nFair warning: shiny reflective glass can sometimes need quick touch-ups.\n\nGrab our free beginner AI guide via the link in bio.\n\nWhat product are you currently trying to take better photos of?",
+  "youtube_title": "Turn cheap product photos into studio shots fast",
+  "hashtags": [
+   "#photoroom",
+   "#smallbusiness",
+   "#productphotography",
+   "#ecommercehacks",
+   "#toolhourai"
+  ],
+  "fact_check": {
+   "verdict": "unverified",
+   "problems": [
+    "Gemini free daily limit reached"
+   ]
+  },
+  "mode": "exploit",
+  "settings": {
+   "voice": "Puck",
+   "music_bpm": 116,
+   "length": "normal"
+  },
+  "experiment": null,
+  "concept": {
+   "format": "Before / after transformation of a real piece of work",
+   "story": "We start with a dimly lit photo of a handmade candle shot on a cluttered kitchen counter. Dropping it into Photoroom wipes the background, re-lights the wax, and places it in a photorealistic marble bathroom setting. The final render looks like a luxury Madison Avenue campaign shot.",
+   "emotion": "surprise",
+   "total": 44
+  },
+  "created": "2026-11-17T17:55:54.684263Z",
+  "final_caption": "Myth: You need a thousand-dollar studio setup to sell products online.\n\nFact: Good lighting and clean backgrounds can now be done in seconds with Photoroom. Take a quick snapshot on your phone, upload it, and let it build a luxury studio backdrop around your actual product.\n\nFair warning: shiny reflective glass can sometimes need quick touch-ups.\n\nGrab our free beginner AI guide via the link in bio.\n\nWhat product are you currently trying to take better photos of?\n\n\ud83c\udf81 Free guide: link in bio\nAI voiceover \u00b7 not sponsored\n\n#aitools #smallbusiness #productivity #toolhourai #photoroom",
+  "id": "2026-11-17-photoroom-turn-messy-product-shots-into-",
+  "seconds": 35.9,
+  "file": "v/2026-11-17-photoroom-turn-messy-product-shots-into-.mp4",
+  "buffer_posts": {
+   "instagram": "6afc966532ea84693c32a06d",
+   "youtube": "6afc96651521a8d022917f2e"
+  },
+  "auto_published": false,
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-17-photoroom-turn-messy-product-shots-into-.mp4"
  }
 ]
