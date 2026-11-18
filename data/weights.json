@@ -14,6 +14,11 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Myth vs fact": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "tools": {
@@ -31,18 +36,23 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Photoroom": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "hooks": {
   "before-after": {
-   "n": 3,
+   "n": 4,
    "sum": 0.0,
    "score": 0.0
   }
  },
  "formats": {
   "Before / after transformation of a real piece of work": {
-   "n": 1,
+   "n": 2,
    "sum": 0.0,
    "score": 0.0
   },
@@ -59,12 +69,12 @@
  },
  "experiments": {
   "voice=Puck": {
-   "n": 2,
+   "n": 3,
    "sum": 0.0,
    "score": 0.0
   },
   "music_bpm=116": {
-   "n": 2,
+   "n": 3,
    "sum": 0.0,
    "score": 0.0
   },
@@ -79,7 +89,7 @@
    "score": 0.0
   },
   "length=normal": {
-   "n": 2,
+   "n": 3,
    "sum": 0.0,
    "score": 0.0
   },

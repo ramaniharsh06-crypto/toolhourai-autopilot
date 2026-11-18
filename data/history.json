@@ -612,6 +612,125 @@
    "youtube": "6afc96651521a8d022917f2e"
   },
   "auto_published": false,
-  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-17-photoroom-turn-messy-product-shots-into-.mp4"
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-17-photoroom-turn-messy-product-shots-into-.mp4",
+  "status": {
+   "instagram": "draft",
+   "youtube": "draft"
+  },
+  "metrics": {
+   "youtube": {
+    "reactions": 0,
+    "comments": 0,
+    "engagementRate": 0,
+    "views": 0
+   }
+  },
+  "score": 0.0
+ },
+ {
+  "pillar": "Stack tour",
+  "tool_name": "Otter.ai",
+  "tool_url": "https://otter.ai",
+  "topic": "Turn chaotic client calls into summary action items automatically",
+  "hook_style": "before-after",
+  "format": "Quick demo showing client meeting notes transform into a clean checklist",
+  "scenes": [
+   {
+    "kind": "hook",
+    "headline": "STOP TYPING MEETING NOTES",
+    "sub": "You are wasting hours every week",
+    "voice": "<sigh> Stop wasting your evenings typing up notes from chaotic client calls.",
+    "visual": {
+     "type": "stat",
+     "data": {
+      "title": "Weekly Note Taking",
+      "before_label": "By Hand",
+      "before": "4 Hours",
+      "after_label": "With Otter",
+      "after": "0 Mins",
+      "device": "laptop"
+     }
+    }
+   },
+   {
+    "kind": "tool",
+    "headline": "MEET OTTER AI",
+    "sub": "Your automated meeting assistant",
+    "voice": "Use Otter dot AI instead. It joins your calls and records everything."
+   },
+   {
+    "kind": "step",
+    "number": 1,
+    "headline": "CONNECT YOUR CALENDAR",
+    "sub": "Let AI auto-join meetings",
+    "voice": "Step one. Connect your calendar so it auto-joins your scheduled Zoom or Google Meet calls."
+   },
+   {
+    "kind": "step",
+    "number": 2,
+    "headline": "GET AUTOMATIC SUMMARIES",
+    "sub": "Instant bullet points and tasks",
+    "voice": "Step two. While you talk, it transcribes the entire call and extracts action items."
+   },
+   {
+    "kind": "result",
+    "headline": "READY TO SEND CLIENTS",
+    "sub": "Instant action items generated",
+    "voice": "And <gasp> here is the crazy part. You get a clean summary email ready to send in seconds.",
+    "visual": {
+     "type": "checklist",
+     "data": {
+      "title": "Client Action Items",
+      "items": [
+       "Send updated proposal by Tuesday",
+       "Confirm project launch timeline",
+       "Share brand style guide with team",
+       "Schedule follow-up review call"
+      ],
+      "device": "phone"
+     }
+    }
+   },
+   {
+    "kind": "cta",
+    "voice": "Follow Tool Hour AI for one AI shortcut every day."
+   }
+  ],
+  "caption": "Are you still spending hours after client calls typing up notes?\n\nStop doing it by hand.\n\nOtter AI joins your calls, transcribes the conversation, and generates a clean checklist of action items automatically.\n\nWhat used to take an hour of manual typing now takes zero effort.\n\nTry the free plan today to reclaim your evenings.\n\nWant our complete list of small business AI tools? Grab our free guide in bio.\n\nHow much time do you spend writing meeting notes?",
+  "youtube_title": "Stop Typing Meeting Notes by Hand (Do This Instead)",
+  "hashtags": [
+   "#smallbusiness",
+   "#ai tools",
+   "#productivity",
+   "#businessowner",
+   "#automation"
+  ],
+  "fact_check": {
+   "verdict": "unverified",
+   "problems": [
+    "Gemini free daily limit reached"
+   ]
+  },
+  "mode": "exploit",
+  "settings": {
+   "voice": "Puck",
+   "music_bpm": 108,
+   "length": "normal"
+  },
+  "experiment": {
+   "dim": "music_bpm",
+   "value": 108
+  },
+  "created": "2026-11-18T17:34:01.488050Z",
+  "final_caption": "Are you still spending hours after client calls typing up notes?\n\nStop doing it by hand.\n\nOtter AI joins your calls, transcribes the conversation, and generates a clean checklist of action items automatically.\n\nWhat used to take an hour of manual typing now takes zero effort.\n\nTry the free plan today to reclaim your evenings.\n\nWant our complete list of small business AI tools? Grab our free guide in bio.\n\nHow much time do you spend writing meeting notes?\n\n\ud83c\udf81 Free guide: link in bio\nAI voiceover \u00b7 not sponsored\n\n     tools\n\n#aitools #smallbusiness #productivity #toolhourai #ai",
+  "id": "2026-11-18-otter-ai-turn-chaotic-client-calls-into-",
+  "seconds": 40.1,
+  "file": "v/2026-11-18-otter-ai-turn-chaotic-client-calls-into-.mp4",
+  "buffer_posts": {
+   "instagram": "6afde2ba33817c1785c1c778",
+   "youtube": "6afde2bb6cf2b648384acd00"
+  },
+  "auto_published": false,
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-18-otter-ai-turn-chaotic-client-calls-into-.mp4"
  }
 ]
