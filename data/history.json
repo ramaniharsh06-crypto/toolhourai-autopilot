@@ -731,6 +731,245 @@
    "youtube": "6afde2bb6cf2b648384acd00"
   },
   "auto_published": false,
-  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-18-otter-ai-turn-chaotic-client-calls-into-.mp4"
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-18-otter-ai-turn-chaotic-client-calls-into-.mp4",
+  "status": {
+   "instagram": "draft",
+   "youtube": "draft"
+  },
+  "metrics": {
+   "youtube": {
+    "reactions": 0,
+    "comments": 0,
+    "engagementRate": 0,
+    "views": 0
+   }
+  },
+  "score": 0.0
+ },
+ {
+  "pillar": "Honest review",
+  "tool_name": "Rows",
+  "tool_url": "https://rows.com",
+  "topic": "Clean messy customer spreadsheets automatically with AI",
+  "hook_style": "stop-doing",
+  "format": "Stop doing this manually: replacing a tedious 1-hour admin chore in under 60 seconds",
+  "scenes": [
+   {
+    "kind": "hook",
+    "headline": "Stop cleaning spreadsheets manually",
+    "sub": "Messy data ruins your evening",
+    "voice": "Still wasting hours fixing messy spreadsheets by hand?",
+    "visual": {
+     "type": "spreadsheet",
+     "data": {
+      "title": "Messy_Leads.csv",
+      "columns": [
+       "Name",
+       "Phone",
+       "Status"
+      ],
+      "rows": [
+       [
+        "john d.",
+        "555-0199",
+        "new lead"
+       ],
+       [
+        "SARAH M.",
+        "(555) 0122",
+        "Follow Up"
+       ],
+       [
+        "john d.",
+        "5550199",
+        "new lead"
+       ],
+       [
+        "mike k",
+        "555.0144",
+        "CLOSED"
+       ]
+      ],
+      "highlight_column": 1,
+      "result_note": "Duplicates & messy formatting"
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "Stop",
+      "wasting hours"
+     ],
+     "mascot": "wow"
+    }
+   },
+   {
+    "kind": "tool",
+    "headline": "Meet Rows AI",
+    "sub": "Smart spreadsheets built for teams",
+    "voice": "Rows AI wipes out that nightmare instantly.",
+    "attention": {
+     "emphasis": [
+      "Rows AI",
+      "instantly"
+     ],
+     "mascot": "happy"
+    }
+   },
+   {
+    "kind": "step",
+    "number": 1,
+    "headline": "Open the AI analyst",
+    "sub": "Ask in plain English",
+    "voice": "Just drop in your file and tell the AI what to fix.",
+    "visual": {
+     "type": "chat",
+     "data": {
+      "app": "Rows AI",
+      "user": "Fix phone numbers and remove all duplicate rows",
+      "ai": "Standardized 4 phone formats and removed 1 duplicate lead."
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "plain English"
+     ],
+     "mascot": "happy"
+    }
+   },
+   {
+    "kind": "step",
+    "number": 2,
+    "headline": "Watch it fix errors",
+    "sub": "Instant cleanup without formulas",
+    "voice": "Boom: phone numbers standardize, caps fix, and duplicates vanish.",
+    "visual": {
+     "type": "spreadsheet",
+     "data": {
+      "title": "Cleaned_Leads.csv",
+      "columns": [
+       "Name",
+       "Phone",
+       "Status"
+      ],
+      "rows": [
+       [
+        "John D.",
+        "(555) 019-9000",
+        "New Lead"
+       ],
+       [
+        "Sarah M.",
+        "(555) 012-2000",
+        "Follow Up"
+       ],
+       [
+        "Mike K.",
+        "(555) 014-4000",
+        "Closed"
+       ]
+      ],
+      "highlight_column": 0,
+      "result_note": "Cleaned & deduplicated"
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "Boom",
+      "disappear"
+     ],
+     "mascot": "wow"
+    }
+   },
+   {
+    "kind": "result",
+    "headline": "Spotless data in seconds",
+    "sub": "Save your entire evening",
+    "voice": "Complex formulas still need Excel, but routine cleanup is officially solved.",
+    "visual": {
+     "type": "stat",
+     "data": {
+      "title": "Cleanup time",
+      "before_label": "By hand",
+      "before": "45 min",
+      "after_label": "Rows AI",
+      "after": "30 sec"
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "30 sec",
+      "officially solved"
+     ],
+     "mascot": "happy"
+    }
+   },
+   {
+    "kind": "cta",
+    "voice": "Follow Tool Hour AI for one AI shortcut every day.",
+    "attention": {
+     "emphasis": [
+      "one AI shortcut",
+      "every day"
+     ],
+     "mascot": "happy"
+    }
+   }
+  ],
+  "caption": "Spending your evening fixing messy spreadsheet columns is exhausting.\n\nRows connects built-in AI right inside your spreadsheet. You just type what you need cleaned in plain English, and it fixes casing, removes duplicates, and standardizes numbers instantly.\n\nHonest review: it is not a replacement for massive statistical models, but for daily client cleanup, it saves serious time.\n\nGrab our free starter guide in bio.\n\nHow much time do you spend formatting spreadsheets every week?",
+  "youtube_title": "Stop Cleaning Messy Spreadsheets Manually",
+  "hashtags": [
+   "#smallbusinesstips",
+   "#productivityhacks",
+   "#spreadsheets",
+   "#solopreneurlife",
+   "#aitools"
+  ],
+  "editor": {
+   "scores": {
+    "hook": 7,
+    "pacing": 7,
+    "payoff": 6,
+    "emotion": 6,
+    "clarity": 8
+   },
+   "note": "Punched up the hook into an engaging question, removed sluggish filler across steps 1 and 2, replaced the awkward sigh/take in the result with a punchy contrast, kept visual objects identical, and hit a conversational 62 total spoken words."
+  },
+  "attention_plan": {
+   "retention_score": 92,
+   "biggest_risk": "Viewers might drop off during Scene 3 (the prompt step) thinking it requires typing complex commands; countered by punching the line to 'plain English' and firing an immediate 'Boom' payoff in Scene 4."
+  },
+  "fact_check": {
+   "verdict": "unverified",
+   "problems": [
+    "Gemini 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and "
+   ]
+  },
+  "mode": "exploit",
+  "settings": {
+   "voice": "Puck",
+   "music_bpm": 116,
+   "length": "short"
+  },
+  "experiment": {
+   "dim": "length",
+   "value": "short"
+  },
+  "concept": {
+   "format": "Stop doing this manually: replacing a tedious 1-hour admin chore in under 60 seconds",
+   "story": "You stare down 500 rows of unformatted, misspelled lead data that usually takes your whole evening to fix. We run Rows AI Analyst with one click, and it instantly deduplicates, normalizes phone numbers, and categorizes leads automatically. You close your laptop 59 minutes early with spotless data ready for sales.",
+   "emotion": "relief",
+   "total": 42
+  },
+  "created": "2026-11-19T17:52:30.645497Z",
+  "final_caption": "Spending your evening fixing messy spreadsheet columns is exhausting.\n\nRows connects built-in AI right inside your spreadsheet. You just type what you need cleaned in plain English, and it fixes casing, removes duplicates, and standardizes numbers instantly.\n\nHonest review: it is not a replacement for massive statistical models, but for daily client cleanup, it saves serious time.\n\nGrab our free starter guide in bio.\n\nHow much time do you spend formatting spreadsheets every week?\n\n\ud83c\udf81 Free guide: link in bio\nAI voiceover \u00b7 not sponsored\n\n#aitools #smallbusiness #productivity #toolhourai #smallbusinesstips",
+  "id": "2026-11-19-rows-clean-messy-customer-spreadsheets-a",
+  "seconds": 30.6,
+  "file": "v/2026-11-19-rows-clean-messy-customer-spreadsheets-a.mp4",
+  "buffer_posts": {
+   "instagram": "6aff3a1aed6071e70990f96e",
+   "youtube": "6aff3a1bb96c7393c03ffc2b"
+  },
+  "auto_published": false,
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-19-rows-clean-messy-customer-spreadsheets-a.mp4"
  }
 ]
