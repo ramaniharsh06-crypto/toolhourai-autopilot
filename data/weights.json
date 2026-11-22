@@ -24,6 +24,11 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Honest review": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "tools": {
@@ -51,11 +56,21 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Rows": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "hooks": {
   "before-after": {
    "n": 5,
+   "sum": 0.0,
+   "score": 0.0
+  },
+  "stop-doing": {
+   "n": 1,
    "sum": 0.0,
    "score": 0.0
   }
@@ -80,21 +95,26 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Stop doing this manually: replacing a tedious 1-hour admin c": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "experiments": {
   "voice=Puck": {
-   "n": 4,
+   "n": 5,
    "sum": 0.0,
    "score": 0.0
   },
   "music_bpm=116": {
-   "n": 3,
+   "n": 4,
    "sum": 0.0,
    "score": 0.0
   },
   "length=short": {
-   "n": 1,
+   "n": 2,
    "sum": 0.0,
    "score": 0.0
   },

@@ -1,6 +1,6 @@
-# Tool Hour AI autopilot report — 2026-11-19
+# Tool Hour AI autopilot report — 2026-11-22
 
-Videos made: **5** · with stats: **5**
+Videos made: **6** · with stats: **6**
 
 ## Top videos
 | Score | Pillar | Tool | Topic |
@@ -14,18 +14,18 @@ Videos made: **5** · with stats: **5**
 ## What the next videos will lean toward
 - **formats**: Before / after transformation of a real piece of work (0.0×), Tool vs the old way: side-by-side, the old way loses hilario (0.0×), Speed run: do a real task with the tool in 3 fast steps, rac (0.0×)
 - **pillars**: Steal this prompt (0.0×), Tool in 30s (0.0×), Before / after (0.0×)
-- **hooks**: before-after (0.0×)
+- **hooks**: before-after (0.0×), stop-doing (0.0×)
 - **tools**: Notion AI (0.0×), Descript (0.0×), Gamma App (0.0×)
 - **experiments**: voice=Puck (0.0×), music_bpm=116 (0.0×), length=short (0.0×)
 
 ## Growth Analyst
-- All 5 posted videos have recorded 0 views, reactions, comments, and a 0.0 total performance score.
-- The data sample size is too small (n=5 total videos) to determine high-performing content types.
-- Every video tested exclusively relied on the 'before-after' hook style, yielding no comparative performance data against other hooks.
-- Content pillars (Steal this prompt, Tool in 30s, Before / after, Myth vs fact, Stack tour) each only have a sample size of n=1.
-- Experimental variables like voice ('Puck' vs 'Leda') and music BPM (108, 116, 124) show 0 engagement due to lack of overall reach across all videos.
+- All 6 published videos currently show zero views, reactions, and comments across YouTube metrics.
+- The data set is extremely small (sample size n=6 total), making quantitative performance comparisons impossible.
+- The 'before-after' hook style is heavily over-represented, accounting for 5 of the 6 total uploads.
+- Each content pillar and tool has only a single data point (n=1), which is too small of a sample to draw conclusions on content preferences.
+- Technical variants like the 'Puck' voiceover (n=5) and 116 BPM background music (n=4) dominate testing, but show no performance differentiation due to zero baseline engagement.
 
 **Next moves:**
-1. Audit channel posting settings, platform indexing, and video visibility to fix the lack of distribution causing 0 views.
-1. Diversify the hook style beyond 'before-after' to test new visual or text angles once initial distribution is resolved.
-1. Increase posting volume per pillar (currently n=1 each) to gather a meaningful sample size for performance analysis.
+1. Verify channel indexing, privacy settings, and distribution setups to ensure videos are publicly accessible and being served to users.
+1. Maintain consistent posting across diverse pillars and tools to build a sufficient sample size (n >= 5 per variable) before evaluating performance.
+1. Diversify hook styles in upcoming uploads to avoid over-indexing on 'before-after' framing while early audience data is established.

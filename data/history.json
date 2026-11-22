@@ -970,6 +970,143 @@
    "youtube": "6aff3a1bb96c7393c03ffc2b"
   },
   "auto_published": false,
-  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-19-rows-clean-messy-customer-spreadsheets-a.mp4"
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-19-rows-clean-messy-customer-spreadsheets-a.mp4",
+  "status": {
+   "instagram": "draft",
+   "youtube": "draft"
+  },
+  "metrics": {
+   "youtube": {
+    "reactions": 0,
+    "comments": 0,
+    "engagementRate": 0,
+    "views": 0
+   }
+  },
+  "score": 0.0
+ },
+ {
+  "pillar": "Myth vs fact",
+  "tool_name": "ChatGPT",
+  "tool_url": "https://chatgpt.com",
+  "topic": "Busting the myth that AI copy always sounds robotic",
+  "hook_style": "myth",
+  "format": "Myth buster: a common belief about AI, flipped with a real demo",
+  "scenes": [
+   {
+    "kind": "hook",
+    "headline": "Think AI sounds like a robot",
+    "sub": "You might be using it wrong",
+    "voice": "Think AI writing always sounds like a generic, robotic fake? <chuckle> You are missing out.",
+    "visual": {
+     "type": "email",
+     "data": {
+      "device": "laptop",
+      "to": "client@example.com",
+      "subject": "Project update",
+      "body": "Dear Valued Customer, We are writing to inform you regarding our upcoming deliverables.",
+      "ai_written": true
+     }
+    }
+   },
+   {
+    "kind": "tool",
+    "headline": "Try ChatGPT for free",
+    "sub": "Train it on your own writing",
+    "voice": "Open ChatGPT on the free plan."
+   },
+   {
+    "kind": "step",
+    "number": 1,
+    "headline": "Paste your past emails",
+    "body": "Feed it three real emails you wrote to customers",
+    "voice": "Paste three of your past emails and tell it to analyze your tone.",
+    "visual": {
+     "type": "chat",
+     "data": {
+      "device": "laptop",
+      "app": "ChatGPT",
+      "user": "Analyze the tone and voice of these 3 past emails I wrote.",
+      "ai": "Understood. Your voice is friendly, direct, and concise."
+     }
+    }
+   },
+   {
+    "kind": "step",
+    "number": 2,
+    "headline": "Prompt your response",
+    "body": "Ask it to write a reply matching that voice",
+    "voice": "Then ask it to write a new customer reply using that exact voice.",
+    "visual": {
+     "type": "chat",
+     "data": {
+      "device": "laptop",
+      "app": "ChatGPT",
+      "user": "Reply to this refund query using my exact voice.",
+      "ai": "Hey Mark! Absolutely, I can handle that refund right now. No worries at all!"
+     }
+    }
+   },
+   {
+    "kind": "result",
+    "headline": "Human tone in seconds",
+    "sub": "Nobody will know AI wrote it",
+    "voice": "And here is the crazy part: it sounds completely natural, like you wrote it yourself.",
+    "visual": {
+     "type": "stat",
+     "data": {
+      "device": "laptop",
+      "title": "Email Drafting Time",
+      "before_label": "Writing manually",
+      "before": "15 mins",
+      "after_label": "With ChatGPT voice",
+      "after": "30 secs"
+     }
+    }
+   },
+   {
+    "kind": "cta",
+    "voice": "Follow Tool Hour AI for one AI shortcut every day."
+   }
+  ],
+  "caption": "Most small business owners think AI content sounds fake and robotic, ruining customer trust.\n\nHere is the secret: AI only sounds generic if you give it generic prompts!\n\nIf you feed ChatGPT 2-3 examples of your actual emails or messages, it learns your exact tone, pacing, and style instantly.\n\nYou save hours answering routine messages without losing your personal touch.\n\nAre you using ChatGPT to answer client emails yet?",
+  "youtube_title": "Think AI Copy Always Sounds Robotic? Try This Prompt",
+  "hashtags": [
+   "#ChatGPT",
+   "#SmallBusinessTips",
+   "#AITools",
+   "#Productivity",
+   "#BusinessAutomation"
+  ],
+  "fact_check": {
+   "verdict": "unverified",
+   "problems": [
+    "Gemini free daily limit reached"
+   ]
+  },
+  "mode": "explore",
+  "settings": {
+   "voice": "Puck",
+   "music_bpm": 116,
+   "length": "normal"
+  },
+  "experiment": null,
+  "concept": {
+   "format": "Myth buster: a common belief about AI, flipped with a real demo",
+   "story": "Small business owners assume AI copy is instantly recognizable spam that ruins brand trust. We feed ChatGPT three past customer emails and watch it mimic the exact brand voice in seconds. The output is indistinguishable from a real human response, busting the robotic myth.",
+   "emotion": "surprise",
+   "total": 43
+  },
+  "created": "2026-11-22T16:36:34.680008Z",
+  "final_caption": "Most small business owners think AI content sounds fake and robotic, ruining customer trust.\n\nHere is the secret: AI only sounds generic if you give it generic prompts!\n\nIf you feed ChatGPT 2-3 examples of your actual emails or messages, it learns your exact tone, pacing, and style instantly.\n\nYou save hours answering routine messages without losing your personal touch.\n\nAre you using ChatGPT to answer client emails yet?\n\n\ud83c\udf81 Free guide: link in bio\nAI voiceover \u00b7 not sponsored\n\n#aitools #smallbusiness #productivity #toolhourai #ChatGPT",
+  "id": "2026-11-22-chatgpt-busting-the-myth-that-ai-copy-al",
+  "seconds": 35.7,
+  "file": "v/2026-11-22-chatgpt-busting-the-myth-that-ai-copy-al.mp4",
+  "buffer_posts": {
+   "instagram": "6b031b58bf5d5a73b6a5ea21",
+   "youtube": "6b031b58d5eabfb8ccc27d70"
+  },
+  "auto_published": false,
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-22-chatgpt-busting-the-myth-that-ai-copy-al.mp4"
  }
 ]
