@@ -1,6 +1,6 @@
-# Tool Hour AI autopilot report — 2026-11-22
+# Tool Hour AI autopilot report — 2026-11-23
 
-Videos made: **6** · with stats: **6**
+Videos made: **7** · with stats: **7**
 
 ## Top videos
 | Score | Pillar | Tool | Topic |
@@ -14,18 +14,18 @@ Videos made: **6** · with stats: **6**
 ## What the next videos will lean toward
 - **formats**: Before / after transformation of a real piece of work (0.0×), Tool vs the old way: side-by-side, the old way loses hilario (0.0×), Speed run: do a real task with the tool in 3 fast steps, rac (0.0×)
 - **pillars**: Steal this prompt (0.0×), Tool in 30s (0.0×), Before / after (0.0×)
-- **hooks**: before-after (0.0×), stop-doing (0.0×)
+- **hooks**: before-after (0.0×), stop-doing (0.0×), myth (0.0×)
 - **tools**: Notion AI (0.0×), Descript (0.0×), Gamma App (0.0×)
 - **experiments**: voice=Puck (0.0×), music_bpm=116 (0.0×), length=short (0.0×)
 
 ## Growth Analyst
-- All 6 published videos currently show zero views, reactions, and comments across YouTube metrics.
-- The data set is extremely small (sample size n=6 total), making quantitative performance comparisons impossible.
-- The 'before-after' hook style is heavily over-represented, accounting for 5 of the 6 total uploads.
-- Each content pillar and tool has only a single data point (n=1), which is too small of a sample to draw conclusions on content preferences.
-- Technical variants like the 'Puck' voiceover (n=5) and 116 BPM background music (n=4) dominate testing, but show no performance differentiation due to zero baseline engagement.
+- All 7 videos across YouTube currently show zero views, zero engagement, and a aggregate performance score of 0.0.
+- The data heavily relies on the 'before-after' hook style (5 out of 7 videos), but there is zero performance data to validate its effectiveness yet.
+- The overall dataset sample size (7 videos) is far too small to draw statistically significant conclusions regarding high-performing topics or tools.
+- Sample sizes for individual variables (such as individual tools like Notion AI or Descript) are tiny, with only 1 video per tool.
+- No content pillar, format, or audio experiment has established a proven baseline since all recorded performance scores remain identical at zero.
 
 **Next moves:**
-1. Verify channel indexing, privacy settings, and distribution setups to ensure videos are publicly accessible and being served to users.
-1. Maintain consistent posting across diverse pillars and tools to build a sufficient sample size (n >= 5 per variable) before evaluating performance.
-1. Diversify hook styles in upcoming uploads to avoid over-indexing on 'before-after' framing while early audience data is established.
+1. Audit YouTube distribution and technical settings (indexing, upload visibility, and metadata) to ensure videos are actually reaching viewers, given the 0-view metrics across all posts.
+1. Continue uploading consistently to build a minimum viable sample size of at least 20-30 videos before making strategic shifts in pillars or tools.
+1. Diversify hook styles beyond 'before-after' (which accounts for ~71% of posts) to test a broader set of creative angles once views begin registering.

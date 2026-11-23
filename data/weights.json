@@ -16,7 +16,7 @@
    "score": 0.0
   },
   "Myth vs fact": {
-   "n": 1,
+   "n": 2,
    "sum": 0.0,
    "score": 0.0
   },
@@ -61,6 +61,11 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "ChatGPT": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "hooks": {
@@ -70,6 +75,11 @@
    "score": 0.0
   },
   "stop-doing": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
+  },
+  "myth": {
    "n": 1,
    "sum": 0.0,
    "score": 0.0
@@ -100,16 +110,21 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Myth buster: a common belief about AI, flipped with a real d": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "experiments": {
   "voice=Puck": {
-   "n": 5,
+   "n": 6,
    "sum": 0.0,
    "score": 0.0
   },
   "music_bpm=116": {
-   "n": 4,
+   "n": 5,
    "sum": 0.0,
    "score": 0.0
   },
@@ -124,7 +139,7 @@
    "score": 0.0
   },
   "length=normal": {
-   "n": 4,
+   "n": 5,
    "sum": 0.0,
    "score": 0.0
   },

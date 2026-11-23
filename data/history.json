@@ -1107,6 +1107,144 @@
    "youtube": "6b031b58d5eabfb8ccc27d70"
   },
   "auto_published": false,
-  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-22-chatgpt-busting-the-myth-that-ai-copy-al.mp4"
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-22-chatgpt-busting-the-myth-that-ai-copy-al.mp4",
+  "status": {
+   "instagram": "draft",
+   "youtube": "draft"
+  },
+  "metrics": {
+   "youtube": {
+    "reactions": 0,
+    "comments": 0,
+    "engagementRate": 0,
+    "views": 0
+   }
+  },
+  "score": 0.0
+ },
+ {
+  "pillar": "Steal this prompt",
+  "tool_name": "Trello",
+  "tool_url": "https://trello.com",
+  "topic": "Turn chaotic client audio transcripts into structured Trello boards automatically",
+  "hook_style": "stop-doing",
+  "format": "Client turnaround challenge: taking raw, messy input and delivering finished work live",
+  "scenes": [
+   {
+    "kind": "hook",
+    "headline": "Chaotic client voice note",
+    "sub": "Stop turning audio into tasks manually",
+    "voice": "Client sent a chaotic rambly voice message? <sigh> Stop panicking.",
+    "visual": {
+     "type": "chat",
+     "data": {
+      "app": "Voice Notes",
+      "user": "5-minute audio rant.wav",
+      "ai": "Client rambling about 5 urgent site fixes and pricing updates."
+     }
+    }
+   },
+   {
+    "kind": "tool",
+    "headline": "Trello",
+    "sub": "Free project management board",
+    "voice": "Open Trello."
+   },
+   {
+    "kind": "step",
+    "number": 1,
+    "headline": "Paste transcript to prompt",
+    "body": "Feed the audio text into Trello AI",
+    "voice": "Paste the transcript straight into Trello's AI prompt.",
+    "visual": {
+     "type": "chat",
+     "data": {
+      "app": "Trello AI",
+      "user": "Extract action items, due dates, and checklist items from this transcript:",
+      "ai": "Creating cards for Client Deliverables..."
+     }
+    }
+   },
+   {
+    "kind": "step",
+    "number": 2,
+    "headline": "Auto generate task cards",
+    "body": "Trello extracts dates and action steps",
+    "voice": "It instantly populates assigned cards, due dates, and checklists live.",
+    "visual": {
+     "type": "checklist",
+     "data": {
+      "title": "Client Deliverables",
+      "items": [
+       "Update pricing page (Due Tomorrow)",
+       "Fix navigation bug (Due Friday)",
+       "Send updated proposal draft"
+      ]
+     }
+    }
+   },
+   {
+    "kind": "result",
+    "headline": "Instant organization",
+    "body": "Structured workflow from messy thoughts",
+    "voice": "Boom. <chuckle> Messy rant to organized project in ten seconds.",
+    "visual": {
+     "type": "stat",
+     "data": {
+      "title": "Task setup time",
+      "before_label": "Manual typing",
+      "before": "45 mins",
+      "after_label": "Trello AI",
+      "after": "10 secs"
+     }
+    }
+   },
+   {
+    "kind": "cta",
+    "voice": "Follow Tool Hour AI for one AI shortcut every day."
+   }
+  ],
+  "caption": "Ever get a 5-minute rambly voice note from a client with 10 hidden tasks inside?\n\nStop taking notes manually. You can copy the transcript directly into Trello's AI prompt and watch it generate organized task cards, due dates, and checklists in seconds.\n\nTry it on Trello's free plan today.\n\nWant 50+ time-saving AI prompts for small business owners? Grab our free guide in the bio!\n\nHow do you handle messy client notes?",
+  "youtube_title": "Turn Messy Client Voice Notes into Trello Tasks Fast",
+  "hashtags": [
+   "#trello",
+   "#smallbusiness",
+   "#productivitytips",
+   "#aiconnect",
+   "#workflowautomation"
+  ],
+  "fact_check": {
+   "verdict": "unverified",
+   "problems": [
+    "Gemini free daily limit reached"
+   ]
+  },
+  "mode": "explore",
+  "settings": {
+   "voice": "Puck",
+   "music_bpm": 116,
+   "length": "short"
+  },
+  "experiment": {
+   "dim": "length",
+   "value": "short"
+  },
+  "concept": {
+   "format": "Client turnaround challenge: taking raw, messy input and delivering finished work live",
+   "story": "A client leaves an unstructured audio rant detailing five urgent project updates and random feature requests. You run the transcript through Trello's Strategy AI prompt, which instantly populates assigned cards, due dates, and task checklists live on screen.",
+   "emotion": "Triumph",
+   "total": 44
+  },
+  "created": "2026-11-23T20:22:05.856262Z",
+  "final_caption": "Ever get a 5-minute rambly voice note from a client with 10 hidden tasks inside?\n\nStop taking notes manually. You can copy the transcript directly into Trello's AI prompt and watch it generate organized task cards, due dates, and checklists in seconds.\n\nTry it on Trello's free plan today.\n\nWant 50+ time-saving AI prompts for small business owners? Grab our free guide in the bio!\n\nHow do you handle messy client notes?\n\n\ud83c\udf81 Free guide: link in bio\nAI voiceover \u00b7 not sponsored\n\n#aitools #smallbusiness #productivity #toolhourai #trello",
+  "id": "2026-11-23-trello-turn-chaotic-client-audio-transcr",
+  "seconds": 30.9,
+  "file": "v/2026-11-23-trello-turn-chaotic-client-audio-transcr.mp4",
+  "buffer_posts": {
+   "instagram": "6b04a1c0e9bcfe11e844cf8d",
+   "youtube": "6b04a1c0f80929239f3e62ec"
+  },
+  "auto_published": false,
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-23-trello-turn-chaotic-client-audio-transcr.mp4"
  }
 ]
