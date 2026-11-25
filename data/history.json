@@ -1245,6 +1245,205 @@
    "youtube": "6b04a1c0f80929239f3e62ec"
   },
   "auto_published": false,
-  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-23-trello-turn-chaotic-client-audio-transcr.mp4"
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-23-trello-turn-chaotic-client-audio-transcr.mp4",
+  "status": {
+   "instagram": "draft",
+   "youtube": "draft"
+  },
+  "metrics": {
+   "youtube": {
+    "reactions": 0,
+    "comments": 0,
+    "engagementRate": 0,
+    "views": 0
+   }
+  },
+  "score": 0.0
+ },
+ {
+  "pillar": "Tool in 30s",
+  "tool_name": "ElevenLabs",
+  "tool_url": "https://elevenlabs.io",
+  "topic": "Instant realistic voiceovers for small business ads",
+  "hook_style": "stop-doing",
+  "format": "Tool vs the old way: side-by-side, the old way loses hilariously",
+  "scenes": [
+   {
+    "kind": "hook",
+    "headline": "Stop recording awkward voiceovers",
+    "sub": "Tired of ten awkward takes",
+    "voice": "Stop recording awkward ad voiceovers like this.",
+    "visual": {
+     "type": "stat",
+     "data": {
+      "title": "Voiceover production",
+      "before_label": "DIY mic recording",
+      "before": "45 min",
+      "after_label": "ElevenLabs generation",
+      "after": "10 sec"
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "Stop",
+      "awkward"
+     ],
+     "mascot": "wow"
+    }
+   },
+   {
+    "kind": "tool",
+    "headline": "Meet ElevenLabs",
+    "sub": "Studio audio in seconds",
+    "voice": "This AI tool clones flawless studio voices in seconds.",
+    "visual": null,
+    "attention": {
+     "emphasis": [
+      "clones",
+      "seconds"
+     ],
+     "mascot": "wow"
+    }
+   },
+   {
+    "kind": "step",
+    "number": 1,
+    "headline": "Paste your ad script",
+    "sub": "Any text turns to audio",
+    "voice": "Step one. Paste your promo copy straight into the editor.",
+    "visual": {
+     "type": "document",
+     "data": {
+      "title": "Spring_Sale_Ad.txt",
+      "paragraphs": [
+       "Get twenty percent off all handcrafted ceramic mugs this weekend only.",
+       "Fresh batches just arrived at the downtown studio."
+      ]
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "Paste",
+      "instant"
+     ],
+     "mascot": "happy"
+    }
+   },
+   {
+    "kind": "step",
+    "number": 2,
+    "headline": "Pick a realistic voice",
+    "sub": "Dozens of natural tones",
+    "voice": "Step two. Pick a hyper-realistic voice and hit generate.",
+    "visual": {
+     "type": "checklist",
+     "data": {
+      "title": "Select Voice Style",
+      "items": [
+       "Adam: Warm and conversational (Selected)",
+       "Rachel: Clear and energetic",
+       "Domi: Friendly and soft"
+      ]
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "hyper-realistic",
+      "generate"
+     ],
+     "mascot": "happy"
+    }
+   },
+   {
+    "kind": "result",
+    "headline": "Clean audio zero mic stress",
+    "sub": "Ready for your next ad",
+    "voice": "Just like that, crisp broadcast-ready audio with zero mic stress.",
+    "visual": {
+     "type": "social",
+     "data": {
+      "account": "Ceramic Studio",
+      "caption": "Our spring promo is live! Audio generated in seconds.",
+      "likes": "420",
+      "comments": "18"
+     }
+    },
+    "attention": {
+     "emphasis": [
+      "crisp",
+      "zero"
+     ],
+     "mascot": "wow"
+    }
+   },
+   {
+    "kind": "cta",
+    "voice": "Follow Tool Hour AI for your daily AI workflow boost.",
+    "visual": null,
+    "attention": {
+     "emphasis": [
+      "daily",
+      "boost"
+     ],
+     "mascot": "happy"
+    }
+   }
+  ],
+  "caption": "Still spending forty minutes re-recording your promo audio because of background noise or stumbles?\n\nElevenLabs turns plain text scripts into clean, realistic voiceovers in seconds. You pick the tone, paste your text, and download ready-to-use audio for social ads or product demos.\n\nIt handles pacing and inflection surprisingly well, though you still need to spell out weird brand names phonetically.\n\nGrab our free starter guide in the bio to save hours on your weekly content.\n\nDo you record your own voiceovers or hire freelancers?",
+  "youtube_title": "Stop recording ad voiceovers by hand (ElevenLabs demo)",
+  "hashtags": [
+   "#elevenlabs",
+   "#smallbiztools",
+   "#voiceover",
+   "#businesstips",
+   "#marketinghacks"
+  ],
+  "editor": {
+   "scores": {
+    "hook": 7,
+    "pacing": 7,
+    "payoff": 8,
+    "emotion": 6,
+    "clarity": 9
+   },
+   "note": "Sharpened voiceover copy to feel more conversational, dynamic, and emotionally punchy with clear step callouts and strong sensory payoff. Total spoken word count tuned to 64 words."
+  },
+  "attention_plan": {
+   "retention_score": 94,
+   "biggest_risk": "Viewers swiping during the UI steps (scenes 3 and 4); mitigated by trimming voiceover drag, punching high-impact action verbs ('Paste', 'generate'), and keeping Tick dynamically reacting to maintain cartoon-level pacing."
+  },
+  "fact_check": {
+   "verdict": "unverified",
+   "problems": [
+    "Gemini 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and "
+   ]
+  },
+  "mode": "exploit",
+  "settings": {
+   "voice": "Puck",
+   "music_bpm": 124,
+   "length": "short"
+  },
+  "experiment": {
+   "dim": "music_bpm",
+   "value": 124
+  },
+  "concept": {
+   "format": "Tool vs the old way: side-by-side, the old way loses hilariously",
+   "story": "Split screen shows a founder coughing, resetting microphones, and butchering script takes for forty minutes on the left. On the right, they paste the exact script into ElevenLabs, pick a studio voice, and hit export in four seconds. The founder on the left is still untangling headphone cables while the ad goes live.",
+   "emotion": "Comedic satisfaction",
+   "total": 43
+  },
+  "created": "2026-11-25T18:56:53.942681Z",
+  "final_caption": "Still spending forty minutes re-recording your promo audio because of background noise or stumbles?\n\nElevenLabs turns plain text scripts into clean, realistic voiceovers in seconds. You pick the tone, paste your text, and download ready-to-use audio for social ads or product demos.\n\nIt handles pacing and inflection surprisingly well, though you still need to spell out weird brand names phonetically.\n\nGrab our free starter guide in the bio to save hours on your weekly content.\n\nDo you record your own voiceovers or hire freelancers?\n\n\ud83c\udf81 Free guide: link in bio\nAI voiceover \u00b7 not sponsored\n\n#aitools #smallbusiness #productivity #toolhourai #elevenlabs",
+  "id": "2026-11-25-elevenlabs-instant-realistic-voiceovers-",
+  "seconds": 31.9,
+  "file": "v/2026-11-25-elevenlabs-instant-realistic-voiceovers-.mp4",
+  "buffer_posts": {
+   "instagram": "6b0730b7c06d6883dad7a03d",
+   "youtube": "6b0730b803e79bc5c6f88e08"
+  },
+  "auto_published": false,
+  "video_url": "https://ramaniharsh06-crypto.github.io/toolhourai-autopilot/v/2026-11-25-elevenlabs-instant-realistic-voiceovers-.mp4"
  }
 ]

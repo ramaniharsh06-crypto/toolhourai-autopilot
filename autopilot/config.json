@@ -58,7 +58,7 @@
   "defaults": {
     "voice": "Puck",
     "music_bpm": 116,
-    "length": "normal"
+    "length": "short"
   },
   "experiments": {
     "voice": [

@@ -1,7 +1,7 @@
 {
  "pillars": {
   "Steal this prompt": {
-   "n": 1,
+   "n": 2,
    "sum": 0.0,
    "score": 0.0
   },
@@ -66,6 +66,11 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Trello": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "hooks": {
@@ -75,7 +80,7 @@
    "score": 0.0
   },
   "stop-doing": {
-   "n": 1,
+   "n": 2,
    "sum": 0.0,
    "score": 0.0
   },
@@ -115,21 +120,26 @@
    "n": 1,
    "sum": 0.0,
    "score": 0.0
+  },
+  "Client turnaround challenge: taking raw, messy input and del": {
+   "n": 1,
+   "sum": 0.0,
+   "score": 0.0
   }
  },
  "experiments": {
   "voice=Puck": {
-   "n": 6,
+   "n": 7,
    "sum": 0.0,
    "score": 0.0
   },
   "music_bpm=116": {
-   "n": 5,
+   "n": 6,
    "sum": 0.0,
    "score": 0.0
   },
   "length=short": {
-   "n": 2,
+   "n": 3,
    "sum": 0.0,
    "score": 0.0
   },
